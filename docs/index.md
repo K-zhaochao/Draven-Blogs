@@ -19,7 +19,7 @@ features:
     details: HashMap里面每一个对象包含以下内容：1.1 链表中的键值对对象
     link: /java/hashmap
   - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: Lorem ipsum dolor sit amet
   - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
