@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  base: '/',
+  base: '/Draven-Blogs/',
   title: "Draven's Blogs",
   description: "Code like a dreamer, build like an engineer.",
   // 赛博朋克紫色调的主色设置
