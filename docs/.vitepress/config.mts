@@ -1,17 +1,30 @@
 import { defineConfig } from 'vitepress'
+import { generateSidebar } from 'vitepress-sidebar'
+import taskLists from 'markdown-it-task-lists'
 
 export default defineConfig({
   base: '/',
   title: "Draven's Blogs",
   description: "Code like a dreamer, build like an engineer.",
+  lastUpdated: true, // 3.开启最后更新时间
+  // 配置 markdown
+  markdown: {
+    config: (md) => {
+      md.use(taskLists) // 2.任务列表支持
+    }
+  },
   // 赛博朋克紫色调的主色设置
   themeConfig: {
+    lastUpdated: {
+      text: '最后更新于'
+    },
     logo: 'https://skillicons.dev/icons?i=java', 
     nav: [
       { text: '首页', link: '/' },
       { text: 'Java 核心', link: '/java/index' },
       { text: '项目实战', link: '/projects/index' },
       { text: '思考与总结', link: '/thoughts/index' },
+      { text: '语雀笔记', link: 'https://www.yuque.com/u34064869/draven323' }, // 4.添加语雀链接
       { text: 'GitHub', link: 'https://github.com/K-zhaochao' }
     ],
 
@@ -41,35 +54,15 @@ export default defineConfig({
       }
     },
 
-    sidebar: {
-      '/java/': [
-        {
-          text: 'Java 基础进阶',
-          items: [
-            { text: 'HashMap 源码深度解析', link: '/java/hashmap' },
-            { text: 'JVM 内存模型总结', link: '/java/jvm' },
-          ]
-        }
-      ],
-      '/projects/': [
-        {
-          text: '实战项目',
-          items: [
-            { text: '苍穹外卖：核心架构设计', link: '/projects/sky-takeout' },
-            { text: 'Redis 在外卖业务中的应用', link: '/projects/redis-action' },
-          ]
-        }
-      ],
-      '/thoughts/': [
-        {
-          text: '技术随笔',
-          items: [
-            { text: '大二下学期的迷茫与突破', link: '/thoughts/2024-summary' },
-            { text: '为什么我选择自建博客', link: '/thoughts/why-blog' },
-          ]
-        }
-      ]
-    },
+    // 1.自动生成侧边栏
+    sidebar: generateSidebar({
+      documentRootPath: 'docs', // 文档根目录
+      useTitleFromFileHeading: true, // 从文件标题获取侧边栏名称
+      useTitleFromFrontmatter: true, // 优先使用 frontmatter 中的 title
+      useFolderTitleFromIndexFile: true, // 文件夹标题使用其内部的 index.md
+      sortMenusByFrontmatterOrder: true, // 支持按 frontmatter order 排序
+      collapsed: false // 是否默认折叠
+    }),
 
     docFooter: {
       prev: '上一页',

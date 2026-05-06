@@ -1,3 +1,11 @@
+---
+title: HashMap 源码深度解析
+order: 1
+tags:
+  - Java
+  - 分享
+---
+
 ## 1\. 看源码之前需要了解的一些内容
 
 * `Node<K,V>\[] table`：哈希表结构中数组的名字
@@ -22,13 +30,13 @@ Node<K,V> next;   //下一个节点的地址值
 包含：
 
 ```java
-int hash;         		//键的哈希值
-final K key;      		//键
-V value;         	 	//值
-TreeNode<K,V> parent;  	//父节点的地址值
-TreeNode<K,V> left;		//左子节点的地址值
-TreeNode<K,V> right;	//右子节点的地址值
-boolean red;			//节点的颜色
+int hash;           //键的哈希值
+final K key;        //键
+V value;            //值
+TreeNode<K,V> parent;   //父节点的地址值
+TreeNode<K,V> left;  //左子节点的地址值
+TreeNode<K,V> right; //右子节点的地址值
+boolean red;   //节点的颜色
 ```
 
 ## 2\. 添加元素
@@ -71,8 +79,8 @@ static final int hash(Object key) {
 //参数二：键
 //参数三：值
 //参数四：如果键重复了是否保留
-//		   true，表示老元素的值保留，不会覆盖
-//		   false，表示老元素的值不保留，会进行覆盖
+//     true，表示老元素的值保留，不会覆盖
+//     false，表示老元素的值不保留，会进行覆盖
 final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
     //定义一个局部变量，用来记录哈希表中数组的地址值。
     Node<K,V>\[] tab;
@@ -138,7 +146,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
                         treeifyBin(tab, hash);
                     break;
                 }
-                //e：			  0x0044  ddd  444
+                //e：     0x0044  ddd  444
                 //要添加的元素： 0x0055   ddd   555
                 //如果哈希值一样，就会调用equals方法比较内部的属性值是否相同
                 if (e.hash == hash \&\& ((k = e.key) == key || (key != null \&\& key.equals(k)))){
@@ -180,4 +188,3 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
 1. HashMap 底层哈希表的数组默认长度为16，默认加载因子为0.75，数组名为`table`，节点分为链表节点（Node）和红黑树节点（TreeNode）。
 2. HashMap 的`put`方法核心逻辑在`putVal`中，会先计算键的哈希值确定数组索引，再根据索引位置的节点情况（空、键重复、链表/红黑树）做不同处理。
 3. HashMap 扩容时机为元素数量超过`数组长度\*加载因子`，链表转红黑树的条件是链表长度≥8且数组长度≥64。
-
