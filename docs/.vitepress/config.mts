@@ -24,7 +24,7 @@ export default defineConfig({
       { text: 'Java 核心', link: '/java/index' },
       { text: '项目实战', link: '/projects/index' },
       { text: '思考与总结', link: '/thoughts/index' },
-      { text: '语雀笔记', link: 'https://www.yuque.com/u34064869/draven323' }, // 4.添加语雀链接
+      { text: '学习笔记', link: '/notes/index' }, 
       { text: 'GitHub', link: 'https://github.com/K-zhaochao' }
     ],
 

@@ -32,6 +32,8 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install dependencies
         run: npm ci
+      - name: Sync Obsidian Notes
+        run: node scripts/sync.mjs
       - name: Build with VitePress
         run: npm run build
       - name: Upload artifact
