@@ -29,10 +29,36 @@ function getAllMdFiles(dir, fileList = []) {
 
 // 核心转换正则
 function transformContent(content) {
-  // 1. 转换 Obsidian 双链: [[文件名]] -> [文件名](./文件名.md)
+  // 1. 转换内部图片引用的路径 (放到双链转换前面，防止被误伤)
+  // 处理 Obsidian 特有的 Wiki 图片格式: ![[Draven_Note_Images/图片名.png]] 或者 ![[图片名.png]]
+  content = content.replace(/!\[\[(.*?)\]\]/g, (match, imgPath) => {
+    // 尝试提取 Draven_Note_Images 之后的完整目录结构
+    const matchDir = imgPath.match(/Draven_Note_Images\/(.*)/);
+    if (matchDir && matchDir[1]) {
+      return `![img](/Draven_Note_Images/${matchDir[1]})`;
+    }
+    // 如果没有，退回到仅保留文件名
+    const fileName = path.basename(imgPath);
+    return `![img](/Draven_Note_Images/${fileName})`;
+  });
+
+  // 处理由于拖拽引起的传统 Markdown 形式图片，包含所有可能的上级目录如 ![](.../Draven_Note_Images/图片.png)
+  content = content.replace(
+    /!\[.*?\]\(.*?(Draven_Note_Images\/.*?)\)/g,
+    "![img](/$1)",
+  );
+
+  // 兜底处理：如果笔记里有导出的无效相对路径图片 (如 ./img/xxx.png 且该文件本身不存在)，
+  // 会导致 Vite 打包报 Rollup 错误退出，因此我们直接将其替换为文本提示。
+  content = content.replace(
+    /!\[(.*?)\]\(\.\/?img\/(.*?)\)/g,
+    "> ⚠️ [图片丢失: $2]",
+  );
+
+  // 2. 转换 Obsidian 双链: [[文件名]] -> [文件名](./文件名.md)
   content = content.replace(/\[\[(.*?)\]\]/g, "[$1](./$1.md)");
 
-  // 2. 转换 Obsidian Callout: > [!info] 标题 -> ::: info 标题 \n :::
+  // 3. 转换 Obsidian Callout: > [!info] 标题 -> ::: info 标题 \n :::
   // (简易版本，针对单行或简单多行)
   content = content.replace(
     /^> \[!(\w+)\](.*?)\n([\s\S]*?)(?=\n[^>]|$)/gm,
@@ -43,18 +69,9 @@ function transformContent(content) {
     },
   );
 
-  // 3. 转换内部图片引用的路径
-  // 处理 Obsidian 特有的 Wiki 图片格式: ![[Draven_Note_Images/图片名.png]] 或者 ![[图片名.png]]
-  content = content.replace(/!\[\[(.*?)\]\]/g, (match, imgPath) => {
-    const fileName = path.basename(imgPath);
-    return `![img](/Draven_Note_Images/${fileName})`;
-  });
-
-  // 处理由于拖拽引起的传统 Markdown 形式图片，包含所有可能的上级目录如 ![](.../Draven_Note_Images/图片.png)
-  content = content.replace(
-    /!\[.*?\]\(.*?(Draven_Note_Images\/.*?)\)/g,
-    "![img](/$1)",
-  );
+  // 4. 转义可能引起 Vue 报错的无闭合标签/泛型（如 ArrayList<E>）
+  // 匹配类似 <E>, <T>, <K, V>, <String> 这种泛型写法，将其左右括号转义
+  content = content.replace(/<([A-Z][a-zA-Z0-9_,\s]*)>/g, "&lt;$1&gt;");
 
   return content;
 }

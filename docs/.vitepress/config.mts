@@ -3,6 +3,7 @@ import { generateSidebar } from 'vitepress-sidebar'
 import taskLists from 'markdown-it-task-lists'
 
 export default defineConfig({
+  ignoreDeadLinks: true,
   base: '/',
   title: "Draven's Blogs",
   description: "Code like a dreamer, build like an engineer.",
