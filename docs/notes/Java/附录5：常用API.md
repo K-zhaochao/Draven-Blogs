@@ -5,11 +5,11 @@ title: "附录5：常用API"
 
 # 附录5：常用API
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_01.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_01.png)
 
 ### Math：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Math：_02.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Math：_02.png)
 ```java
 public static double sqrt(double a)   返回a的平方根
 ``````java
@@ -17,65 +17,65 @@ public static double cbrt(double a)   返回a的立方根
 ``````java
 public static int/long absExact(int/long a)   返回a的绝对值，能抛出异常
 ```
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Math：_03.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Math：_03.png)
 
 ### System：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_System：_04.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_System：_04.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_System：_05.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_System：_05.png)
 
 ### Runtime：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Runtime：_06.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Runtime：_06.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Runtime：_07.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Runtime：_07.png)
 
 ### Objec：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_08.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_08.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_09.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_09.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_10.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_10.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_11.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objec：_11.png)
 
 ### Objects：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objects：_12.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objects：_12.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objects：_13.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Objects：_13.png)
 
 ### BigInteger：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_14.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_14.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_15.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_15.png)
 
 **注意：**对象一旦创建，那么内部记录的值是无法更改的。
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_16.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_16.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_17.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_17.png)
 
 ### BigDecimal：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigDecimal：_18.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigDecimal：_18.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigDecimal：_19.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigDecimal：_19.png)
 
 ### 时间相关类（JDK7以前）
 
 #### Date(时间)：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Date_时间_：_20.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Date_时间_：_20.png)
 
 #### SimpleDateFormat(格式化时间)：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_21.png" alt="img" /><img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_22.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_21.png)![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_22.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_23.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_23.png)
 
 ##### 练习1：
 
@@ -135,29 +135,29 @@ public static void main(String[] args) throws ParseException {
 
 #### Calendar(日历)：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_24.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_24.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_25.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_25.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_26.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_26.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_27.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Calendar_日历_：_27.png)
 
 ### 时间相关类（JDK8）
 
 **注意：**时间日期对象都是不可变的。
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_时间相关类（JDK8）_28.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_时间相关类（JDK8）_28.png)
 
 #### ZoneId：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_ZoneId：_29.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_ZoneId：_29.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_ZoneId：_30.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_ZoneId：_30.png)
 
 #### Instant：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Instant：_31.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Instant：_31.png)
 
 ```java
 public static void main(String[] args) {
@@ -195,7 +195,7 @@ public static void main(String[] args) {
 
 #### ZoneDateTime：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_ZoneDateTime：_32.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_ZoneDateTime：_32.png)
 
 ```java
 public static void main(String[] args) {
@@ -228,29 +228,29 @@ public static void main(String[] args) {
 
 用于时间的格式化和解析。
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_DateTimeFormatter：_33.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_DateTimeFormatter：_33.png)
 
 #### LocalDate、LocalTime、LocalDateTime：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_LocalDate、LocalTime、_34.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_LocalDate、LocalTime、_34.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_LocalDate、LocalTime、_35.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_LocalDate、LocalTime、_35.png)
 
 #### Duration、Period、ChronoUnit：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_36.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_36.png)
 
 **Duration：**
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_37.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_37.png)
 
 **Period：**
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_38.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_38.png)
 
 **ChronoUnit：**
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_39.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_39.png)
 
 **注意：**方法是用第二个参数减去第一个参数。
 
@@ -258,23 +258,23 @@ public static void main(String[] args) {
 
 ### 包装类
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_40.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_40.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_41.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_41.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_42.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_42.png)
 
 **注：**JDK5以前。
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_43.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_43.png)
 
 ***
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_44.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_44.png)
 
 #### Integer：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Integer：_45.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Integer：_45.png)
 
 ```java
 public static void main(String[] args) {
@@ -358,18 +358,18 @@ public static String toBinaryString(int num) {
 
 ### Arrays：
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_46.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_46.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_47.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_47.png)
 
 ***
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_48.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_48.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_49.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_49.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_50.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_50.png)
 
-<img src="/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_51.png" alt="img" />
+![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_51.png)
 
 ***

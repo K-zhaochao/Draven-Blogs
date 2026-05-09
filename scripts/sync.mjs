@@ -84,35 +84,38 @@ function transformContent(content, relPath) {
     }
   }
 
+  // 辅助函数：将路径中的空格编码为 %20，保留中文字符
+  function encodeImagePath(p) {
+    return p.replace(/\s+/g, '%20');
+  }
+
   // 1. 转换内部图片引用的路径 (放到双链转换前面，防止被误伤)
   // 处理 Obsidian 特有的 Wiki 图片格式: ![[Draven_Note_Images/图片名.png]] 或者 ![[图片名.png]]
   content = content.replace(/!\[\[(.*?)\]\]/g, (match, imgPath) => {
     // 尝试提取 Draven_Note_Images 之后的完整目录结构
     const matchDir = imgPath.match(/Draven_Note_Images\/(.*)/);
     if (matchDir && matchDir[1]) {
-      return `<img src="/Draven_Note_Images/${matchDir[1].trim()}" alt="img" />`;
+      return `![img](/Draven_Note_Images/${encodeImagePath(matchDir[1].trim())})`;
     }
     // 如果没有，退回到仅保留文件名
     const fileName = path.basename(imgPath);
-    return `<img src="/Draven_Note_Images/${fileName.trim()}" alt="img" />`;
+    return `![img](/Draven_Note_Images/${encodeImagePath(fileName.trim())})`;
   });
 
   // 处理由于拖拽引起的传统 Markdown 形式图片，包含所有可能的上级目录如 ![](.../Draven_Note_Images/图片.png)
   content = content.replace(
     /!\[.*?\]\(.*?(Draven_Note_Images\/.*?)\)/g,
     (match, imgPath) => {
-      // 同样处理 url 编码
-      return `<img src="/${imgPath.trim()}" alt="img" />`;
+      return `![img](/${encodeImagePath(imgPath.trim())})`;
     },
   );
 
   // 1.1 处理 ./img/ 相对路径图片引用（如 Maven 笔记中的 ./img/6Q2D8D5Tei33CxSQ/xxx.png）
   // 这些图片实际存放在 Draven_Note_Images/JavaWeb/Maven/ 对应目录中
-  // 需要转换为 VitePress 可访问的绝对路径 /Draven_Note_Images/JavaWeb/Maven/xxx.png
   content = content.replace(
     /!\[(.*?)\]\(\.\/?img\/(.*?)\/(.*?)\)/g,
     (match, alt, subfolder, filename) => {
-      return `<img src="/Draven_Note_Images/JavaWeb/Maven/${subfolder}/${filename}" alt="img" />`;
+      return `![img](/Draven_Note_Images/JavaWeb/Maven/${encodeImagePath(subfolder)}/${encodeImagePath(filename)})`;
     },
   );
 

@@ -3,8 +3,9 @@ import { generateSidebar } from 'vitepress-sidebar'
 import taskLists from 'markdown-it-task-lists'
 
 // 递归为侧边栏所有 link 添加前缀，并清理 index.md 后缀
-function prefixSidebarLinks(items: any[], prefix: string): any[] {
-  return items.map((item) => {
+function prefixSidebarLinks(items: any, prefix: string): any[] {
+  const arr = Array.isArray(items) ? items : [items];
+  return arr.map((item: any) => {
     const newItem = { ...item };
     if (newItem.link) {
       let link = newItem.link;

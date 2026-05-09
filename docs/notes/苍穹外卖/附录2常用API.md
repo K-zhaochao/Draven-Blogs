@@ -107,7 +107,7 @@ Spring 提供的**消息转换接口**，处理 HTTP 请求 / 响应体的格式
 
 #### `HttpClient`：
 
-<img src="/Draven_Note_Images/苍穹外卖/附录2常用API/附录2 常用API_`HttpClient`：_01.png" alt="img" />
+![img](/Draven_Note_Images/苍穹外卖/附录2常用API/附录2%20常用API_`HttpClient`：_01.png)
 
 **举例：**
 
