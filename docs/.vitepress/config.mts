@@ -40,10 +40,9 @@ export default defineConfig({
     logo: 'https://skillicons.dev/icons?i=java', 
     nav: [
       { text: '首页', link: '/' },
-      { text: 'Java 核心', link: '/java/index' },
-      { text: '项目实战', link: '/projects/index' },
-      { text: '思考与总结', link: '/thoughts/index' },
-      { text: '学习笔记', link: '/notes/index' }, 
+      { text: '思考与总结', link: '/thoughts/' },
+      { text: '学习笔记', link: '/notes/' },
+      { text: '项目实战', link: '/projects/' },
       { text: 'GitHub', link: 'https://github.com/K-zhaochao' }
     ],
 
@@ -75,16 +74,16 @@ export default defineConfig({
 
     // 1.按路径分区域生成侧边栏（不同导航区域显示各自的目录）
     sidebar: {
-      // Java 核心区域
-      '/java/': prefixSidebarLinks(generateSidebar({
-        documentRootPath: 'docs/java',
+      // 思考与总结区域
+      '/thoughts/': prefixSidebarLinks(generateSidebar({
+        documentRootPath: 'docs/thoughts',
         useTitleFromFrontmatter: true,
         useFolderTitleFromIndexFile: true,
         useFolderLinkFromIndexFile: true,
         folderLinkNotIncludesFileName: true,
         sortMenusByFrontmatterOrder: true,
         collapsed: false
-      }), '/java/'),
+      }), '/thoughts/'),
       // 学习笔记区域
       '/notes/': prefixSidebarLinks(generateSidebar({
         documentRootPath: 'docs/notes',
@@ -94,7 +93,17 @@ export default defineConfig({
         folderLinkNotIncludesFileName: true,
         sortMenusByFrontmatterOrder: true,
         collapsed: false
-      }), '/notes/')
+      }), '/notes/'),
+      // 项目实战区域
+      '/projects/': prefixSidebarLinks(generateSidebar({
+        documentRootPath: 'docs/projects',
+        useTitleFromFrontmatter: true,
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        folderLinkNotIncludesFileName: true,
+        sortMenusByFrontmatterOrder: true,
+        collapsed: false
+      }), '/projects/')
     },
 
     docFooter: {

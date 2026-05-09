@@ -1,33 +1,8 @@
+---
+order: 999
+title: "前后端分离"
+---
+
 # 前后端分离
 
-### 前后端分离开发
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_前后端分离开发_01.png]]
-
-### 接口文档管理
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_接口文档管理_02.png]]
-
-_**Mock服务是用于自动生成测试数据**_
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_接口文档管理_03.png]]
-
-### 实际前端开发
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_实际前端开发_04.png]]
-
-### 案例
-
-#### 学员管理界面
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_学员管理界面_05.png]]
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_学员管理界面_06.png]]
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_学员管理界面_07.png]]
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_学员管理界面_08.png]]
-
-_**重点：**_[_**作用域插槽**_](作用域插槽.md)
-
-![[../../../Draven_Note_Images/JavaWeb/Web前端/前后端分离/index/前后端分离_学员管理界面_09.png]]
+- [作用域插槽](作用域插槽.md)

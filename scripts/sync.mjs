@@ -165,6 +165,10 @@ function copyDir(src, dest) {
 function run() {
   console.log("🔄 开始从 Obsidian 源仓库同步与转换笔记...");
 
+  // -- 先修正源目录的索引文件 --
+  console.log("📁 正在修正 Draven_Note 中的索引文件...");
+  regenerateAllIndexes(SRC_DIR, true);
+
   // -- 洗 Markdown 文件逻辑 ---
   if (fs.existsSync(DEST_DIR))
     fs.rmSync(DEST_DIR, { recursive: true, force: true });
@@ -227,66 +231,14 @@ function run() {
     }
   }
 
-  // -- 自动为缺少 index.md 的文件夹生成索引 --
-  console.log("📁 检查并生成缺失的文件夹索引...");
-  generateMissingIndexes(DEST_DIR);
+  // -- 自动修正所有 index.md 文件 --
+  console.log("📁 正在修正 docs/notes 中的索引文件...");
+  regenerateAllIndexes(DEST_DIR, true);
 
   console.log("✅ 同步转换完成，笔记及图片已安全注入！");
 }
 
-// 递归扫描目录，为缺少 index.md 的文件夹自动生成
-function generateMissingIndexes(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const subdirs = entries.filter((e) => e.isDirectory());
-  const mdFiles = entries
-    .filter(
-      (e) =>
-        e.isFile() &&
-        e.name.endsWith(".md") &&
-        e.name.toLowerCase() !== "index.md",
-    )
-    .map((e) => e.name);
 
-  // 递归处理子目录
-  for (const subdir of subdirs) {
-    generateMissingIndexes(path.join(dir, subdir.name));
-  }
-
-  // 如果没有 index.md 且有 .md 文件，自动生成
-  const hasIndex = entries.some(
-    (e) => e.isFile() && e.name.toLowerCase() === "index.md",
-  );
-  if (!hasIndex && mdFiles.length > 0) {
-    const dirName = path.basename(dir);
-    const relToNotes = path.relative(DEST_DIR, dir);
-
-    // 按文件名排序
-    mdFiles.sort((a, b) => {
-      const orderA = getFileOrder(a);
-      const orderB = getFileOrder(b);
-      if (orderA !== orderB) return orderA - orderB;
-      return a.localeCompare(b);
-    });
-
-    const links = mdFiles
-      .map((f) => {
-        const name = f.replace(/\.md$/i, "");
-        // 去掉文件名中的空格，生成可用的链接路径
-        const linkPath = f.replace(/\s+/g, "");
-        return `- [${name}](${linkPath})`;
-      })
-      .join("\n");
-
-    let indexContent = `# ${dirName}\n\n${links}`;
-    indexContent = transformContent(
-      indexContent,
-      path.join(relToNotes, "index.md"),
-    );
-
-    fs.writeFileSync(path.join(dir, "index.md"), indexContent, "utf-8");
-    console.log(`  📄 已生成: ${relToNotes}/index.md`);
-  }
-}
 
 // 提取文件排序权重（复用 transformContent 中的逻辑）
 function getFileOrder(fileName) {
@@ -297,6 +249,172 @@ function getFileOrder(fileName) {
   if (appendixMatch) return 1000 + parseInt(appendixMatch[1], 10);
   if (name.match(/^(?:附录|附件)/)) return 1000;
   return 999;
+}
+
+// === 索引文件自动修正 ===
+
+function getOrderFromFrontmatter(content) {
+  const match = content.match(/^order:\s*(\d+)/m);
+  return match ? parseInt(match[1], 10) : null;
+}
+
+function getTitleFromFrontmatter(content) {
+  const match = content.match(/^title:\s*"?([^"\n]+)"?/m);
+  return match ? match[1].trim() : null;
+}
+
+function getItemInfo(fullPath, entry) {
+  if (entry.isDirectory()) {
+    const indexPath = path.join(fullPath, "index.md");
+    let order = getFileOrder(entry.name);
+    let title = entry.name;
+    if (fs.existsSync(indexPath)) {
+      const content = fs.readFileSync(indexPath, "utf-8");
+      const fmOrder = getOrderFromFrontmatter(content);
+      if (fmOrder !== null) order = fmOrder;
+      const fmTitle = getTitleFromFrontmatter(content);
+      if (fmTitle) title = fmTitle;
+    }
+    return { type: "dir", name: entry.name, title, order };
+  } else {
+    const content = fs.readFileSync(fullPath, "utf-8");
+    let order = getFileOrder(entry.name);
+    let title = entry.name.replace(/\.md$/i, "");
+    const fmOrder = getOrderFromFrontmatter(content);
+    if (fmOrder !== null) order = fmOrder;
+    const fmTitle = getTitleFromFrontmatter(content);
+    if (fmTitle) title = fmTitle;
+    return { type: "file", name: entry.name, title, order };
+  }
+}
+
+// 判断目录是否为"真正的内容目录"（包含 .md 文件或有意义的子目录）
+function isRealContentDir(dir) {
+  if (!fs.existsSync(dir)) return false;
+  const ents = fs.readdirSync(dir, { withFileTypes: true });
+  const hasMd = ents.some(
+    (e) =>
+      e.isFile() &&
+      e.name.endsWith(".md") &&
+      e.name.toLowerCase() !== "index.md",
+  );
+  if (hasMd) return true;
+  const hasRealSubdir = ents.some(
+    (e) =>
+      e.isDirectory() &&
+      !e.name.startsWith(".") &&
+      isRealContentDir(path.join(dir, e.name)),
+  );
+  return hasRealSubdir;
+}
+
+function generateListForDir(dirPath, basePath, depth = 0) {
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  const items = [];
+  for (const entry of entries) {
+    if (entry.name.startsWith(".")) continue;
+    if (entry.name.toLowerCase() === "index.md") continue;
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      // 只收录真正包含内容的子目录
+      if (!isRealContentDir(fullPath)) continue;
+      const info = getItemInfo(fullPath, entry);
+      items.push(info);
+    } else if (entry.name.endsWith(".md")) {
+      const info = getItemInfo(fullPath, entry);
+      items.push(info);
+    }
+  }
+  items.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+  const lines = [];
+  const indent = "  ".repeat(depth);
+  for (const item of items) {
+    const relPath = path
+      .relative(basePath, path.join(dirPath, item.name))
+      .replace(/\\/g, "/");
+    if (item.type === "dir") {
+      lines.push(`${indent}- [${item.title}](${relPath}/index.md)`);
+      const subLines = generateListForDir(
+        path.join(dirPath, item.name),
+        basePath,
+        depth + 1,
+      );
+      lines.push(...subLines);
+    } else {
+      lines.push(`${indent}- [${item.title}](${relPath})`);
+    }
+  }
+  return lines;
+}
+
+function regenerateAllIndexes(dirPath, isRoot = true) {
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  const subdirs = entries.filter(
+    (e) => e.isDirectory() && !e.name.startsWith("."),
+  );
+  // 深度优先：先修正子目录索引
+  for (const subdir of subdirs) {
+    regenerateAllIndexes(path.join(dirPath, subdir.name), false);
+  }
+
+  // 收集当前目录的条目
+  const items = [];
+  for (const entry of entries) {
+    if (entry.name.startsWith(".")) continue;
+    if (entry.name.toLowerCase() === "index.md") continue;
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      // 只收录真正包含内容的子目录
+      if (isRealContentDir(fullPath)) {
+        const info = getItemInfo(fullPath, entry);
+        items.push(info);
+      }
+    } else if (entry.name.endsWith(".md")) {
+      const info = getItemInfo(fullPath, entry);
+      items.push(info);
+    }
+  }
+
+  // 如果没有任何条目，不生成 index.md
+  if (items.length === 0 && !isRoot) return;
+
+  items.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+  const dirName = path.basename(dirPath);
+  let content = "";
+  if (isRoot) {
+    content += '---\ntitle: "闲云野鹤笔记"\n---\n\n';
+    content += "# 闲云野鹤笔记\n\n";
+    content += "> 学习笔记。\n\n";
+    for (const item of items) {
+      if (item.type === "dir") {
+        content += `## [${item.title}](${item.name}/index.md)\n`;
+        const subLines = generateListForDir(
+          path.join(dirPath, item.name),
+          dirPath,
+          0,
+        );
+        content += subLines.join("\n") + "\n\n";
+      } else {
+        content += `- [${item.title}](${item.name})\n`;
+      }
+    }
+  } else {
+    const indexPath = path.join(dirPath, "index.md");
+    let order = getFileOrder(dirName);
+    if (fs.existsSync(indexPath)) {
+      const existing = fs.readFileSync(indexPath, "utf-8");
+      const fmOrder = getOrderFromFrontmatter(existing);
+      if (fmOrder !== null) order = fmOrder;
+    }
+    content += `---\norder: ${order}\ntitle: "${dirName}"\n---\n\n`;
+    content += `# ${dirName}\n\n`;
+    const lines = generateListForDir(dirPath, dirPath, 0);
+    content += lines.join("\n") + "\n";
+  }
+  const indexPath = path.join(dirPath, "index.md");
+  fs.writeFileSync(indexPath, content, "utf-8");
+  const relPath = path.relative(path.dirname(dirPath), indexPath);
+  console.log(`  📄 已更新索引: ${relPath}`);
 }
 
 // -- 增量同步单个文件 --
