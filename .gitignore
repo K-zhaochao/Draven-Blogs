@@ -2,3 +2,5 @@ node_modules
 docs/.vitepress/dist
 docs/.vitepress/cache
 docs/public/Draven_Note_Images/
+Draven_Note/.obsidian/
+Draven_Note/.vscode/
