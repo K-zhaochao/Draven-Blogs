@@ -1,4 +1,9 @@
-﻿# 附录2 常用API
+---
+order: 1002
+title: "附录2常用API"
+---
+
+# 附录2 常用API
 
 #### `DigestUtils`：
 
@@ -102,7 +107,7 @@ Spring 提供的**消息转换接口**，处理 HTTP 请求 / 响应体的格式
 
 #### `HttpClient`：
 
-![img](/Draven_Note_Images/苍穹外卖/附录2常用API/附录2 常用API_`HttpClient`：_01.png)
+<img src="/Draven_Note_Images/苍穹外卖/附录2常用API/附录2 常用API_`HttpClient`：_01.png" alt="img" />
 
 **举例：**
 

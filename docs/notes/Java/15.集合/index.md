@@ -1,4 +1,9 @@
-﻿# 15. 集合
+---
+order: 15
+title: "15.集合"
+---
+
+# 15. 集合
 
 - [集合的进阶](集合的进阶.md)
 - [HashMap核心源码](HashMap核心源码.md)
@@ -6,16 +11,16 @@
 
 ### ArrayList&lt;E&gt;类
 
-![img](/Draven_Note_Images/Java/15.集合/index/15. 集合_ArrayList_E_类_01.png)
+<img src="/Draven_Note_Images/Java/15.集合/index/15. 集合_ArrayList_E_类_01.png" alt="img" />
 
 ### 泛型
 
-![img](/Draven_Note_Images/Java/15.集合/index/15. 集合_泛型_02.png)
+<img src="/Draven_Note_Images/Java/15.集合/index/15. 集合_泛型_02.png" alt="img" />
 
 ### 基本数据类型的包装类
 
-![img](/Draven_Note_Images/Java/15.集合/index/15. 集合_基本数据类型的包装类_03.png)
+<img src="/Draven_Note_Images/Java/15.集合/index/15. 集合_基本数据类型的包装类_03.png" alt="img" />
 
 ### 集合与数组的区别
 
-![img](/Draven_Note_Images/Java/15.集合/index/15. 集合_集合与数组的区别_04.png)
+<img src="/Draven_Note_Images/Java/15.集合/index/15. 集合_集合与数组的区别_04.png" alt="img" />

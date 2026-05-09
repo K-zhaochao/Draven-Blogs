@@ -1,4 +1,9 @@
-﻿# HashMap 核心源码
+---
+order: 999
+title: "HashMap核心源码"
+---
+
+# HashMap 核心源码
 
 ## 1. 看源码之前需要了解的一些内容
 

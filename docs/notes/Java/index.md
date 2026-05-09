@@ -1,4 +1,9 @@
-﻿# Java
+---
+order: 999
+title: "Java"
+---
+
+# Java
 
 ### 目录
 

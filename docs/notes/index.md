@@ -1,3 +1,8 @@
+---
+order: 999
+title: "闲云野鹤笔记"
+---
+
 # 闲云野鹤笔记
 
 > 学习笔记。
@@ -13,9 +18,9 @@
 - [6.店铺营业状态设置](苍穹外卖/6.店铺营业状态设置.md)
 - [7.微信登录&商品浏览](苍穹外卖/7.微信登录&商品浏览.md)
 - [8.缓存商品&购物车](苍穹外卖/8.缓存商品&购物车.md)
-- [附录1数据库设计文档](苍穹外卖/附录1数据库设计文档.md)
-- [附录2常用API](苍穹外卖/附录2常用API.md)
-- [附录3常见错误&问题](苍穹外卖/附录3常见错误&问题.md)
+- [附录1 数据库设计文档](苍穹外卖/附录1%20数据库设计文档.md)
+- [附录2 常用API](苍穹外卖/附录2%20常用API.md)
+- [附录3 常见错误&问题](苍穹外卖/附录3%20常见错误&问题.md)
 
 ## [Java](Java/index.md)
 
@@ -75,8 +80,8 @@
 - [9.SpringBoot原理](JavaWeb/SpringBootWeb/9.SpringBoot原理.md)
 - [10.Web后端总结](JavaWeb/SpringBootWeb/10.Web后端总结.md)
 - [案例](JavaWeb/SpringBootWeb/案例.md)
-- [附录1实用依赖&工具类](JavaWeb/SpringBootWeb/附录1实用依赖&工具类.md)
-- [附录2注解整理](JavaWeb/SpringBootWeb/附录2注解整理.md)
+- [附录1 实用依赖&工具类](JavaWeb/SpringBootWeb/附录1%20实用依赖&工具类.md)
+- [附录2 注解整理](JavaWeb/SpringBootWeb/附录2%20注解整理.md)
 
 #### [HTTP](JavaWeb/SpringBootWeb/HTTP/index.md)
 

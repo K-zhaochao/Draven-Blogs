@@ -1,4 +1,4 @@
-﻿# 附录2 常用API
+# 附录2 常用API
 
 #### `DigestUtils`：
 

@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import chokidar from "chokidar";
 
 // 获取当前目录与根目录
 const __filename = fileURLToPath(import.meta.url);
@@ -28,35 +29,94 @@ function getAllMdFiles(dir, fileList = []) {
 }
 
 // 核心转换正则
-function transformContent(content) {
+function transformContent(content, relPath) {
+  // -- 自动注入 Frontmatter 元数据，用于控制 VuePress 侧边栏标题与排序 --
+  if (relPath) {
+    const fileName = path.basename(relPath);
+    let dirName = path.basename(path.dirname(relPath));
+    const isIndex = fileName.toLowerCase() === "index.md";
+    let targetName = isIndex ? dirName : fileName.replace(/\.md$/i, "");
+
+    // 对于根 index.md（relPath === "index.md"），从 H1 标题提取名称
+    if (relPath === "index.md") {
+      const h1Match = content.match(/^#\s+(.+)/m);
+      if (h1Match) {
+        targetName = h1Match[1].trim();
+      }
+    }
+
+    let order = 999;
+
+    // 解析前缀数字排序，例如 "15.xxx"
+    const numMatch = targetName.match(/^(\d+)\./);
+    if (numMatch) {
+      order = parseInt(numMatch[1], 10);
+    }
+    // 解析附录排序，例如 "附录1：细节"
+    else if (targetName.match(/^(?:附录|附件)(\d+)/)) {
+      order = 1000 + parseInt(targetName.match(/^(?:附录|附件)(\d+)/)[1], 10);
+    } else if (targetName.match(/^(?:附录|附件)/)) {
+      order = 1000;
+    }
+
+    const frontmatterToInject = `order: ${order}\ntitle: "${targetName}"`;
+
+    if (content.startsWith("---")) {
+      const secondDashIndex = content.indexOf("---", 3);
+      if (secondDashIndex !== -1) {
+        const before = content.substring(0, secondDashIndex);
+        const after = content.substring(secondDashIndex);
+        content = `${before}${frontmatterToInject}\n${after}`;
+      }
+    } else {
+      content = `---\n${frontmatterToInject}\n---\n\n${content}`;
+    }
+  }
+
   // 1. 转换内部图片引用的路径 (放到双链转换前面，防止被误伤)
   // 处理 Obsidian 特有的 Wiki 图片格式: ![[Draven_Note_Images/图片名.png]] 或者 ![[图片名.png]]
   content = content.replace(/!\[\[(.*?)\]\]/g, (match, imgPath) => {
     // 尝试提取 Draven_Note_Images 之后的完整目录结构
     const matchDir = imgPath.match(/Draven_Note_Images\/(.*)/);
     if (matchDir && matchDir[1]) {
-      return `![img](/Draven_Note_Images/${matchDir[1]})`;
+      return `<img src="/Draven_Note_Images/${matchDir[1].trim()}" alt="img" />`;
     }
     // 如果没有，退回到仅保留文件名
     const fileName = path.basename(imgPath);
-    return `![img](/Draven_Note_Images/${fileName})`;
+    return `<img src="/Draven_Note_Images/${fileName.trim()}" alt="img" />`;
   });
 
   // 处理由于拖拽引起的传统 Markdown 形式图片，包含所有可能的上级目录如 ![](.../Draven_Note_Images/图片.png)
   content = content.replace(
     /!\[.*?\]\(.*?(Draven_Note_Images\/.*?)\)/g,
-    "![img](/$1)",
+    (match, imgPath) => {
+      // 同样处理 url 编码
+      return `<img src="/${imgPath.trim()}" alt="img" />`;
+    },
   );
 
-  // 兜底处理：如果笔记里有导出的无效相对路径图片 (如 ./img/xxx.png 且该文件本身不存在)，
-  // 会导致 Vite 打包报 Rollup 错误退出，因此我们直接将其替换为文本提示。
+  // 1.1 处理 ./img/ 相对路径图片引用（如 Maven 笔记中的 ./img/6Q2D8D5Tei33CxSQ/xxx.png）
+  // 这些图片实际存放在 Draven_Note_Images/JavaWeb/Maven/ 对应目录中
+  // 需要转换为 VitePress 可访问的绝对路径 /Draven_Note_Images/JavaWeb/Maven/xxx.png
+  content = content.replace(
+    /!\[(.*?)\]\(\.\/?img\/(.*?)\/(.*?)\)/g,
+    (match, alt, subfolder, filename) => {
+      return `<img src="/Draven_Note_Images/JavaWeb/Maven/${subfolder}/${filename}" alt="img" />`;
+    },
+  );
+
+  // 兜底处理：其他无效相对路径图片 (如 ./img/xxx.png 无子目录)
   content = content.replace(
     /!\[(.*?)\]\(\.\/?img\/(.*?)\)/g,
     "> ⚠️ [图片丢失: $2]",
   );
 
   // 2. 转换 Obsidian 双链: [[文件名]] -> [文件名](./文件名.md)
-  content = content.replace(/\[\[(.*?)\]\]/g, "[$1](./$1.md)");
+  // 2. 转换 Obsidian 双链: [[文件名]] -> [文件名](./文件名.md)（链接路径去掉空格）
+  content = content.replace(/\[\[(.*?)\]\]/g, (match, name) => {
+    const cleanLink = name.replace(/\s+/g, "");
+    return `[${name}](./${cleanLink}.md)`;
+  });
 
   // 3. 转换 Obsidian Callout: > [!info] 标题 -> ::: info 标题 \n :::
   // (简易版本，针对单行或简单多行)
@@ -102,12 +162,16 @@ function run() {
   const files = getAllMdFiles(SRC_DIR);
   files.forEach((file) => {
     const relPath = path.relative(SRC_DIR, file);
-    const destPath = path.join(DEST_DIR, relPath);
+    // 去掉路径中所有文件名和文件夹名中的空格，确保 URL 可用
+    const cleanRelPath = relPath.replace(/\s+/g, "");
+    const destPath = path.join(DEST_DIR, cleanRelPath);
 
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
 
     let content = fs.readFileSync(file, "utf-8");
-    content = transformContent(content);
+    // 去除 UTF-8 BOM，防止污染 frontmatter 和 H1 标题解析
+    content = content.replace(/^\uFEFF/, "");
+    content = transformContent(content, cleanRelPath);
 
     fs.writeFileSync(destPath, content, "utf-8");
   });
@@ -133,7 +197,148 @@ function run() {
     console.log("（处理图片时）可忽略提示：", e.message);
   }
 
+  // -- 自动为缺少 index.md 的文件夹生成索引 --
+  console.log("📁 检查并生成缺失的文件夹索引...");
+  generateMissingIndexes(DEST_DIR);
+
   console.log("✅ 同步转换完成，笔记及图片已安全注入！");
 }
 
-run();
+// 递归扫描目录，为缺少 index.md 的文件夹自动生成
+function generateMissingIndexes(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const subdirs = entries.filter((e) => e.isDirectory());
+  const mdFiles = entries
+    .filter(
+      (e) =>
+        e.isFile() &&
+        e.name.endsWith(".md") &&
+        e.name.toLowerCase() !== "index.md",
+    )
+    .map((e) => e.name);
+
+  // 递归处理子目录
+  for (const subdir of subdirs) {
+    generateMissingIndexes(path.join(dir, subdir.name));
+  }
+
+  // 如果没有 index.md 且有 .md 文件，自动生成
+  const hasIndex = entries.some(
+    (e) => e.isFile() && e.name.toLowerCase() === "index.md",
+  );
+  if (!hasIndex && mdFiles.length > 0) {
+    const dirName = path.basename(dir);
+    const relToNotes = path.relative(DEST_DIR, dir);
+
+    // 按文件名排序
+    mdFiles.sort((a, b) => {
+      const orderA = getFileOrder(a);
+      const orderB = getFileOrder(b);
+      if (orderA !== orderB) return orderA - orderB;
+      return a.localeCompare(b);
+    });
+
+    const links = mdFiles
+      .map((f) => {
+        const name = f.replace(/\.md$/i, "");
+        // 去掉文件名中的空格，生成可用的链接路径
+        const linkPath = f.replace(/\s+/g, "");
+        return `- [${name}](${linkPath})`;
+      })
+      .join("\n");
+
+    let indexContent = `# ${dirName}\n\n${links}`;
+    indexContent = transformContent(
+      indexContent,
+      path.join(relToNotes, "index.md"),
+    );
+
+    fs.writeFileSync(path.join(dir, "index.md"), indexContent, "utf-8");
+    console.log(`  📄 已生成: ${relToNotes}/index.md`);
+  }
+}
+
+// 提取文件排序权重（复用 transformContent 中的逻辑）
+function getFileOrder(fileName) {
+  const name = fileName.replace(/\.md$/i, "");
+  const numMatch = name.match(/^(\d+)\./);
+  if (numMatch) return parseInt(numMatch[1], 10);
+  const appendixMatch = name.match(/^(?:附录|附件)(\d+)/);
+  if (appendixMatch) return 1000 + parseInt(appendixMatch[1], 10);
+  if (name.match(/^(?:附录|附件)/)) return 1000;
+  return 999;
+}
+
+// -- 增量同步单个文件 --
+function syncOneFile(srcFilePath) {
+  const relPath = path.relative(SRC_DIR, srcFilePath);
+  const destPath = path.join(DEST_DIR, relPath);
+  fs.mkdirSync(path.dirname(destPath), { recursive: true });
+  let content = fs.readFileSync(srcFilePath, "utf-8");
+  content = content.replace(/^\uFEFF/, "");
+  content = transformContent(content, relPath);
+  fs.writeFileSync(destPath, content, "utf-8");
+  console.log(`  📝 已同步: ${relPath}`);
+}
+
+// -- 删除目标侧对应的文件/目录 --
+function removeTarget(srcPath) {
+  const relPath = path.relative(SRC_DIR, srcPath);
+  const destPath = path.join(DEST_DIR, relPath);
+  if (fs.existsSync(destPath)) {
+    const stat = fs.statSync(destPath);
+    if (stat.isDirectory()) {
+      fs.rmSync(destPath, { recursive: true, force: true });
+    } else {
+      fs.unlinkSync(destPath);
+    }
+    console.log(`  🗑️  已删除: ${relPath}`);
+  }
+}
+
+// -- 文件监听模式 --
+function watch() {
+  console.log("👀 正在监听 Draven_Note/ 的文件变更，修改后自动同步...");
+  console.log("   按 Ctrl+C 停止监听\n");
+
+  const watcher = chokidar.watch(SRC_DIR, {
+    ignored: /(^|[\/\\])\../, // 忽略 .开头的隐藏文件夹
+    persistent: true,
+    ignoreInitial: true, // 启动时不触发事件，避免与全量同步冲突
+    awaitWriteFinish: { stabilityThreshold: 300, pollInterval: 100 },
+  });
+
+  watcher
+    .on("add", (filePath) => {
+      if (filePath.endsWith(".md")) {
+        syncOneFile(filePath);
+      }
+    })
+    .on("change", (filePath) => {
+      if (filePath.endsWith(".md")) {
+        syncOneFile(filePath);
+      }
+    })
+    .on("unlink", (filePath) => {
+      removeTarget(filePath);
+    })
+    .on("addDir", (dirPath) => {
+      // 新建文件夹时，同步其中所有 .md 文件
+      if (fs.existsSync(dirPath)) {
+        const mdFiles = getAllMdFiles(dirPath);
+        mdFiles.forEach(syncOneFile);
+      }
+    })
+    .on("unlinkDir", (dirPath) => {
+      removeTarget(dirPath);
+    });
+}
+
+// -- 入口：支持 --watch 参数 --
+const isWatch = process.argv.includes("--watch");
+if (isWatch) {
+  run(); // 先全量同步一次
+  watch(); // 再启动监听
+} else {
+  run();
+}

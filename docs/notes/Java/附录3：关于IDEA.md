@@ -1,4 +1,9 @@
-﻿# 附录3：关于IDEA
+---
+order: 1003
+title: "附录3：关于IDEA"
+---
+
+# 附录3：关于IDEA
 
 ### 快捷键：
 
@@ -21,12 +26,12 @@
 
 ### IDEA项目结构：
 
-![img](/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_01.png)
+<img src="/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_01.png" alt="img" />
 
-![img](/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_02.png)
+<img src="/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_02.png" alt="img" />
 
-![img](/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_03.png)
+<img src="/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_03.png" alt="img" />
 
 #### 导包的注意事项：
 
-![img](/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_导包的注意事项：_04.png)
+<img src="/Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_导包的注意事项：_04.png" alt="img" />

@@ -2,6 +2,23 @@ import { defineConfig } from 'vitepress'
 import { generateSidebar } from 'vitepress-sidebar'
 import taskLists from 'markdown-it-task-lists'
 
+// 递归为侧边栏所有 link 添加前缀，并清理 index.md 后缀
+function prefixSidebarLinks(items: any[], prefix: string): any[] {
+  return items.map((item) => {
+    const newItem = { ...item };
+    if (newItem.link) {
+      let link = newItem.link;
+      // 去掉末尾的 /index.md，让 VitePress 正确路由到文件夹首页
+      link = link.replace(/\/index\.md$/, '/');
+      newItem.link = prefix + link;
+    }
+    if (newItem.items) {
+      newItem.items = prefixSidebarLinks(newItem.items, prefix);
+    }
+    return newItem;
+  });
+}
+
 export default defineConfig({
   ignoreDeadLinks: true,
   base: '/',
@@ -55,15 +72,29 @@ export default defineConfig({
       }
     },
 
-    // 1.自动生成侧边栏
-    sidebar: generateSidebar({
-      documentRootPath: 'docs', // 文档根目录
-      useTitleFromFileHeading: true, // 从文件标题获取侧边栏名称
-      useTitleFromFrontmatter: true, // 优先使用 frontmatter 中的 title
-      useFolderTitleFromIndexFile: true, // 文件夹标题使用其内部的 index.md
-      sortMenusByFrontmatterOrder: true, // 支持按 frontmatter order 排序
-      collapsed: false // 是否默认折叠
-    }),
+    // 1.按路径分区域生成侧边栏（不同导航区域显示各自的目录）
+    sidebar: {
+      // Java 核心区域
+      '/java/': prefixSidebarLinks(generateSidebar({
+        documentRootPath: 'docs/java',
+        useTitleFromFrontmatter: true,
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        folderLinkNotIncludesFileName: true,
+        sortMenusByFrontmatterOrder: true,
+        collapsed: false
+      }), '/java/'),
+      // 学习笔记区域
+      '/notes/': prefixSidebarLinks(generateSidebar({
+        documentRootPath: 'docs/notes',
+        useTitleFromFrontmatter: true,
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        folderLinkNotIncludesFileName: true,
+        sortMenusByFrontmatterOrder: true,
+        collapsed: false
+      }), '/notes/')
+    },
 
     docFooter: {
       prev: '上一页',

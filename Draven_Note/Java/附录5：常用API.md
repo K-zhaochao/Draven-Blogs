@@ -1,4 +1,4 @@
-﻿# 附录5：常用API
+# 附录5：常用API
 
 ![[../Draven_Note_Images/Java/附录5：常用API/附录5：常用API_01.png]]
 

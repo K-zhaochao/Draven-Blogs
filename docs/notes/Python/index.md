@@ -1,4 +1,9 @@
-﻿# Python
+---
+order: 999
+title: "Python"
+---
+
+# Python
 
 ### 目录
 
