@@ -45,31 +45,42 @@ function transformContent(content, relPath) {
       }
     }
 
-    let order = 999;
-
-    // 解析前缀数字排序，例如 "15.xxx"
-    const numMatch = targetName.match(/^(\d+)\./);
-    if (numMatch) {
-      order = parseInt(numMatch[1], 10);
+    // 混合模式排序：检查源文件是否已有手动设置的 order
+    let order = null;
+    const existingOrderMatch = content.match(/^order:\s*(\d+)/m);
+    if (existingOrderMatch) {
+      // 源文件已有手动 order，保留它
+      order = parseInt(existingOrderMatch[1], 10);
+    } else {
+      // 自动解析排序
+      order = 999;
+      // 解析前缀数字排序，例如 "15.xxx"
+      const numMatch = targetName.match(/^(\d+)\./);
+      if (numMatch) {
+        order = parseInt(numMatch[1], 10);
+      }
+      // 解析附录排序，例如 "附录1：细节"
+      else if (targetName.match(/^(?:附录|附件)(\d+)/)) {
+        order = 1000 + parseInt(targetName.match(/^(?:附录|附件)(\d+)/)[1], 10);
+      } else if (targetName.match(/^(?:附录|附件)/)) {
+        order = 1000;
+      }
     }
-    // 解析附录排序，例如 "附录1：细节"
-    else if (targetName.match(/^(?:附录|附件)(\d+)/)) {
-      order = 1000 + parseInt(targetName.match(/^(?:附录|附件)(\d+)/)[1], 10);
-    } else if (targetName.match(/^(?:附录|附件)/)) {
-      order = 1000;
-    }
 
-    const frontmatterToInject = `order: ${order}\ntitle: "${targetName}"`;
-
+    // 如果源文件已有 frontmatter，先移除已有的 order 和 title 行，再注入新的
     if (content.startsWith("---")) {
       const secondDashIndex = content.indexOf("---", 3);
       if (secondDashIndex !== -1) {
-        const before = content.substring(0, secondDashIndex);
+        let frontmatter = content.substring(3, secondDashIndex);
         const after = content.substring(secondDashIndex);
-        content = `${before}${frontmatterToInject}\n${after}`;
+        // 移除已有的 order 和 title 行
+        frontmatter = frontmatter.replace(/^order:\s*\d+\s*\n?/gm, "");
+        frontmatter = frontmatter.replace(/^title:\s*.*\n?/gm, "");
+        frontmatter = frontmatter.trimStart();
+        content = `---\norder: ${order}\ntitle: "${targetName}"\n${frontmatter}\n${after}`;
       }
     } else {
-      content = `---\n${frontmatterToInject}\n---\n\n${content}`;
+      content = `---\norder: ${order}\ntitle: "${targetName}"\n---\n\n${content}`;
     }
   }
 
