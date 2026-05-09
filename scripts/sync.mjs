@@ -111,17 +111,12 @@ function transformContent(content, relPath) {
   );
 
   // 1.1 处理 ./img/ 相对路径图片引用（如 Maven 笔记中的 ./img/6Q2D8D5Tei33CxSQ/xxx.png）
-  // 这些图片实际存放在 Draven_Note_Images/JavaWeb/Maven/ 对应目录中
-  content = content.replace(
-    /!\[(.*?)\]\(\.\/?img\/(.*?)\/(.*?)\)/g,
-    (match, alt, subfolder, filename) => {
-      return `![img](/Draven_Note_Images/JavaWeb/Maven/${encodeImagePath(subfolder)}/${encodeImagePath(filename)})`;
-    },
-  );
+  // 不转换路径，而是在 run() 中将图片复制到目标目录的 ./img/ 下，保持相对路径可用
+  // 这里只做标记，不做路径转换
 
-  // 兜底处理：其他无效相对路径图片 (如 ./img/xxx.png 无子目录)
+  // 兜底处理：其他无效相对路径图片 (如 ./img/xxx.png 无子目录，即 img/ 后面没有 /)
   content = content.replace(
-    /!\[(.*?)\]\(\.\/?img\/(.*?)\)/g,
+    /!\[(.*?)\]\(\.\/?img\/([^\/]+)\)/g,
     "> ⚠️ [图片丢失: $2]",
   );
 
@@ -209,6 +204,27 @@ function run() {
     }
   } catch (e) {
     console.log("（处理图片时）可忽略提示：", e.message);
+  }
+
+  // -- 处理 ./img/ 相对路径图片：将源 Draven_Note_Images 中的图片复制到目标笔记的 img/ 目录下 --
+  console.log("🔗 处理 ./img/ 相对路径图片引用...");
+  const syncedMdFiles = getAllMdFiles(DEST_DIR);
+  for (const mdFile of syncedMdFiles) {
+    const content = fs.readFileSync(mdFile, "utf-8");
+    const imgRefs = content.match(/!\[.*?\]\(\.\/img\/(.*?)\)/g);
+    if (!imgRefs) continue;
+    const destDir = path.dirname(mdFile);
+    for (const ref of imgRefs) {
+      const pathMatch = ref.match(/!\[.*?\]\(\.\/img\/(.*?)\)/);
+      if (!pathMatch) continue;
+      const imgRelPath = pathMatch[1]; // e.g. "6Q2D8D5Tei33CxSQ/xxx.png"
+      const srcImg = path.join(SRC_IMG_DIR, "JavaWeb", "Maven", imgRelPath);
+      const destImg = path.join(destDir, "img", imgRelPath);
+      if (fs.existsSync(srcImg) && !fs.existsSync(destImg)) {
+        fs.mkdirSync(path.dirname(destImg), { recursive: true });
+        fs.copyFileSync(srcImg, destImg);
+      }
+    }
   }
 
   // -- 自动为缺少 index.md 的文件夹生成索引 --
