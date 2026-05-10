@@ -1,0 +1,25 @@
+fragment ThoughtsParts on Thoughts {
+  __typename
+  title
+  order
+  tags
+  body
+}
+
+fragment ProjectsParts on Projects {
+  __typename
+  title
+  description
+  techStack
+  status
+  order
+  body
+}
+
+fragment JavaDocsParts on JavaDocs {
+  __typename
+  title
+  order
+  tags
+  body
+}
