@@ -120,6 +120,12 @@ export default defineConfig({
       level: [2, 4], 
     },
 
+    darkModeSwitchLabel: '外观',
+    sidebarMenuLabel: '菜单',
+    returnToTopLabel: '返回顶部',
+    darkModeSwitchTitle: '切换到暗色主题',
+    lightModeSwitchTitle: '切换到亮色主题',
+
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2026-present Draven | <a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;">黔ICP备2025056580号</a>'
