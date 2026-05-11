@@ -95,39 +95,6 @@ var config_default = defineConfig({
             isBody: true
           }
         ]
-      },
-      {
-        name: "javaDocs",
-        label: "Java \u6587\u6863",
-        path: "docs/java",
-        match: {
-          exclude: "index.md"
-        },
-        fields: [
-          {
-            name: "title",
-            label: "\u6807\u9898",
-            type: "string",
-            required: true
-          },
-          {
-            name: "order",
-            label: "\u6392\u5E8F\u6743\u91CD",
-            type: "number"
-          },
-          {
-            name: "tags",
-            label: "\u6807\u7B7E",
-            type: "string",
-            list: true
-          },
-          {
-            name: "body",
-            label: "\u6B63\u6587",
-            type: "rich-text",
-            isBody: true
-          }
-        ]
       }
     ]
   }

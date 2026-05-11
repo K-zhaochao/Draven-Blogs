@@ -15,11 +15,3 @@ fragment ProjectsParts on Projects {
   order
   body
 }
-
-fragment JavaDocsParts on JavaDocs {
-  __typename
-  title
-  order
-  tags
-  body
-}

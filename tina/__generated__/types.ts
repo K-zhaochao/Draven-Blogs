@@ -86,8 +86,6 @@ export type Query = {
   thoughtsConnection: ThoughtsConnection;
   projects: Projects;
   projectsConnection: ProjectsConnection;
-  javaDocs: JavaDocs;
-  javaDocsConnection: JavaDocsConnection;
 };
 
 
@@ -141,25 +139,9 @@ export type QueryProjectsConnectionArgs = {
   filter?: InputMaybe<ProjectsFilter>;
 };
 
-
-export type QueryJavaDocsArgs = {
-  relativePath?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryJavaDocsConnectionArgs = {
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<JavaDocsFilter>;
-};
-
 export type DocumentFilter = {
   thoughts?: InputMaybe<ThoughtsFilter>;
   projects?: InputMaybe<ProjectsFilter>;
-  javaDocs?: InputMaybe<JavaDocsFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -199,7 +181,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Thoughts | Projects | JavaDocs | Folder;
+export type DocumentNode = Thoughts | Projects | Folder;
 
 export type Thoughts = Node & Document & {
   __typename?: 'Thoughts';
@@ -290,37 +272,6 @@ export type ProjectsConnection = Connection & {
   edges?: Maybe<Array<Maybe<ProjectsConnectionEdges>>>;
 };
 
-export type JavaDocs = Node & Document & {
-  __typename?: 'JavaDocs';
-  title: Scalars['String']['output'];
-  order?: Maybe<Scalars['Float']['output']>;
-  tags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  body?: Maybe<Scalars['JSON']['output']>;
-  id: Scalars['ID']['output'];
-  _sys: SystemInfo;
-  _values: Scalars['JSON']['output'];
-};
-
-export type JavaDocsFilter = {
-  title?: InputMaybe<StringFilter>;
-  order?: InputMaybe<NumberFilter>;
-  tags?: InputMaybe<StringFilter>;
-  body?: InputMaybe<RichTextFilter>;
-};
-
-export type JavaDocsConnectionEdges = {
-  __typename?: 'JavaDocsConnectionEdges';
-  cursor: Scalars['String']['output'];
-  node?: Maybe<JavaDocs>;
-};
-
-export type JavaDocsConnection = Connection & {
-  __typename?: 'JavaDocsConnection';
-  pageInfo: PageInfo;
-  totalCount: Scalars['Float']['output'];
-  edges?: Maybe<Array<Maybe<JavaDocsConnectionEdges>>>;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -332,8 +283,6 @@ export type Mutation = {
   createThoughts: Thoughts;
   updateProjects: Projects;
   createProjects: Projects;
-  updateJavaDocs: JavaDocs;
-  createJavaDocs: JavaDocs;
 };
 
 
@@ -393,29 +342,15 @@ export type MutationCreateProjectsArgs = {
   params: ProjectsMutation;
 };
 
-
-export type MutationUpdateJavaDocsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: JavaDocsMutation;
-};
-
-
-export type MutationCreateJavaDocsArgs = {
-  relativePath: Scalars['String']['input'];
-  params: JavaDocsMutation;
-};
-
 export type DocumentUpdateMutation = {
   thoughts?: InputMaybe<ThoughtsMutation>;
   projects?: InputMaybe<ProjectsMutation>;
-  javaDocs?: InputMaybe<JavaDocsMutation>;
   relativePath?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type DocumentMutation = {
   thoughts?: InputMaybe<ThoughtsMutation>;
   projects?: InputMaybe<ProjectsMutation>;
-  javaDocs?: InputMaybe<JavaDocsMutation>;
 };
 
 export type ThoughtsMutation = {
@@ -434,18 +369,9 @@ export type ProjectsMutation = {
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-export type JavaDocsMutation = {
-  title?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Scalars['Float']['input']>;
-  tags?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  body?: InputMaybe<Scalars['JSON']['input']>;
-};
-
 export type ThoughtsPartsFragment = { __typename: 'Thoughts', title: string, order?: number | null, tags?: Array<string | null> | null, body?: any | null };
 
 export type ProjectsPartsFragment = { __typename: 'Projects', title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, order?: number | null, body?: any | null };
-
-export type JavaDocsPartsFragment = { __typename: 'JavaDocs', title: string, order?: number | null, tags?: Array<string | null> | null, body?: any | null };
 
 export type ThoughtsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -485,25 +411,6 @@ export type ProjectsConnectionQueryVariables = Exact<{
 
 export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename: 'Projects', id: string, title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, order?: number | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
-export type JavaDocsQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
-}>;
-
-
-export type JavaDocsQuery = { __typename?: 'Query', javaDocs: { __typename: 'JavaDocs', id: string, title: string, order?: number | null, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
-
-export type JavaDocsConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<JavaDocsFilter>;
-}>;
-
-
-export type JavaDocsConnectionQuery = { __typename?: 'Query', javaDocsConnection: { __typename?: 'JavaDocsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'JavaDocsConnectionEdges', cursor: string, node?: { __typename: 'JavaDocs', id: string, title: string, order?: number | null, tags?: Array<string | null> | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
-
 export const ThoughtsPartsFragmentDoc = gql`
     fragment ThoughtsParts on Thoughts {
   __typename
@@ -521,15 +428,6 @@ export const ProjectsPartsFragmentDoc = gql`
   techStack
   status
   order
-  body
-}
-    `;
-export const JavaDocsPartsFragmentDoc = gql`
-    fragment JavaDocsParts on JavaDocs {
-  __typename
-  title
-  order
-  tags
   body
 }
     `;
@@ -647,63 +545,6 @@ export const ProjectsConnectionDocument = gql`
   }
 }
     ${ProjectsPartsFragmentDoc}`;
-export const JavaDocsDocument = gql`
-    query javaDocs($relativePath: String!) {
-  javaDocs(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        hasReferences
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...JavaDocsParts
-  }
-}
-    ${JavaDocsPartsFragmentDoc}`;
-export const JavaDocsConnectionDocument = gql`
-    query javaDocsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: JavaDocsFilter) {
-  javaDocsConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            hasReferences
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...JavaDocsParts
-      }
-    }
-  }
-}
-    ${JavaDocsPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -718,12 +559,6 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     projectsConnection(variables?: ProjectsConnectionQueryVariables, options?: C): Promise<{data: ProjectsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: ProjectsConnectionQueryVariables, query: string}> {
         return requester<{data: ProjectsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: ProjectsConnectionQueryVariables, query: string}, ProjectsConnectionQueryVariables>(ProjectsConnectionDocument, variables, options);
-      },
-    javaDocs(variables: JavaDocsQueryVariables, options?: C): Promise<{data: JavaDocsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: JavaDocsQueryVariables, query: string}> {
-        return requester<{data: JavaDocsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: JavaDocsQueryVariables, query: string}, JavaDocsQueryVariables>(JavaDocsDocument, variables, options);
-      },
-    javaDocsConnection(variables?: JavaDocsConnectionQueryVariables, options?: C): Promise<{data: JavaDocsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: JavaDocsConnectionQueryVariables, query: string}> {
-        return requester<{data: JavaDocsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: JavaDocsConnectionQueryVariables, query: string}, JavaDocsConnectionQueryVariables>(JavaDocsConnectionDocument, variables, options);
       }
     };
   }

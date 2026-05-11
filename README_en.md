@@ -4,6 +4,7 @@ English | [简体中文](./README.md)
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=java&logoColor=white)
 ![VitePress](https://img.shields.io/badge/VitePress-5C59F7?style=flat-square&logo=vite&logoColor=white)
+![TinaCMS](https://img.shields.io/badge/TinaCMS-6DB33F?style=flat-square&logo=tinacms&logoColor=white)
 ![Obsidian](https://img.shields.io/badge/Obsidian-483699?style=flat-square&logo=obsidian&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white)
 
@@ -22,29 +23,74 @@ My original intention for building this site was to create a **low-friction, pur
 
 ## 🛠️ Highlights & Workflow Implementation
 
-This repository is more than just a [VitePress](https://vitepress.dev/) template; it runs a heavily customized automated publishing workflow specifically designed for **[Obsidian](https://obsidian.md/)**.
+This repository is more than just a [VitePress](https://vitepress.dev/) template; it runs a **dual-path content management system** powered by **Obsidian + TinaCMS**.
+
+### 1. Learning Notes: Obsidian for Local Writing
 
 If you also use Obsidian for note-taking, you might understand the pain: Obsidian's convenient wikilinks `[[ ]]` and image syntax `![[ ]]` cannot be displayed out-of-the-box by most frontend frameworks. To solve this, I pieced together the following solution:
 
-### 1. Writing Experience: Fully Local, Zero Friction
-
 - **Source Isolation**: The original files containing real content are placed in the `Draven_Note` folder, isolated from the frontend project. VitePress doesn't read them directly. My note management relies entirely on local Obsidian.
-- **Zero Image Redundancy**: Through Windows Directory Junction (`mklink /J`), the local folder where Obsidian saves images is mapped directly into VitePress's `public` directory. As a result, the frontend server can hot-reload images during local writing without duplicating files on the hard drive.
+- **Zero Image Redundancy**: Through Windows Directory Junction (`mklink /J`), the local folder where Obsidian saves images is mapped directly into VitePress's `public` directory. The frontend server can hot-reload images during local writing without duplicating files on the hard drive.
+- **Automated Syntax Cleaning**: Every time notes are pushed to GitHub, `scripts/sync.mjs` automatically traverses `Draven_Note`, using regular expressions to convert Obsidian-specific `[[Wikilinks]]`, Callout syntax, and inline image paths into standard VitePress syntax.
 
-### 2. Deployment: Automated Syntax "Washing" & Publish
+### 2. Thoughts & Projects: TinaCMS Visual Management
 
-Every time notes are `push`ed to GitHub, `.github/workflows` intercepts and completes the remaining hard work on cloud servers:
+Beyond learning notes, the **Thoughts & Reflections** (`docs/thoughts/`) and **Project Showcases** (`docs/projects/`) sections are managed through [TinaCMS](https://tina.io/):
 
-- **Execute Polish Script (`scripts/sync.mjs`)**: The script traverses my `Draven_Note` in the cloud. Using regular expressions, it "formats" Obsidian-specific `[[Wikilinks]]`, Callout syntax, and inline image paths into standard VitePress/Vue component syntax.
-- **Silent Publish**: Right after the code is polished, `npm run build` generates the static pages and deploys them to [GitHub Pages](https://pages.github.com/).
+- **Web-based Editing**: Access the `/admin/` path in your browser to use TinaCMS's what-you-see-is-what-you-get editor
+- **Git-based Storage**: All content is stored directly as Markdown files in the Git repository, completely isolated from Obsidian notes
+- **Zero Conflict**: TinaCMS-managed content and Obsidian notes don't interfere with each other — each system handles its own domain
 
-**In short: Thanks to symlinks locally, I can open Obsidian, write freely, and preview instantly. Once done, a `git push` triggers [GitHub Actions](https://github.com/features/actions) to handle everything else.**
+### 3. Deployment: Fully Automated Pipeline
+
+Every time code is pushed to GitHub, `.github/workflows` automatically completes the following steps:
+
+```
+push to main
+  → sync.mjs          (Clean Obsidian note syntax)
+  → tinacms build      (Build TinaCMS Admin panel)
+  → vitepress build    (Generate static site)
+  → deploy to GitHub Pages
+```
+
+**In a nutshell: Obsidian manages notes, TinaCMS manages articles. Write locally, `git push`, and let GitHub Actions handle everything else.**
+
+---
+
+## 📁 Project Structure
+
+```
+Draven-Blogs/
+├── Draven_Note/              # Obsidian note source (learning notes)
+│   ├── Java/                 #   Java learning notes
+│   ├── JavaWeb/              #   JavaWeb notes
+│   ├── Python/               #   Python notes
+│   ├── 苍穹外卖/              #   Project practice notes
+│   └── Draven_Note_Images/   #   Note image assets
+├── docs/                     # VitePress frontend project
+│   ├── .vitepress/           #   VitePress config & custom theme
+│   ├── notes/                #   ← Auto-generated by sync.mjs
+│   ├── thoughts/             #   ← Managed by TinaCMS (thoughts)
+│   ├── projects/             #   ← Managed by TinaCMS (projects)
+│   └── public/               #   Static assets (images, Admin UI)
+├── tina/                     # TinaCMS configuration
+│   └── config.ts             #   Collection definitions
+├── scripts/
+│   └── sync.mjs              # Obsidian → VitePress syntax cleaning script
+└── .github/workflows/        # CI/CD auto-deployment
+```
 
 ---
 
 ## 🚀 Run Locally
 
-If you'd like to experience this geeky workflow yourself, clone the repository and follow these steps:
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) >= 18
+- [Obsidian](https://obsidian.md/) (only needed for editing notes)
+- Windows OS (`mklink /J` is a Windows command)
+
+### Installation & Startup
 
 ```bash
 # 1. Install dependencies
@@ -53,11 +99,46 @@ npm install
 # 2. Mount the image directory symlink (Must run CMD or PowerShell as Administrator)
 mklink /J "docs\public\Draven_Note_Images" "Draven_Note\Draven_Note_Images"
 
-# 3. Start the dev server (local live preview)
-npm run docs:dev
+# 3. Configure TinaCMS environment variables (create a .env file in the project root)
+#    TINA_CLIENT_ID=your_client_id
+#    TINA_TOKEN=your_token
+
+# 4. Start the dev server
+npm run dev
 ```
 
-> **Note**: A `.gitignore` has been configured to ignore the frontend image symlink, ensuring our cloud code repository does not bulge from duplicated assets.
+> **Note**: The `.env` file is already configured in `.gitignore` and will not be committed to the repository.
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Sync notes + Start TinaCMS + VitePress dev server |
+| `npm run build` | Sync + TinaCMS build + VitePress build (production) |
+| `npm run sync` | Only sync Obsidian notes |
+| `npm run watch` | Watch note changes and sync in real-time |
+| `npm run tina:dev` | Only start TinaCMS + VitePress (without syncing notes) |
+| `npm run preview` | Preview the build output |
+
+After startup:
+
+- Blog homepage: `http://localhost:5173/`
+- TinaCMS Editor: `http://localhost:5173/admin/index.html`
+
+---
+
+## ⚙️ CI/CD Deployment
+
+The project is automatically deployed to GitHub Pages via GitHub Actions. Pushing to the `main` branch triggers the deployment.
+
+### Required Secrets
+
+Configure in the repository **Settings → Secrets and variables → Actions**:
+
+| Secret | Description |
+|--------|-------------|
+| `TINA_CLIENT_ID` | TinaCMS Cloud project Client ID |
+| `TINA_TOKEN` | TinaCMS Cloud API Token (Content Read-only) |
 
 ---
 

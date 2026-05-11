@@ -58,14 +58,11 @@ type Query {
   thoughtsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ThoughtsFilter): ThoughtsConnection!
   projects(relativePath: String): Projects!
   projectsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: ProjectsFilter): ProjectsConnection!
-  javaDocs(relativePath: String): JavaDocs!
-  javaDocsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: JavaDocsFilter): JavaDocsConnection!
 }
 
 input DocumentFilter {
   thoughts: ThoughtsFilter
   projects: ProjectsFilter
-  javaDocs: JavaDocsFilter
 }
 
 type DocumentConnectionEdges {
@@ -91,7 +88,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Thoughts | Projects | JavaDocs | Folder
+union DocumentNode = Thoughts | Projects | Folder
 
 type Thoughts implements Node & Document {
   title: String!
@@ -176,34 +173,6 @@ type ProjectsConnection implements Connection {
   edges: [ProjectsConnectionEdges]
 }
 
-type JavaDocs implements Node & Document {
-  title: String!
-  order: Float
-  tags: [String]
-  body: JSON
-  id: ID!
-  _sys: SystemInfo!
-  _values: JSON!
-}
-
-input JavaDocsFilter {
-  title: StringFilter
-  order: NumberFilter
-  tags: StringFilter
-  body: RichTextFilter
-}
-
-type JavaDocsConnectionEdges {
-  cursor: String!
-  node: JavaDocs
-}
-
-type JavaDocsConnection implements Connection {
-  pageInfo: PageInfo!
-  totalCount: Float!
-  edges: [JavaDocsConnectionEdges]
-}
-
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -214,21 +183,17 @@ type Mutation {
   createThoughts(relativePath: String!, params: ThoughtsMutation!): Thoughts!
   updateProjects(relativePath: String!, params: ProjectsMutation!): Projects!
   createProjects(relativePath: String!, params: ProjectsMutation!): Projects!
-  updateJavaDocs(relativePath: String!, params: JavaDocsMutation!): JavaDocs!
-  createJavaDocs(relativePath: String!, params: JavaDocsMutation!): JavaDocs!
 }
 
 input DocumentUpdateMutation {
   thoughts: ThoughtsMutation
   projects: ProjectsMutation
-  javaDocs: JavaDocsMutation
   relativePath: String
 }
 
 input DocumentMutation {
   thoughts: ThoughtsMutation
   projects: ProjectsMutation
-  javaDocs: JavaDocsMutation
 }
 
 input ThoughtsMutation {
@@ -244,13 +209,6 @@ input ProjectsMutation {
   techStack: [String]
   status: String
   order: Float
-  body: JSON
-}
-
-input JavaDocsMutation {
-  title: String
-  order: Float
-  tags: [String]
   body: JSON
 }
 

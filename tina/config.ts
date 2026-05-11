@@ -99,39 +99,6 @@ export default defineConfig({
           },
         ],
       },
-      {
-        name: "javaDocs",
-        label: "Java 文档",
-        path: "docs/java",
-        match: {
-          exclude: "index.md",
-        },
-        fields: [
-          {
-            name: "title",
-            label: "标题",
-            type: "string",
-            required: true,
-          },
-          {
-            name: "order",
-            label: "排序权重",
-            type: "number",
-          },
-          {
-            name: "tags",
-            label: "标签",
-            type: "string",
-            list: true,
-          },
-          {
-            name: "body",
-            label: "正文",
-            type: "rich-text",
-            isBody: true,
-          },
-        ],
-      },
     ],
   },
 });
