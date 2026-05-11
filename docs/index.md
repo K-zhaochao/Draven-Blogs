@@ -11,7 +11,7 @@ hero:
       link: /notes/
     - theme: alt
       text: GitHub
-      link: https://github.com/K-zhaochao
+      link: https://github.com/K-zhaochao/Draven-Blogs
 
 features:
   - icon: 📝

@@ -43,7 +43,7 @@ export default defineConfig({
       { text: '思考与总结', link: '/thoughts/' },
       { text: '学习笔记', link: '/notes/' },
       { text: '项目实战', link: '/projects/' },
-      { text: 'GitHub', link: 'https://github.com/K-zhaochao' }
+      { text: 'GitHub', link: 'https://github.com/K-zhaochao/Draven-Blogs' }
     ],
 
     // 搜索功能配置
