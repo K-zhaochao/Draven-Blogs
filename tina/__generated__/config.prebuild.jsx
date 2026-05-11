@@ -21,7 +21,7 @@ var config_default = defineConfig({
         label: "\u601D\u8003\u4E0E\u603B\u7ED3",
         path: "docs/thoughts",
         match: {
-          exclude: "index"
+          exclude: "index.md"
         },
         fields: [
           {
@@ -54,7 +54,7 @@ var config_default = defineConfig({
         label: "\u9879\u76EE\u5B9E\u6218",
         path: "docs/projects",
         match: {
-          exclude: "index"
+          exclude: "index.md"
         },
         fields: [
           {
@@ -101,7 +101,7 @@ var config_default = defineConfig({
         label: "Java \u6587\u6863",
         path: "docs/java",
         match: {
-          exclude: "index"
+          exclude: "index.md"
         },
         fields: [
           {

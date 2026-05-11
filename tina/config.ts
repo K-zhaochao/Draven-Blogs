@@ -24,7 +24,7 @@ export default defineConfig({
         label: "思考与总结",
         path: "docs/thoughts",
         match: {
-          exclude: "index",
+          exclude: "index.md",
         },
         fields: [
           {
@@ -57,7 +57,7 @@ export default defineConfig({
         label: "项目实战",
         path: "docs/projects",
         match: {
-          exclude: "index",
+          exclude: "index.md",
         },
         fields: [
           {
@@ -104,7 +104,7 @@ export default defineConfig({
         label: "Java 文档",
         path: "docs/java",
         match: {
-          exclude: "index",
+          exclude: "index.md",
         },
         fields: [
           {
