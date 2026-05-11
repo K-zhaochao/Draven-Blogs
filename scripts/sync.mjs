@@ -86,7 +86,7 @@ function transformContent(content, relPath) {
 
   // 辅助函数：将路径中的空格编码为 %20，保留中文字符
   function encodeImagePath(p) {
-    return p.replace(/\s+/g, '%20');
+    return p.replace(/\s+/g, "%20");
   }
 
   // 1. 转换内部图片引用的路径 (放到双链转换前面，防止被误伤)
@@ -95,7 +95,9 @@ function transformContent(content, relPath) {
     // 尝试提取 Draven_Note_Images 之后的完整目录结构
     const matchDir = imgPath.match(/Draven_Note_Images\/(.*)/);
     if (matchDir && matchDir[1]) {
-      return `![img](/Draven_Note_Images/${encodeImagePath(matchDir[1].trim())})`;
+      return `![img](/Draven_Note_Images/${encodeImagePath(
+        matchDir[1].trim(),
+      )})`;
     }
     // 如果没有，退回到仅保留文件名
     const fileName = path.basename(imgPath);
@@ -200,11 +202,21 @@ function run() {
   );
   const SRC_IMG_DIR = path.join(ROOT_DIR, "Draven_Note", "Draven_Note_Images");
 
-  // 防止本地由于软链接执行报错，如果由于任何原因已有源则忽略覆盖/或者删除软链接重建。
-  // Action 上一定是空目录，放心拷贝即可：
+  // 本地使用 mklink /J 软链接时跳过拷贝（软链接指向源目录，无需处理）
+  // CI 环境或普通目录：删除旧目录后全量重建，确保新增图片也能同步
   try {
-    if (!fs.existsSync(PUBLIC_IMG_DIR)) {
+    if (fs.existsSync(PUBLIC_IMG_DIR)) {
+      const stat = fs.lstatSync(PUBLIC_IMG_DIR);
+      if (stat.isSymbolicLink()) {
+        console.log("  ℹ️ 检测到软链接，跳过图片拷贝");
+      } else {
+        fs.rmSync(PUBLIC_IMG_DIR, { recursive: true, force: true });
+        copyDir(SRC_IMG_DIR, PUBLIC_IMG_DIR);
+        console.log("  ✅ 图片目录已重建");
+      }
+    } else {
       copyDir(SRC_IMG_DIR, PUBLIC_IMG_DIR);
+      console.log("  ✅ 图片目录已创建");
     }
   } catch (e) {
     console.log("（处理图片时）可忽略提示：", e.message);
@@ -237,8 +249,6 @@ function run() {
 
   console.log("✅ 同步转换完成，笔记及图片已安全注入！");
 }
-
-
 
 // 提取文件排序权重（复用 transformContent 中的逻辑）
 function getFileOrder(fileName) {
