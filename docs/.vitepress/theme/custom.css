@@ -1,5 +1,6 @@
 :root {
-  --vp-c-brand-1: #B026FF; /* 赛博朋克紫 */
+  --vp-c-brand-1: #B026FF;
+  /* 赛博朋克紫 */
   --vp-c-brand-2: #8A2BE2;
   --vp-c-brand-3: #6a1b9a;
   --vp-home-hero-name-color: transparent;
@@ -20,4 +21,116 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
+}
+
+/* ===== layout: page 下的 Markdown 排版样式 ===== */
+/* VitePress 默认主题的正文排版仅作用于 .vp-doc（layout: doc），
+   layout: page 渲染到 .VPPage，不会继承这些样式。
+   以下为 .VPPage 补全常用 Markdown 排版。 */
+.VPPage {
+  padding: 32px 24px 96px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.VPPage h1 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 0;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+
+.VPPage h2 {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-top: 40px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.VPPage h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.VPPage p {
+  margin: 16px 0;
+  line-height: 1.8;
+}
+
+.VPPage blockquote {
+  margin: 16px 0;
+  padding: 16px 20px;
+  border-left: 4px solid var(--vp-c-brand-1);
+  background-color: var(--vp-c-bg-soft);
+  border-radius: 0 8px 8px 0;
+  color: var(--vp-c-text-2);
+  font-size: 16px;
+}
+
+.VPPage blockquote p {
+  margin: 0;
+}
+
+.VPPage hr {
+  margin: 32px 0;
+  border: none;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.VPPage a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.25s;
+}
+
+.VPPage a:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration: underline;
+}
+
+/* VitePress 自定义容器（::: info / tip / warning / danger） */
+.VPPage .custom-block {
+  margin: 16px 0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.VPPage .custom-block .custom-block-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.VPPage .custom-block.info {
+  background-color: var(--vp-custom-block-info-bg);
+  border: 1px solid var(--vp-custom-block-info-border);
+  color: var(--vp-custom-block-info-text);
+}
+
+.VPPage .custom-block.tip {
+  background-color: var(--vp-custom-block-tip-bg);
+  border: 1px solid var(--vp-custom-block-tip-border);
+  color: var(--vp-custom-block-tip-text);
+}
+
+.VPPage .custom-block.warning {
+  background-color: var(--vp-custom-block-warning-bg);
+  border: 1px solid var(--vp-custom-block-warning-border);
+  color: var(--vp-custom-block-warning-text);
+}
+
+.VPPage .custom-block.danger {
+  background-color: var(--vp-custom-block-danger-bg);
+  border: 1px solid var(--vp-custom-block-danger-border);
+  color: var(--vp-custom-block-danger-text);
 }
