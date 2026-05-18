@@ -141,7 +141,7 @@ export default defineConfig({
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2026-present Draven | <a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;">黔ICP备2025056580号</a> | <a href="https://beian.mps.gov.cn/#/query/webSearch?code=52052302000396" rel="noreferrer" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;"><img src="/gongan.png" style="width:16px;height:17px;vertical-align:middle;margin-right:4px;">贵公网安备52052302000396号</a>'
+      copyright: 'Copyright © 2026-present Draven | <a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;">黔ICP备2025056580号</a><br><a href="https://beian.mps.gov.cn/#/query/webSearch?code=52052302000396" rel="noreferrer" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;"><img src="/gongan.png" style="width:16px;height:17px;vertical-align:middle;margin-right:4px;display:inline;">贵公网安备52052302000396号</a>'
     }
   }
 })
