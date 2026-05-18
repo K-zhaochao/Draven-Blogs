@@ -106,15 +106,20 @@ function formatDate(dateStr?: string): string {
   cursor: pointer;
 }
 
+/* :where() 包裹后 Vue 追加的 [data-v-xxx] 不额外增加权重，保持与源选择器一致 */
 .project-card:hover {
   transform: translateY(-3px);
   border-color: var(--vp-c-brand-1, #B026FF);
   box-shadow: 0 0 14px rgba(176, 38, 255, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: inherit;
 }
 
 .project-card:focus-visible {
   outline: 2px solid var(--vp-c-brand-1, #B026FF);
   outline-offset: 2px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .card-header {
