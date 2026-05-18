@@ -11,7 +11,8 @@ function prefixSidebarLinks(items: any, prefix: string): any[] {
       let link = newItem.link;
       // 去掉末尾的 /index.md，让 VitePress 正确路由到文件夹首页
       link = link.replace(/\/index\.md$/, '/');
-      newItem.link = prefix + link;
+      // 拼接前缀与链接，去除中间可能产生的双斜杠
+      newItem.link = (prefix + link).replace(/\/{2,}/g, '/');
     }
     if (newItem.items) {
       newItem.items = prefixSidebarLinks(newItem.items, prefix);
