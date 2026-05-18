@@ -87,6 +87,21 @@ export default defineConfig({
             options: ["学习中", "进行中", "已完成", "已归档"],
           },
           {
+            type: "string",
+            name: "category",
+            label: "项目类型",
+            options: [
+              { label: "手搓 / 协作项目", value: "manual" },
+              { label: "AI Vibe Coding", value: "ai-vibe" },
+            ],
+            required: true,
+          },
+          {
+            type: "string",
+            name: "github",
+            label: "GitHub 仓库 (owner/repo)",
+          },
+          {
             name: "order",
             label: "排序权重",
             type: "number",

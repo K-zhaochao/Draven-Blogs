@@ -5,3 +5,19 @@
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: linear-gradient(135deg, #B026FF 0%, #00BFFF 100%);
 }
+
+/* ===== 项目实战看板栅格布局 ===== */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 16px 0;
+}
+
+/* 小屏适配：单列 */
+@media (max-width: 640px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

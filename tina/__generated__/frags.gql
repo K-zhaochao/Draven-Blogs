@@ -12,6 +12,8 @@ fragment ProjectsParts on Projects {
   description
   techStack
   status
+  category
+  github
   order
   body
 }

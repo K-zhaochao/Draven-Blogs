@@ -1,6 +1,16 @@
 ---
 title: 项目实战
+layout: page
 ---
+
+<script setup>
+import { data } from './projects.data'
+import ProjectCard from '../.vitepress/components/ProjectCard.vue'
+
+const manualProjects = data.manualProjects
+const aiProjects = data.aiProjects
+</script>
+
 # 项目实战
 
 > 纸上得来终觉浅，绝知此事要躬行。
@@ -17,17 +27,14 @@ title: 项目实战
 
 ---
 
-## 项目列表
+## 🛠 手搓 / 协作项目
 
-### 🛒 苍穹外卖
+<div class="project-grid">
+  <ProjectCard v-for="p in manualProjects" :key="p.title" :project="p" />
+</div>
 
-一个基于 Spring Boot 的外卖点餐系统，涵盖了员工管理、菜品管理、套餐管理、微信登录、购物车等完整业务流程。
+## 🤖 AI Vibe Coding
 
-- **技术栈**：Spring Boot、MyBatis、Redis、微信小程序
-- **状态**：学习中
-
-> 详细笔记已整理在 [学习笔记 - 苍穹外卖](/notes/苍穹外卖/) 板块。
-
----
-
-*更多项目正在路上……*
+<div class="project-grid">
+  <ProjectCard v-for="p in aiProjects" :key="p.title" :project="p" />
+</div>

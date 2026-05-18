@@ -84,6 +84,21 @@ var config_default = defineConfig({
             options: ["\u5B66\u4E60\u4E2D", "\u8FDB\u884C\u4E2D", "\u5DF2\u5B8C\u6210", "\u5DF2\u5F52\u6863"]
           },
           {
+            type: "string",
+            name: "category",
+            label: "\u9879\u76EE\u7C7B\u578B",
+            options: [
+              { label: "\u624B\u6413 / \u534F\u4F5C\u9879\u76EE", value: "manual" },
+              { label: "AI Vibe Coding", value: "ai-vibe" }
+            ],
+            required: true
+          },
+          {
+            type: "string",
+            name: "github",
+            label: "GitHub \u4ED3\u5E93 (owner/repo)"
+          },
+          {
             name: "order",
             label: "\u6392\u5E8F\u6743\u91CD",
             type: "number"

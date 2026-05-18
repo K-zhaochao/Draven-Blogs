@@ -243,6 +243,8 @@ export type Projects = Node & Document & {
   description?: Maybe<Scalars['String']['output']>;
   techStack?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   status?: Maybe<Scalars['String']['output']>;
+  category: Scalars['String']['output'];
+  github?: Maybe<Scalars['String']['output']>;
   order?: Maybe<Scalars['Float']['output']>;
   body?: Maybe<Scalars['JSON']['output']>;
   id: Scalars['ID']['output'];
@@ -255,6 +257,8 @@ export type ProjectsFilter = {
   description?: InputMaybe<StringFilter>;
   techStack?: InputMaybe<StringFilter>;
   status?: InputMaybe<StringFilter>;
+  category?: InputMaybe<StringFilter>;
+  github?: InputMaybe<StringFilter>;
   order?: InputMaybe<NumberFilter>;
   body?: InputMaybe<RichTextFilter>;
 };
@@ -365,13 +369,15 @@ export type ProjectsMutation = {
   description?: InputMaybe<Scalars['String']['input']>;
   techStack?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   status?: InputMaybe<Scalars['String']['input']>;
+  category?: InputMaybe<Scalars['String']['input']>;
+  github?: InputMaybe<Scalars['String']['input']>;
   order?: InputMaybe<Scalars['Float']['input']>;
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
 export type ThoughtsPartsFragment = { __typename: 'Thoughts', title: string, order?: number | null, tags?: Array<string | null> | null, body?: any | null };
 
-export type ProjectsPartsFragment = { __typename: 'Projects', title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, order?: number | null, body?: any | null };
+export type ProjectsPartsFragment = { __typename: 'Projects', title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, category: string, github?: string | null, order?: number | null, body?: any | null };
 
 export type ThoughtsQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -397,7 +403,7 @@ export type ProjectsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectsQuery = { __typename?: 'Query', projects: { __typename: 'Projects', id: string, title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, order?: number | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type ProjectsQuery = { __typename?: 'Query', projects: { __typename: 'Projects', id: string, title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, category: string, github?: string | null, order?: number | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type ProjectsConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']['input']>;
@@ -409,7 +415,7 @@ export type ProjectsConnectionQueryVariables = Exact<{
 }>;
 
 
-export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename: 'Projects', id: string, title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, order?: number | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type ProjectsConnectionQuery = { __typename?: 'Query', projectsConnection: { __typename?: 'ProjectsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProjectsConnectionEdges', cursor: string, node?: { __typename: 'Projects', id: string, title: string, description?: string | null, techStack?: Array<string | null> | null, status?: string | null, category: string, github?: string | null, order?: number | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const ThoughtsPartsFragmentDoc = gql`
     fragment ThoughtsParts on Thoughts {
@@ -427,6 +433,8 @@ export const ProjectsPartsFragmentDoc = gql`
   description
   techStack
   status
+  category
+  github
   order
   body
 }
@@ -607,7 +615,7 @@ export const ExperimentalGetTinaClient = () =>
   getSdk(
     generateRequester(
       createClient({
-        url: "http://localhost:4001/graphql",
+        url: "https://content.tinajs.io/2.3/content/a55e3c97-e341-48df-b0e4-ceae62e5d55a/github/main",
         queries,
       })
     )

@@ -23,8 +23,8 @@ title: "Redis"
 
 ![img](/Draven_Note_Images/JavaWeb/Redis/Redis_服务启动与停止：_05.png)
 
-* **`-h`：**链接地址
-* **`-p`：**端口号
+* **`-h`：** 链接地址
+* **`-p`：** 端口号
 * **`-a`：**`Redis`密码
 
 ***

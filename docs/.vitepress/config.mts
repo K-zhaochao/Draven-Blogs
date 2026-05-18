@@ -37,7 +37,7 @@ export default defineConfig({
     lastUpdated: {
       text: '最后更新于'
     },
-    logo: 'https://skillicons.dev/icons?i=java', 
+    logo: 'https://skillicons.dev/icons?i=java',
     nav: [
       { text: '首页', link: '/' },
       { text: '思考与总结', link: '/thoughts/' },
@@ -116,8 +116,8 @@ export default defineConfig({
     ],
 
     outline: {
-      label: '本页目录', 
-      level: [2, 4], 
+      label: '本页目录',
+      level: [2, 4],
     },
 
     darkModeSwitchLabel: '外观',
@@ -128,7 +128,7 @@ export default defineConfig({
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2026-present Draven | <a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;">黔ICP备2025056580号</a>'
+      copyright: 'Copyright © 2026-present Draven | <a href="https://beian.miit.gov.cn/" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;">黔ICP备2025056580号</a> | <a href="https://beian.mps.gov.cn/#/query/webSearch?code=52052302000396" rel="noreferrer" target="_blank" style="color: var(--vp-c-brand-1); text-decoration: none;"><img src="/gongan.png" style="width:16px;height:17px;vertical-align:middle;margin-right:4px;">贵公网安备52052302000396号</a>'
     }
   }
 })

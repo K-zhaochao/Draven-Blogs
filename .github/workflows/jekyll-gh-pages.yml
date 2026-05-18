@@ -38,6 +38,10 @@ jobs:
         run: npm ci
       - name: Sync Obsidian Notes
         run: node scripts/sync.mjs
+      - name: Sync project status from GitHub
+        run: node scripts/sync-projects.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build TinaCMS
         run: npx tinacms build
       - name: Build with VitePress
