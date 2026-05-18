@@ -46,6 +46,8 @@ function formatDate(dateStr?: string): string {
   <a
     class="project-card"
     :href="project.url"
+    target="_blank"
+    rel="noopener noreferrer"
     :aria-label="`项目: ${project.title}`"
   >
     <!-- 顶部：标题 + 状态徽章 -->
