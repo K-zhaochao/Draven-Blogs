@@ -10,7 +10,16 @@ English | [简体中文](./README.md)
 
 Hi, I'm **[K-zhaochao](https://github.com/K-zhaochao)**, an undergraduate majoring in Computer Science and Technology (Class of 2024).
 
-This is my personal blog and digital garden. It serves as a repository for my learning notes, a place to document my tech stack (currently focusing on **Java Backend Development**), and a log of the pitfalls I've encountered during real-world projects. Occasionally, apart from emotionless code, you'll also find my personal thoughts and random ideas here.
+This is my personal blog for recording learning, practice, and reflections. It mainly hosts my learning notes, tech stack documentation (currently focusing on **Java Backend Development**), and project practice experiences.
+
+### ✨ Features
+
+- 📝 **Learning Notes** — Java, JavaWeb, Python, etc., written in Obsidian and auto-synced
+- 💭 **Thoughts & Reflections** — Visually edited via TinaCMS Cloud
+- 🚀 **Project Showcase** — Hand-crafted/collaborative projects + AI Vibe Coding, with GitHub status auto-tracking
+- 🎨 **Cyberpunk Purple Theme** — Customized purple-toned design
+- 🔍 **Full-text Search** — Quickly locate note content
+- 📱 **Responsive Design** — Multi-device access support
 
 ---
 
@@ -82,30 +91,17 @@ Draven-Blogs/
 
 ---
 
-## 🚀 Run Locally
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) >= 18
-- [Obsidian](https://obsidian.md/) (only needed for editing notes)
-- Windows OS (`mklink /J` is a Windows command)
-
-### Installation & Startup
+## 🚀 Local Development
 
 ```bash
-# 1. Install dependencies
+# Install dependencies
 npm install
 
-# 2. Mount the image directory symlink (Must run CMD or PowerShell as Administrator)
-mklink /J "docs\public\Draven_Note_Images" "Draven_Note\Draven_Note_Images"
-
-# 3. Configure TinaCMS environment variables (create a .env file in the project root)
-#    TINA_CLIENT_ID=your_client_id
-#    TINA_TOKEN=your_token
-
-# 4. Start the dev server
+# Start the dev server
 npm run dev
 ```
+
+> 💡 First-time setup requires TinaCMS environment variables configuration (see [CI/CD Deployment](#%EF%B8%8F-cicd-deployment) section below)
 
 > **Note**: The `.env` file is already configured in `.gitignore` and will not be committed to the repository.
 
@@ -139,6 +135,13 @@ Configure in the repository **Settings → Secrets and variables → Actions**:
 |--------|-------------|
 | `TINA_CLIENT_ID` | TinaCMS Cloud project Client ID |
 | `TINA_TOKEN` | TinaCMS Cloud API Token (Content Read-only) |
+
+---
+
+## 📝 Registration Info
+
+- [ICP: 黔ICP备2025056580号](https://beian.miit.gov.cn/)
+- [Public Security: 贵公网安备52052302000396号](https://beian.mps.gov.cn/#/query/webSearch?code=52052302000396)
 
 ---
 

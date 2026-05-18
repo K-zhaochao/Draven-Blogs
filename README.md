@@ -10,7 +10,16 @@
 
 Hi，我是 **[K-zhaochao](https://github.com/K-zhaochao)**，一名 24 级计算机科学与技术专业的在校生。
 
-这里是我的个人博客，主要用于存放我的学习笔记、梳理技术栈（目前主攻 **Java 后端开发**），以及记录一些项目实战的踩坑过程。当然，除了毫无感情的代码，这里也会偶尔掉落一些个人的思考和脑洞。
+这里是我的个人博客，用于记录学习、实践与思考。主要存放学习笔记、梳理技术栈（目前主攻 **Java 后端开发**），以及记录项目实战的踩坑过程。
+
+### ✨ 特性
+
+- 📝 **学习笔记** — Java、JavaWeb、Python 等，通过 Obsidian 编写，自动同步
+- 💭 **思考与总结** — 通过 TinaCMS Cloud 可视化编辑
+- 🚀 **项目实战** — 手搓/协作项目 + AI Vibe Coding，GitHub 状态自动追踪
+- 🎨 **赛博朋克紫色主题** — 定制化的紫色调设计
+- 🔍 **全文搜索** — 快速定位笔记内容
+- 📱 **响应式设计** — 支持多端访问
 
 ---
 
@@ -82,30 +91,17 @@ Draven-Blogs/
 
 ---
 
-## 🚀 本地运行
-
-### 前置条件
-
-- [Node.js](https://nodejs.org/) >= 18
-- [Obsidian](https://obsidian.md/)（仅编辑笔记需要）
-- Windows 系统（`mklink /J` 为 Windows 命令）
-
-### 安装与启动
+## 🚀 本地开发
 
 ```bash
-# 1. 安装依赖
+# 安装依赖
 npm install
 
-# 2. 挂载图片目录的软链接（必须以管理员身份运行 CMD 或 PowerShell）
-mklink /J "docs\public\Draven_Note_Images" "Draven_Note\Draven_Note_Images"
-
-# 3. 配置 TinaCMS 环境变量（在项目根目录创建 .env 文件）
-#    TINA_CLIENT_ID=你的ClientID
-#    TINA_TOKEN=你的Token
-
-# 4. 启动开发服务器
+# 启动开发服务器
 npm run dev
 ```
+
+> 💡 首次使用需要配置 TinaCMS 环境变量（详见下方 [CI/CD 部署](#️-cicd-部署) 章节）
 
 > **Note**: `.env` 文件已配置在 `.gitignore` 中，不会被提交到仓库。
 
@@ -139,6 +135,13 @@ npm run dev
 |--------|------|
 | `TINA_CLIENT_ID` | TinaCMS Cloud 项目 Client ID |
 | `TINA_TOKEN` | TinaCMS Cloud API Token（Content Read-only） |
+
+---
+
+## 📝 备案信息
+
+- [黔ICP备2025056580号](https://beian.miit.gov.cn/)
+- [贵公网安备52052302000396号](https://beian.mps.gov.cn/#/query/webSearch?code=52052302000396)
 
 ---
 
