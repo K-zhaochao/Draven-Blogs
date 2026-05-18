@@ -76,35 +76,47 @@ export default defineConfig({
     // 1.按路径分区域生成侧边栏（不同导航区域显示各自的目录）
     sidebar: {
       // 思考与总结区域
-      '/thoughts/': prefixSidebarLinks(generateSidebar({
-        documentRootPath: 'docs/thoughts',
-        useTitleFromFrontmatter: true,
-        useFolderTitleFromIndexFile: true,
-        useFolderLinkFromIndexFile: true,
-        folderLinkNotIncludesFileName: true,
-        sortMenusByFrontmatterOrder: true,
-        collapsed: false
-      }), '/thoughts/'),
+      '/thoughts/': [{
+        text: '思考与总结',
+        link: '/thoughts/',
+        items: prefixSidebarLinks(generateSidebar({
+          documentRootPath: 'docs/thoughts',
+          useTitleFromFrontmatter: true,
+          useFolderTitleFromIndexFile: true,
+          useFolderLinkFromIndexFile: true,
+          folderLinkNotIncludesFileName: true,
+          sortMenusByFrontmatterOrder: true,
+          collapsed: false
+        }), '/thoughts/')
+      }],
       // 学习笔记区域
-      '/notes/': prefixSidebarLinks(generateSidebar({
-        documentRootPath: 'docs/notes',
-        useTitleFromFrontmatter: true,
-        useFolderTitleFromIndexFile: true,
-        useFolderLinkFromIndexFile: true,
-        folderLinkNotIncludesFileName: true,
-        sortMenusByFrontmatterOrder: true,
-        collapsed: false
-      }), '/notes/'),
+      '/notes/': [{
+        text: '学习笔记',
+        link: '/notes/',
+        items: prefixSidebarLinks(generateSidebar({
+          documentRootPath: 'docs/notes',
+          useTitleFromFrontmatter: true,
+          useFolderTitleFromIndexFile: true,
+          useFolderLinkFromIndexFile: true,
+          folderLinkNotIncludesFileName: true,
+          sortMenusByFrontmatterOrder: true,
+          collapsed: false
+        }), '/notes/')
+      }],
       // 项目实战区域
-      '/projects/': prefixSidebarLinks(generateSidebar({
-        documentRootPath: 'docs/projects',
-        useTitleFromFrontmatter: true,
-        useFolderTitleFromIndexFile: true,
-        useFolderLinkFromIndexFile: true,
-        folderLinkNotIncludesFileName: true,
-        sortMenusByFrontmatterOrder: true,
-        collapsed: false
-      }), '/projects/')
+      '/projects/': [{
+        text: '项目实战',
+        link: '/projects/',
+        items: prefixSidebarLinks(generateSidebar({
+          documentRootPath: 'docs/projects',
+          useTitleFromFrontmatter: true,
+          useFolderTitleFromIndexFile: true,
+          useFolderLinkFromIndexFile: true,
+          folderLinkNotIncludesFileName: true,
+          sortMenusByFrontmatterOrder: true,
+          collapsed: false
+        }), '/projects/')
+      }]
     },
 
     docFooter: {
