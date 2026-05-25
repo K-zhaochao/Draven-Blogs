@@ -10,7 +10,7 @@ title: "JavaWeb"
   - [j-Tt1odScD67GPzy](Maven/j-Tt1odScD67GPzy/index.md)
 - [MyBatis](MyBatis/index.md)
 - [MySQL](MySQL/index.md)
-- [Redis](Redis/index.md)
+- [Redis](Draven_Note_Images/JavaWeb/Redis/index.md)
 - [SpringBootWeb](SpringBootWeb/index.md)
   - [1.简介](SpringBootWeb/1.简介/index.md)
   - [2.Tomcat[Servlet容器]](SpringBootWeb/2.Tomcat[Servlet容器]/index.md)
