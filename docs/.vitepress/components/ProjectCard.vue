@@ -4,12 +4,10 @@
  * 项目实战看板卡片组件
  * 职责：展示单一项目信息（标题、状态、描述、技术栈、Stars、更新时间）
  * Props: project - 包含 title, slug, category, status, techStack, stars, lastPush, description, url
- * 点击：跳转到 VitePress 内部项目详情页 /projects/{slug}/
+ * 点击：emit('select', project) 由父组件打开 Modal
  * Hover: 上浮 + 品牌色发光边框
  * 缺省防御：stars / techStack 为空时不渲染对应区域
  */
-
-import { withBase } from 'vitepress'
 
 interface Project {
   title: string
@@ -27,10 +25,9 @@ defineProps<{
   project: Project
 }>()
 
-/** 根据 slug 生成 VitePress 内部路由 */
-function projectLink(slug: string): string {
-  return withBase(`/projects/${slug}/`)
-}
+const emit = defineEmits<{
+  select: [project: Project]
+}>()
 
 /** 状态映射：不同 status 对应不同颜色 */
 const statusColorMap: Record<string, string> = {
@@ -52,10 +49,14 @@ function formatDate(dateStr?: string): string {
 </script>
 
 <template>
-  <a
+  <div
     class="project-card"
-    :href="projectLink(project.slug)"
-    :aria-label="`项目: ${project.title}`"
+    role="button"
+    tabindex="0"
+    @click="emit('select', project)"
+    @keydown.enter="emit('select', project)"
+    @keydown.space.prevent="emit('select', project)"
+    :aria-label="`查看项目: ${project.title}`"
   >
     <!-- 顶部：标题 + 状态徽章 -->
     <div class="card-header">
@@ -97,7 +98,7 @@ function formatDate(dateStr?: string): string {
         {{ formatDate(project.lastPush) }}
       </span>
     </div>
-  </a>
+  </div>
 </template>
 
 <style scoped>

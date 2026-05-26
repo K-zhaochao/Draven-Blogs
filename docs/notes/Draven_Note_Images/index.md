@@ -3,7 +3,7 @@ order: 999
 title: "Draven_Note_Images"
 
 ---
-
+> **注意：** 此处用于存放图片，无任何文章。
 # Draven_Note_Images
 
 - [苍穹外卖](苍穹外卖/index.md)

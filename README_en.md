@@ -1,6 +1,6 @@
 # Draven's Blog ☕
 
-English | [简体中文](./README.md)
+English | [简体中文](https://github.com/K-zhaochao/Draven-Blogs/blob/main/README.md)
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=java&logoColor=white)
 ![VitePress](https://img.shields.io/badge/VitePress-5C59F7?style=flat-square&logo=vite&logoColor=white)

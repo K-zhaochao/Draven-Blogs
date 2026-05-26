@@ -4,11 +4,26 @@ layout: page
 ---
 
 <script setup>
+import { ref } from 'vue'
 import { data } from './projects.data'
 import ProjectCard from '../.vitepress/components/ProjectCard.vue'
+import ProjectModal from '../.vitepress/components/ProjectModal.vue'
+import readmeCache from './readme-cache.json'
 
 const manualProjects = data.manualProjects
 const aiProjects = data.aiProjects
+const otherProjects = data.otherProjects
+
+// Modal 状态
+const modalVisible = ref(false)
+const selectedProject = ref(null)
+const readmeContent = ref('')
+
+function onProjectSelect(project) {
+  selectedProject.value = project
+  readmeContent.value = readmeCache[project.slug] || ''
+  modalVisible.value = true
+}
 </script>
 
 # 项目实战
@@ -20,11 +35,48 @@ const aiProjects = data.aiProjects
 ## 🛠 手搓 / 协作项目
 
 <div class="project-grid">
-  <ProjectCard v-for="p in manualProjects" :key="p.title" :project="p" />
+  <ProjectCard
+    v-for="p in manualProjects"
+    :key="p.title"
+    :project="p"
+    @select="onProjectSelect"
+  />
 </div>
 
 ## 🤖 AI Vibe Coding
 
 <div class="project-grid">
-  <ProjectCard v-for="p in aiProjects" :key="p.title" :project="p" />
+  <ProjectCard
+    v-for="p in aiProjects"
+    :key="p.title"
+    :project="p"
+    @select="onProjectSelect"
+  />
 </div>
+
+## 📂 其他项目
+
+<div class="project-grid">
+  <ProjectCard
+    v-for="p in otherProjects"
+    :key="p.title"
+    :project="p"
+    @select="onProjectSelect"
+  />
+</div>
+
+<!-- 大卡片弹窗 -->
+<ProjectModal
+  v-model="modalVisible"
+  :project="selectedProject"
+  :readme-raw="readmeContent"
+/>
+
+<style>
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+</style>

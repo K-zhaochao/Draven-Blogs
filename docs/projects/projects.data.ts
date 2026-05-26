@@ -2,7 +2,7 @@
  * projects.data.ts
  * VitePress 数据加载器
  * 职责：使用 createContentLoader 加载 projects/*\/index.md 的 frontmatter 数据
- * 输出：按 category 分组的 { manualProjects, aiProjects } 结构
+ * 输出：按 category 分组的 { manualProjects, aiProjects, otherProjects } 结构
  * 数据源：docs/projects/<项目名>/index.md 的 frontmatter
  * 排除：projects/index.md（页面本身不会被 glob 匹配到）
  */
@@ -72,7 +72,10 @@ export default createContentLoader('projects/*/index.md', {
     const aiProjects = allProjects.filter(
       (p) => p.category === 'ai-vibe' || p.category === 'ai'
     )
+    const otherProjects = allProjects.filter(
+      (p) => p.category === 'other'
+    )
 
-    return { manualProjects, aiProjects }
+    return { manualProjects, aiProjects, otherProjects }
   }
 })

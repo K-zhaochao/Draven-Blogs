@@ -153,6 +153,9 @@ async function main() {
   let skipped = 0;
   let failed = 0;
 
+  /** 收集所有项目的 README 原始内容，最终写入 readme-cache.json 供前端 Modal 使用 */
+  const readmeCache = {};
+
   for (const dir of projectDirs) {
     const indexMdPath = path.join(PROJECTS_DIR, dir, "index.md");
 
@@ -202,6 +205,7 @@ async function main() {
     let newContent = content;
     if (readme) {
       newContent = upsertReadmeSection(content, wrapReadme(readme));
+      readmeCache[dir] = readme.trim();  // 收集原始 README 到缓存
     }
 
     // ---------------------------------------------------------------- 写回文件
@@ -215,6 +219,11 @@ async function main() {
     );
     updated++;
   }
+
+  // ---------------------------------------------------------------- 写出 README 缓存
+  const cachePath = path.join(PROJECTS_DIR, 'readme-cache.json');
+  fs.writeFileSync(cachePath, JSON.stringify(readmeCache, null, 2), 'utf-8');
+  console.log(`\n📦 README 缓存已写入 readme-cache.json (${Object.keys(readmeCache).length} 个项目)`);
 
   // ---------------------------------------------------------------- 汇总
   console.log("\n—— 同步完成 ——");

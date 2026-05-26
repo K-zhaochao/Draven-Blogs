@@ -1,6 +1,30 @@
+---
+title: Draven's Blogs
+category: other
+github: K-zhaochao/Draven-Blogs
+status: 进行中
+techStack:
+  - VitePress
+  - Vue 3
+  - TypeScript
+  - TinaCMS
+  - GitHub Actions
+order: 1
+stars: 0
+lastPush: '2026-05-26'
+language: JavaScript
+description: 个人技术博客，记录学习笔记、项目实战与思考总结。
+---
+
+基于 VitePress + TinaCMS 的个人技术博客，自动同步 Obsidian 笔记，GitHub Actions 自动构建部署。
+
+<!-- @sync-readme:start -->
+
+> 以下内容由 `sync-projects.mjs` 自动从 [GitHub 仓库]() 的 README.md 同步。
+
 # Draven's Blog ☕
 
-[English](https://github.com/K-zhaochao/Draven-Blogs/blob/main/README_en.md) | 简体中文
+[English](./README_en.md) | 简体中文
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=java&logoColor=white)
 ![VitePress](https://img.shields.io/badge/VitePress-5C59F7?style=flat-square&logo=vite&logoColor=white)
@@ -146,3 +170,5 @@ npm run dev
 ---
 
 📝 *Keep coding, keep thinking.*
+
+<!-- @sync-readme:end -->
