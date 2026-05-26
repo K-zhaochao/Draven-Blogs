@@ -1,10 +1,10 @@
 /**
  * projects.data.ts
  * VitePress 数据加载器
- * 职责：使用 createContentLoader 加载 projects/*.md（排除 index.md）的 frontmatter 数据
+ * 职责：使用 createContentLoader 加载 projects/*\/index.md 的 frontmatter 数据
  * 输出：按 category 分组的 { manualProjects, aiProjects } 结构
- * 数据源：docs/projects/*.md 的 frontmatter
- * 排除：index.md（页面本身）
+ * 数据源：docs/projects/<项目名>/index.md 的 frontmatter
+ * 排除：projects/index.md（页面本身不会被 glob 匹配到）
  */
 
 import { createContentLoader } from 'vitepress'
@@ -23,19 +23,35 @@ export interface ProjectFrontmatter {
   order?: number
 }
 
-export default createContentLoader('projects/*.md', {
+export interface Project {
+  title: string
+  slug: string
+  category: string
+  status?: string
+  techStack?: string[]
+  stars?: number
+  lastPush?: string
+  description?: string
+  github?: string
+  url?: string
+  language?: string
+  order?: number
+}
+
+export default createContentLoader('projects/*/index.md', {
   excerpt: false,
   transform(rawData: any[]) {
     const allProjects = rawData
-      .filter((page: any) => {
-        // 排除 index.md 页面（其 URL 不含项目文件名）
-        const url = page.url || ''
-        return !url.endsWith('/') && !url.endsWith('/index.html')
-      })
       .map((page: any) => {
-        const fm = page.frontmatter as ProjectFrontmatter
+        const fm = (page.frontmatter || {}) as ProjectFrontmatter
+        // 从 URL 提取文件夹名作为 slug
+        // URL 形如 /projects/sky-take-out/ → slug = 'sky-take-out'
+        const slug = ((page.url || '') as string)
+          .replace(/^\/projects\//, '')
+          .replace(/\/$/, '')
         return {
-          title: fm.title || page.frontmatter.title || '未命名项目',
+          title: fm.title || '未命名项目',
+          slug: slug || '',
           category: fm.category || 'manual',
           status: fm.status,
           techStack: fm.techStack || [],
@@ -46,15 +62,15 @@ export default createContentLoader('projects/*.md', {
           url: fm.url || (fm.github ? `https://github.com/${fm.github}` : ''),
           language: fm.language || '',
           order: fm.order ?? 99,
-        }
+        } satisfies Project
       })
-      .sort((a: any, b: any) => (a.order ?? 99) - (b.order ?? 99))
+      .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
 
     const manualProjects = allProjects.filter(
-      (p: any) => p.category === 'manual'
+      (p) => p.category === 'manual'
     )
     const aiProjects = allProjects.filter(
-      (p: any) => p.category === 'ai-vibe' || p.category === 'ai'
+      (p) => p.category === 'ai-vibe' || p.category === 'ai'
     )
 
     return { manualProjects, aiProjects }

@@ -3,13 +3,17 @@
  * ProjectCard.vue
  * 项目实战看板卡片组件
  * 职责：展示单一项目信息（标题、状态、描述、技术栈、Stars、更新时间）
- * Props: project - 包含 title, category, status, techStack, stars, lastPush, description, url
+ * Props: project - 包含 title, slug, category, status, techStack, stars, lastPush, description, url
+ * 点击：跳转到 VitePress 内部项目详情页 /projects/{slug}/
  * Hover: 上浮 + 品牌色发光边框
  * 缺省防御：stars / techStack 为空时不渲染对应区域
  */
 
+import { withBase } from 'vitepress'
+
 interface Project {
   title: string
+  slug: string
   category: string
   status?: string
   techStack?: string[]
@@ -22,6 +26,11 @@ interface Project {
 defineProps<{
   project: Project
 }>()
+
+/** 根据 slug 生成 VitePress 内部路由 */
+function projectLink(slug: string): string {
+  return withBase(`/projects/${slug}/`)
+}
 
 /** 状态映射：不同 status 对应不同颜色 */
 const statusColorMap: Record<string, string> = {
@@ -45,9 +54,7 @@ function formatDate(dateStr?: string): string {
 <template>
   <a
     class="project-card"
-    :href="project.url"
-    target="_blank"
-    rel="noopener noreferrer"
+    :href="projectLink(project.slug)"
     :aria-label="`项目: ${project.title}`"
   >
     <!-- 顶部：标题 + 状态徽章 -->
