@@ -148,6 +148,7 @@ type Projects implements Node & Document {
   status: String
   category: String!
   github: String
+  websiteUrl: String
   order: Float
   body: JSON
   id: ID!
@@ -162,6 +163,7 @@ input ProjectsFilter {
   status: StringFilter
   category: StringFilter
   github: StringFilter
+  websiteUrl: StringFilter
   order: NumberFilter
   body: RichTextFilter
 }
@@ -214,6 +216,7 @@ input ProjectsMutation {
   status: String
   category: String
   github: String
+  websiteUrl: String
   order: Float
   body: JSON
 }

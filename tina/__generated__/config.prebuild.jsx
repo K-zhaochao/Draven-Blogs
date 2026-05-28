@@ -88,8 +88,10 @@ var config_default = defineConfig({
             name: "category",
             label: "\u9879\u76EE\u7C7B\u578B",
             options: [
-              { label: "\u624B\u6413 / \u534F\u4F5C\u9879\u76EE", value: "manual" },
-              { label: "AI Vibe Coding", value: "ai-vibe" }
+              { label: "\u624B\u6413/\u534F\u52A9\u9879\u76EE", value: "manual" },
+              { label: "AI Vibe Coding \u9879\u76EE", value: "ai-vibe" },
+              { label: "\u5176\u4ED6\u9879\u76EE", value: "other" },
+              { label: "Demo", value: "demo" }
             ],
             required: true
           },
@@ -97,6 +99,11 @@ var config_default = defineConfig({
             type: "string",
             name: "github",
             label: "GitHub \u4ED3\u5E93 (owner/repo)"
+          },
+          {
+            type: "string",
+            name: "websiteUrl",
+            label: "\u7EBF\u4E0A\u7F51\u7AD9\u94FE\u63A5"
           },
           {
             name: "order",
