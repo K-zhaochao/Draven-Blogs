@@ -2,11 +2,17 @@
 /**
  * ProjectModal.vue
  * 项目详情大卡片弹窗
- * Props: modelValue (显示/隐藏), project (项目信息), readmeRaw (原始 markdown)
- * 顶部：项目标题 + 状态徽章 + GitHub 按钮
- * 下方：GitHub README 渲染为 Markdown 阅读模式
+ *
+ * 功能：
+ * - 顶部：项目标题 + 状态徽章 + 外链按钮（GitHub / 网站）+ 关闭
+ * - 中间：元信息行（stars / language / lastPush / techStack）
+ * - 底部：README 渲染为 Markdown 阅读模式
+ *
+ * 双链接按钮：从 githubUrl / websiteUrl 渲染，不再使用 url
+ * 移动端：bottom sheet 风格，safe-area 适配
+ * 生命周期：body overflow 补偿 + keydown 监听完整清理
  */
-import { computed, watch } from 'vue'
+import { computed, watch, onBeforeUnmount } from 'vue'
 import MarkdownIt from 'markdown-it'
 
 // ------------------------------------------------------------------ Props & Emits
@@ -19,7 +25,10 @@ interface Project {
   stars?: number
   lastPush?: string
   description?: string
+  /** @deprecated 新逻辑使用 githubUrl / websiteUrl */
   url?: string
+  githubUrl?: string
+  websiteUrl?: string
   language?: string
 }
 
@@ -46,6 +55,25 @@ const renderedHtml = computed(() => {
   return md.render(props.readmeRaw)
 })
 
+// ------------------------------------------------------------------ 滚动条补偿
+let savedBodyOverflow = ''
+let savedBodyPaddingRight = ''
+
+function lockBody() {
+  savedBodyOverflow = document.body.style.overflow
+  savedBodyPaddingRight = document.body.style.paddingRight
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+  document.body.style.overflow = 'hidden'
+  if (scrollbarWidth > 0) {
+    document.body.style.paddingRight = scrollbarWidth + 'px'
+  }
+}
+
+function unlockBody() {
+  document.body.style.overflow = savedBodyOverflow
+  document.body.style.paddingRight = savedBodyPaddingRight
+}
+
 // ------------------------------------------------------------------ 交互方法
 function close() {
   emit('update:modelValue', false)
@@ -61,15 +89,27 @@ function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') close()
 }
 
-// 打开/关闭时切换 body 滚动 & 键盘监听
-watch(() => props.modelValue, (val) => {
-  if (val) {
-    document.addEventListener('keydown', onKeydown)
-    document.body.style.overflow = 'hidden'
-  } else {
-    document.removeEventListener('keydown', onKeydown)
-    document.body.style.overflow = ''
-  }
+// 打开/关闭时切换 body 滚动 & 键盘监听（含 immediate 覆盖已打开挂载场景）
+// SSR 守卫：server 环境下 document 不存在，跳过
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (typeof document === 'undefined') return
+    if (val) {
+      document.addEventListener('keydown', onKeydown)
+      lockBody()
+    } else {
+      document.removeEventListener('keydown', onKeydown)
+      unlockBody()
+    }
+  },
+  { immediate: true }
+)
+
+onBeforeUnmount(() => {
+  if (typeof document === 'undefined') return
+  document.removeEventListener('keydown', onKeydown)
+  if (props.modelValue) unlockBody()
 })
 
 // ------------------------------------------------------------------ 状态颜色
@@ -87,6 +127,7 @@ function getStatusColor(status?: string): string {
 function formatDate(dateStr?: string): string {
   if (!dateStr) return ''
   const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return ''
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 </script>
@@ -119,12 +160,26 @@ function formatDate(dateStr?: string): string {
               </span>
             </div>
             <div class="modal-header-right">
+              <!-- 访问网站按钮 -->
               <a
-                v-if="project.url"
-                :href="project.url"
+                v-if="project.websiteUrl"
+                :href="project.websiteUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="github-btn"
+                class="link-btn website-btn"
+              >
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                  <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm5.5 8h-1.34c-.13-.43-.28-.84-.45-1.22l.88-.63.88 1.52-1.02.33zm.5-2l-1 1.73c-.24.41-.51.8-.8 1.15l1.57.9-.87 1.51-1.72-.72c-.55.6-1.17 1.09-1.84 1.46l.18 1.83-1.74.64-1.08-1.7c-.5.12-1.02.2-1.56.22v1.84H4.5v-1.84c-.54-.02-1.06-.1-1.56-.22L1.86 14.9l-1.74-.64.18-1.83c-.67-.37-1.29-.86-1.84-1.46L-1.86 11.8l-.87-1.51 1.57-.9c-.29-.35-.56-.74-.8-1.15L-1.48 6H-2.84c.05-.65.16-1.28.34-1.88l-1.08-.6.88-1.52.88.63c-.17.38-.32.79-.45 1.22H-3.4A8 8 0 008 0z" transform="translate(3 0)" />
+                </svg>
+                访问网站
+              </a>
+              <!-- GitHub 按钮 -->
+              <a
+                v-if="project.githubUrl"
+                :href="project.githubUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-btn github-btn"
               >
                 <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" class="github-icon">
                   <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
@@ -210,6 +265,7 @@ function formatDate(dateStr?: string): string {
   align-items: center;
   gap: 10px;
   min-width: 0;
+  flex: 1;
 }
 
 .modal-title {
@@ -236,10 +292,12 @@ function formatDate(dateStr?: string): string {
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-/* ================================================================ GitHub 按钮 */
-.github-btn {
+/* ================================================================ 外链按钮（通用） */
+.link-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -248,17 +306,40 @@ function formatDate(dateStr?: string): string {
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
-  background: var(--vp-c-brand-1, #B026FF);
-  color: #fff;
   transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.link-btn:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.link-btn:active {
+  transform: translateY(0);
+}
+
+.github-btn {
+  background: var(--vp-c-brand-1, #B026FF);
+  color: #fff;
 }
 
 .github-btn:hover {
   background: var(--vp-c-brand-2, #8a1fd6);
-  transform: translateY(-1px);
-  text-decoration: none;
   color: #fff;
+}
+
+.website-btn {
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  border: 1px solid var(--vp-c-divider);
+}
+
+.website-btn:hover {
+  background: var(--vp-c-default-soft);
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
 }
 
 .github-icon {
@@ -324,10 +405,7 @@ function formatDate(dateStr?: string): string {
   padding: 20px 28px 32px;
   overflow-y: auto;
   flex: 1;
-}
-
-.modal-body .vp-doc {
-  /* 继承 VitePress 默认文档排版 */
+  min-height: 0;
 }
 
 .no-readme {
@@ -369,20 +447,37 @@ function formatDate(dateStr?: string): string {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 60px rgba(176, 38, 255, 0.12);
 }
 
-/* ================================================================ 小屏适配 */
+/* ================================================================ 小屏适配 — bottom sheet */
 @media (max-width: 640px) {
   .modal-overlay {
-    padding: 12px;
+    padding: 0;
     align-items: flex-end;
+    /* 半透明遮罩，露出 bottom sheet 上方 */
   }
 
   .modal-container {
-    max-height: 92vh;
+    max-height: 92vh;  /* 回退：不支持 dvh 的浏览器 */
+    max-height: 92dvh; /* 优先：支持 dvh 的浏览器覆盖上面 */
     border-radius: 14px 14px 0 0;
+    /* safe-area 底部留白 */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .modal-header {
     padding: 14px 18px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .modal-header-left {
+    /* 允许标题换行，不挤压关闭按钮 */
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .modal-header-right {
+    /* 允许按钮换行堆叠 */
+    flex-wrap: wrap;
   }
 
   .modal-body {
@@ -397,9 +492,56 @@ function formatDate(dateStr?: string): string {
     font-size: 17px;
   }
 
-  .github-btn {
+  .link-btn {
     padding: 6px 10px;
     font-size: 12px;
   }
+}
+</style>
+
+<!-- README 溢出控制（非 scoped，深层选择器作用于 v-html 渲染内容） -->
+<style>
+/* 图片不撑破容器 */
+.readme-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 表格可横向滚动 */
+.readme-content table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* 代码块换行 + 断词 */
+.readme-content pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.readme-content code {
+  word-break: break-all;
+}
+
+/* 行内代码不撑破 */
+.readme-content p code,
+.readme-content li code,
+.readme-content td code {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* 长链接断词 */
+.readme-content a {
+  word-break: break-all;
+}
+
+/* 嵌套列表/段落不溢出 */
+.readme-content * {
+  overflow-wrap: break-word;
 }
 </style>
