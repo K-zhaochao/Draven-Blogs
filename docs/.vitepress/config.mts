@@ -1,6 +1,120 @@
 import { defineConfig } from 'vitepress'
 import { generateSidebar } from 'vitepress-sidebar'
 import taskLists from 'markdown-it-task-lists'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+type ProjectCategory = 'manual' | 'ai-vibe' | 'other' | 'demo'
+
+type ProjectSidebarEntry = {
+  slug: string
+  title: string
+  category: ProjectCategory
+  order: number
+}
+
+const PROJECT_CATEGORY_GROUPS: Array<{ category: ProjectCategory; text: string }> = [
+  { category: 'manual', text: '手搓/协助项目' },
+  { category: 'ai-vibe', text: 'AI Vibe Coding 项目' },
+  { category: 'other', text: '其他项目' },
+  { category: 'demo', text: 'Demo' }
+]
+
+const configDir = dirname(fileURLToPath(import.meta.url))
+const projectsRoot = join(configDir, '..', 'projects')
+
+function unquoteFrontmatterValue(value: string): string {
+  const trimmed = value.trim()
+  if (trimmed.length >= 2) {
+    const first = trimmed[0]
+    const last = trimmed[trimmed.length - 1]
+    if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+      return trimmed.slice(1, -1)
+    }
+  }
+  return trimmed
+}
+
+function parseFrontmatter(content: string): Record<string, string> {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
+  if (!match) return {}
+
+  return match[1].split(/\r?\n/).reduce<Record<string, string>>((fields, line) => {
+    const field = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/)
+    if (field) {
+      fields[field[1]] = unquoteFrontmatterValue(field[2])
+    }
+    return fields
+  }, {})
+}
+
+function normalizeProjectCategory(category: string | undefined): ProjectCategory {
+  return PROJECT_CATEGORY_GROUPS.some((group) => group.category === category)
+    ? category as ProjectCategory
+    : 'other'
+}
+
+function parseProjectOrder(order: string | undefined): number {
+  const parsed = Number.parseFloat(order ?? '')
+  return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER
+}
+
+function readProjectsForSidebar(): ProjectSidebarEntry[] {
+  if (!existsSync(projectsRoot)) return []
+
+  return readdirSync(projectsRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry): ProjectSidebarEntry | null => {
+      const slug = entry.name
+      const indexPath = join(projectsRoot, slug, 'index.md')
+      if (!existsSync(indexPath)) return null
+
+      const frontmatter = parseFrontmatter(readFileSync(indexPath, 'utf-8'))
+      const title = frontmatter.title || slug
+
+      return {
+        slug,
+        title,
+        category: normalizeProjectCategory(frontmatter.category),
+        order: parseProjectOrder(frontmatter.order)
+      }
+    })
+    .filter((project): project is ProjectSidebarEntry => Boolean(project))
+}
+
+function generateProjectsSidebarItems(): any[] {
+  const projects = readProjectsForSidebar().sort((left, right) => {
+    if (left.category !== right.category) {
+      return PROJECT_CATEGORY_GROUPS.findIndex((group) => group.category === left.category)
+        - PROJECT_CATEGORY_GROUPS.findIndex((group) => group.category === right.category)
+    }
+    if (left.order !== right.order) return left.order - right.order
+
+    const titleCompare = left.title.localeCompare(right.title, 'zh-CN')
+    if (titleCompare !== 0) return titleCompare
+    return left.slug.localeCompare(right.slug, 'en-US')
+  })
+
+  return PROJECT_CATEGORY_GROUPS
+    .map((group) => {
+      const items = projects
+        .filter((project) => project.category === group.category)
+        .map((project) => ({
+          text: project.title,
+          link: `/projects/${project.slug}/`
+        }))
+
+      if (items.length === 0) return null
+
+      return {
+        text: group.text,
+        collapsed: false,
+        items
+      }
+    })
+    .filter((group): group is any => Boolean(group))
+}
 
 // 递归为侧边栏所有 link 添加前缀，并清理 index.md 后缀
 function prefixSidebarLinks(items: any, prefix: string): any[] {
@@ -107,15 +221,7 @@ export default defineConfig({
       '/projects/': [{
         text: '项目实战',
         link: '/projects/',
-        items: prefixSidebarLinks(generateSidebar({
-          documentRootPath: 'docs/projects',
-          useTitleFromFrontmatter: true,
-          useFolderTitleFromIndexFile: true,
-          useFolderLinkFromIndexFile: true,
-          folderLinkNotIncludesFileName: true,
-          sortMenusByFrontmatterOrder: true,
-          collapsed: false
-        }), '/projects/')
+        items: generateProjectsSidebarItems()
       }]
     },
 
