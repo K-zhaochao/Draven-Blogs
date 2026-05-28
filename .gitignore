@@ -12,7 +12,7 @@ Draven_Note/.vscode/
 .vscode/
 
 # Nexus 内部文档
-.Nexus
+.Nexus/
 
 # 环境变量 & 密钥
 .env
