@@ -91,8 +91,10 @@ export default defineConfig({
             name: "category",
             label: "项目类型",
             options: [
-              { label: "手搓 / 协作项目", value: "manual" },
-              { label: "AI Vibe Coding", value: "ai-vibe" },
+              { label: "手搓/协助项目", value: "manual" },
+              { label: "AI Vibe Coding 项目", value: "ai-vibe" },
+              { label: "其他项目", value: "other" },
+              { label: "Demo", value: "demo" },
             ],
             required: true,
           },
@@ -100,6 +102,11 @@ export default defineConfig({
             type: "string",
             name: "github",
             label: "GitHub 仓库 (owner/repo)",
+          },
+          {
+            type: "string",
+            name: "websiteUrl",
+            label: "线上网站链接",
           },
           {
             name: "order",
