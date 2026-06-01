@@ -89,18 +89,24 @@ function transformContent(content, relPath) {
     return p.replace(/\s+/g, "%20");
   }
 
+  // Obsidian 图片语法支持 ![[path|width]]，构建时路径中不能保留 |width
+  function stripObsidianImageOptions(p) {
+    return p.split("|")[0].trim();
+  }
+
   // 1. 转换内部图片引用的路径 (放到双链转换前面，防止被误伤)
   // 处理 Obsidian 特有的 Wiki 图片格式: ![[Draven_Note_Images/图片名.png]] 或者 ![[图片名.png]]
   content = content.replace(/!\[\[(.*?)\]\]/g, (match, imgPath) => {
+    const cleanImgPath = stripObsidianImageOptions(imgPath);
     // 尝试提取 Draven_Note_Images 之后的完整目录结构
-    const matchDir = imgPath.match(/Draven_Note_Images\/(.*)/);
+    const matchDir = cleanImgPath.match(/Draven_Note_Images\/(.*)/);
     if (matchDir && matchDir[1]) {
       return `![img](/Draven_Note_Images/${encodeImagePath(
         matchDir[1].trim(),
       )})`;
     }
     // 如果没有，退回到仅保留文件名
-    const fileName = path.basename(imgPath);
+    const fileName = path.basename(cleanImgPath);
     return `![img](/Draven_Note_Images/${encodeImagePath(fileName.trim())})`;
   });
 
@@ -108,7 +114,7 @@ function transformContent(content, relPath) {
   content = content.replace(
     /!\[.*?\]\(.*?(Draven_Note_Images\/.*?)\)/g,
     (match, imgPath) => {
-      return `![img](/${encodeImagePath(imgPath.trim())})`;
+      return `![img](/${encodeImagePath(stripObsidianImageOptions(imgPath))})`;
     },
   );
 
