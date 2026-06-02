@@ -13,11 +13,11 @@
     "@tinacms/cli": "latest"
   },
   "scripts": {
-    "sync": "node scripts/sync.mjs",
+    "sync": "node scripts/sync.mjs && node scripts/sync-projects.mjs",
     "tina:dev": "tinacms dev -c \"vitepress dev docs\"",
     "tina:build": "tinacms build",
     "dev": "node scripts/sync.mjs && tinacms dev -c \"vitepress dev docs\"",
-    "build": "node scripts/sync.mjs && tinacms build && vitepress build docs",
+    "build": "node scripts/sync.mjs && node scripts/sync-projects.mjs && tinacms build && vitepress build docs",
     "preview": "vitepress preview docs",
     "watch": "node scripts/sync.mjs --watch"
   }
