@@ -2,7 +2,7 @@
 title: 黑马点评
 category: manual
 github: K-zhaochao/dianping
-status: 已完成
+status: 进行中
 techStack:
   - Spring Boot
   - MyBatis-Plus
@@ -10,7 +10,7 @@ techStack:
   - MySQL
 order: 2
 stars: 0
-lastPush: '2026-06-02'
+lastPush: '2026-06-04'
 language: Java
 description: 黑马点评仓库
 ---
