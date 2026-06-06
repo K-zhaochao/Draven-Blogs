@@ -116,6 +116,59 @@ function generateProjectsSidebarItems(): any[] {
     .filter((group): group is any => Boolean(group))
 }
 
+// ============================================================
+// 学习笔记分类（手动排序 — 调整数组顺序即可改变展示顺序）
+// ============================================================
+const NOTE_CATEGORIES = [
+  { key: 'Java', title: 'Java' },
+  { key: 'JavaWeb', title: 'JavaWeb' },
+  { key: 'Redis', title: 'Redis' },
+  { key: '苍穹外卖', title: '苍穹外卖' },
+  { key: 'Python', title: 'Python' },
+]
+
+/** 为每个笔记类别路径生成独立的侧边栏，进入子分类只看到对应笔记 */
+function buildNotesSidebar(): Record<string, any[]> {
+  const notesRoot = join(configDir, '..', 'notes')
+  const sidebar: Record<string, any[]> = {}
+
+  for (const cat of NOTE_CATEGORIES) {
+    const catDir = join(notesRoot, cat.key)
+    if (!existsSync(catDir)) continue
+
+    sidebar[`/notes/${cat.key}/`] = [{
+      text: cat.title,
+      link: `/notes/${cat.key}/`,
+      items: prefixSidebarLinks(generateSidebar({
+        documentRootPath: `docs/notes/${cat.key}`,
+        useTitleFromFrontmatter: true,
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        folderLinkNotIncludesFileName: true,
+        sortMenusByFrontmatterOrder: true,
+        collapsed: false
+      }), `/notes/${cat.key}/`)
+    }]
+  }
+
+  // /notes/ 聚合页保留全量展开
+  sidebar['/notes/'] = [{
+    text: '学习笔记',
+    link: '/notes/',
+    items: prefixSidebarLinks(generateSidebar({
+      documentRootPath: 'docs/notes',
+      useTitleFromFrontmatter: true,
+      useFolderTitleFromIndexFile: true,
+      useFolderLinkFromIndexFile: true,
+      folderLinkNotIncludesFileName: true,
+      sortMenusByFrontmatterOrder: true,
+      collapsed: false
+    }), '/notes/')
+  }]
+
+  return sidebar
+}
+
 // 递归为侧边栏所有 link 添加前缀，并清理 index.md 后缀
 function prefixSidebarLinks(items: any, prefix: string): any[] {
   const arr = Array.isArray(items) ? items : [items];
@@ -156,7 +209,10 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '思考与总结', link: '/thoughts/' },
-      { text: '学习笔记', link: '/notes/' },
+      {
+        text: '学习笔记',
+        items: NOTE_CATEGORIES.map(c => ({ text: c.title, link: `/notes/${c.key}/` }))
+      },
       { text: '项目实战', link: '/projects/' },
       { text: 'GitHub', link: 'https://github.com/K-zhaochao/Draven-Blogs' }
     ],
@@ -203,20 +259,8 @@ export default defineConfig({
           collapsed: false
         }), '/thoughts/')
       }],
-      // 学习笔记区域
-      '/notes/': [{
-        text: '学习笔记',
-        link: '/notes/',
-        items: prefixSidebarLinks(generateSidebar({
-          documentRootPath: 'docs/notes',
-          useTitleFromFrontmatter: true,
-          useFolderTitleFromIndexFile: true,
-          useFolderLinkFromIndexFile: true,
-          folderLinkNotIncludesFileName: true,
-          sortMenusByFrontmatterOrder: true,
-          collapsed: false
-        }), '/notes/')
-      }],
+      // 学习笔记区域（按类别独立侧边栏）
+      ...buildNotesSidebar(),
       // 项目实战区域
       '/projects/': [{
         text: '项目实战',
