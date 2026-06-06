@@ -10,6 +10,7 @@ title: "附录5：常用API"
 ### Math：
 
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Math：_02.png)
+
 ```java
 public static double sqrt(double a)   返回a的平方根
 ``````java
@@ -17,6 +18,7 @@ public static double cbrt(double a)   返回a的立方根
 ``````java
 public static int/long absExact(int/long a)   返回a的绝对值，能抛出异常
 ```
+
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Math：_03.png)
 
 ### System：
@@ -53,7 +55,7 @@ public static int/long absExact(int/long a)   返回a的绝对值，能抛出异
 
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_15.png)
 
-**注意：**对象一旦创建，那么内部记录的值是无法更改的。
+**注意：** 对象一旦创建，那么内部记录的值是无法更改的。
 
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_BigInteger：_16.png)
 
@@ -145,7 +147,7 @@ public static void main(String[] args) throws ParseException {
 
 ### 时间相关类（JDK8）
 
-**注意：**时间日期对象都是不可变的。
+**注意：** 时间日期对象都是不可变的。
 
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_时间相关类（JDK8）_28.png)
 
@@ -252,7 +254,7 @@ public static void main(String[] args) {
 
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Duration、Period、Chro_39.png)
 
-**注意：**方法是用第二个参数减去第一个参数。
+**注意：** 方法是用第二个参数减去第一个参数。
 
 ***
 
@@ -264,7 +266,7 @@ public static void main(String[] args) {
 
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_42.png)
 
-**注：**JDK5以前。
+**注：** JDK5以前。
 
 ![img](/Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_43.png)
 

@@ -2,67 +2,133 @@
 
 English | [简体中文](./README.md)
 
-![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=java&logoColor=white)
-![VitePress](https://img.shields.io/badge/VitePress-5C59F7?style=flat-square&logo=vite&logoColor=white)
-![TinaCMS](https://img.shields.io/badge/TinaCMS-6DB33F?style=flat-square&logo=tinacms&logoColor=white)
-![Obsidian](https://img.shields.io/badge/Obsidian-483699?style=flat-square&logo=obsidian&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white)
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
+  <img src="https://img.shields.io/badge/VitePress-5C59F7?style=for-the-badge&logo=vite&logoColor=white" alt="VitePress">
+  <img src="https://img.shields.io/badge/TinaCMS-6DB33F?style=for-the-badge&logo=tinacms&logoColor=white" alt="TinaCMS">
+  <img src="https://img.shields.io/badge/Obsidian-483699?style=for-the-badge&logo=obsidian&logoColor=white" alt="Obsidian">
+  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
+</p>
+
+<p align="center">
+  <b>📝 Write Locally &nbsp;·&nbsp; 🔄 Auto Sync &nbsp;·&nbsp; 🚀 One-Click Deploy</b>
+</p>
+
+---
 
 Hi, I'm **[K-zhaochao](https://github.com/K-zhaochao)**, an undergraduate majoring in Computer Science and Technology (Class of 2024).
 
 This is my personal blog for recording learning, practice, and reflections. It mainly hosts my learning notes, tech stack documentation (currently focusing on **Java Backend Development**), and project practice experiences.
 
-### ✨ Features
+---
 
-- 📝 **Learning Notes** — Java, JavaWeb, Python, etc., written in Obsidian and auto-synced
-- 💭 **Thoughts & Reflections** — Visually edited via TinaCMS Cloud
-- 🚀 **Project Showcase** — Hand-crafted/collaborative projects + AI Vibe Coding, with GitHub status auto-tracking
-- 🎨 **Cyberpunk Purple Theme** — Customized purple-toned design
-- 🔍 **Full-text Search** — Quickly locate note content
-- 📱 **Responsive Design** — Multi-device access support
+## 🧰 Tech Stack
+
+| Layer | Tech | Purpose |
+|:---:|------|------|
+| 🖊️ Writing | Obsidian + Markdown | Local note-taking with wikilinks & image management |
+| 🧩 CMS | TinaCMS | Visual content management (thoughts / projects) |
+| ⚡ Framework | VitePress + Vue 3 | Static site generation & custom theme |
+| 🔧 Scripts | Node.js (chokidar) | Syntax cleaning / hot-reload sync |
+| 🚀 Deploy | GitHub Actions + Pages | CI/CD automated build & publish |
 
 ---
 
-## 💡 Why this project?
+## ✨ Features
 
-The faintest ink is better than the best memory. No matter how many tutorials you watch, if you don't turn them into your own output, they will eventually be forgotten.
-My original intention for building this site was to create a **low-friction, pure-local experience** for content publishing. In this workflow, I just want to quietly write [Markdown](https://daringfireball.net/projects/markdown/), and let automation handle the layout, formatting, building, and publishing.
+<table>
+  <tr>
+    <td width="50%">
+      <h4>📝 Dual-Path Content Management</h4>
+      <p>Obsidian for notes + TinaCMS for articles — two systems, zero conflicts</p>
+    </td>
+    <td width="50%">
+      <h4>🔄 Frictionless Automation</h4>
+      <p><code>git push</code> → auto syntax cleaning → build → deploy, fully hands-off</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>🎨 Cyberpunk Purple Theme</h4>
+      <p>Custom VitePress theme with dark mode + neon purple accents</p>
+    </td>
+    <td>
+      <h4>🔍 Full-Text Search</h4>
+      <p>Built-in VitePress search — locate notes & articles in seconds</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>📱 Responsive Design</h4>
+      <p>Desktop / tablet / mobile — optimized reading experience across all devices</p>
+    </td>
+    <td>
+      <h4>🚀 Enhanced Project Showcase</h4>
+      <p>GitHub status auto-tracking, category grouping, dual-link buttons, mobile bottom sheet</p>
+    </td>
+  </tr>
+</table>
 
 ---
 
-## 🛠️ Highlights & Workflow Implementation
+## 💡 Why This Project?
 
-This repository is more than just a [VitePress](https://vitepress.dev/) template; it runs a **dual-path content management system** powered by **Obsidian + TinaCMS**.
+> The faintest ink is better than the best memory. No matter how many tutorials you watch, if you don't turn them into your own output, they will eventually be forgotten.
 
-### 1. Learning Notes: Obsidian for Local Writing
-
-If you also use Obsidian for note-taking, you might understand the pain: Obsidian's convenient wikilinks `[[ ]]` and image syntax `![[ ]]` cannot be displayed out-of-the-box by most frontend frameworks. To solve this, I pieced together the following solution:
-
-- **Source Isolation**: The original files containing real content are placed in the `Draven_Note` folder, isolated from the frontend project. VitePress doesn't read them directly. My note management relies entirely on local Obsidian.
-- **Zero Image Redundancy**: Through Windows Directory Junction (`mklink /J`), the local folder where Obsidian saves images is mapped directly into VitePress's `public` directory. The frontend server can hot-reload images during local writing without duplicating files on the hard drive.
-- **Automated Syntax Cleaning**: Every time notes are pushed to GitHub, `scripts/sync.mjs` automatically traverses `Draven_Note`, using regular expressions to convert Obsidian-specific `[[Wikilinks]]`, Callout syntax, and inline image paths into standard VitePress syntax.
-
-### 2. Thoughts & Projects: TinaCMS Visual Management
-
-Beyond learning notes, the **Thoughts & Reflections** (`docs/thoughts/`) and **Project Showcases** (`docs/projects/`) sections are managed through [TinaCMS](https://tina.io/):
-
-- **Web-based Editing**: Access the `/admin/` path in your browser to use TinaCMS's what-you-see-is-what-you-get editor
-- **Git-based Storage**: All content is stored directly as Markdown files in the Git repository, completely isolated from Obsidian notes
-- **Zero Conflict**: TinaCMS-managed content and Obsidian notes don't interfere with each other — each system handles its own domain
-
-### 3. Deployment: Fully Automated Pipeline
-
-Every time code is pushed to GitHub, `.github/workflows` automatically completes the following steps:
+This site was built to create a **low-friction, local-first content publishing pipeline**:
 
 ```
-push to main
-  → sync.mjs          (Clean Obsidian note syntax)
-  → tinacms build      (Build TinaCMS Admin panel)
-  → vitepress build    (Generate static site)
-  → deploy to GitHub Pages
+  I just write Markdown, quietly
+              ↓
+  Layout / Build / Publish → fully automated
 ```
 
-**In a nutshell: Obsidian manages notes, TinaCMS manages articles. Write locally, `git push`, and let GitHub Actions handle everything else.**
+---
+
+## 🛠️ Workflow Architecture
+
+### 1. 📝 Learning Notes: Obsidian → Auto Sync
+
+If you use Obsidian, you know the struggle: `[[wikilinks]]` and `![[image syntax]]` simply don't render in most frontend frameworks.
+
+My solution: **source isolation + zero redundancy + automatic syntax cleaning**.
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Draven_Note/  (Obsidian vault — source of truth)    │
+│  ├── Java/        ├── Python/      ├── Redis/        │
+│  └── Draven_Note_Images/  (image assets)             │
+│                         │                            │
+│    Windows mklink /J ──→┘  (directory junction)      │
+│                         │                            │
+│  scripts/sync.mjs ──────→  syntax cleaning            │
+│    • [[wikilink]]  →  [text](./path.md)              │
+│    • ![[image]]    →  ![](./image.png)               │
+│    • Callout blocks →  VitePress-compatible           │
+│                         │                            │
+│  docs/notes/  ←──────────  auto-generated output      │
+│    (consumed directly by VitePress, no manual edits)  │
+└─────────────────────────────────────────────────────┘
+```
+
+### 2. 🧩 Thoughts & Projects: TinaCMS Visual Management
+
+- Visit `/admin/` in your browser → WYSIWYG editor
+- Content stored as Markdown in Git, fully isolated from Obsidian notes
+- `tina/config.ts` defines Collection Schema: `thoughts` / `projects`
+
+### 3. 🚀 Deployment Pipeline
+
+```mermaid
+graph LR
+    A[git push main] --> B[sync.mjs]
+    B --> C[sync-projects.mjs]
+    C --> D[tinacms build]
+    D --> E[vitepress build]
+    E --> F[GitHub Pages]
+```
 
 ---
 
@@ -70,23 +136,29 @@ push to main
 
 ```
 Draven-Blogs/
-├── Draven_Note/              # Obsidian note source (learning notes)
+├── Draven_Note/              ← Obsidian vault (just write here)
 │   ├── Java/                 #   Java learning notes
 │   ├── JavaWeb/              #   JavaWeb notes
 │   ├── Python/               #   Python notes
+│   ├── Redis/                #   Redis notes
 │   ├── 苍穹外卖/              #   Project practice notes
-│   └── Draven_Note_Images/   #   Note image assets
-├── docs/                     # VitePress frontend project
-│   ├── .vitepress/           #   VitePress config & custom theme
+│   └── Draven_Note_Images/   #   Image assets (mklink → public)
+│
+├── docs/                     ← VitePress frontend
+│   ├── .vitepress/           #   Config & custom theme
 │   ├── notes/                #   ← Auto-generated by sync.mjs
-│   ├── thoughts/             #   ← Managed by TinaCMS (thoughts)
-│   ├── projects/             #   ← Managed by TinaCMS (projects)
-│   └── public/               #   Static assets (images, Admin UI)
-├── tina/                     # TinaCMS configuration
-│   └── config.ts             #   Collection definitions
-├── scripts/
-│   └── sync.mjs              # Obsidian → VitePress syntax cleaning script
-└── .github/workflows/        # CI/CD auto-deployment
+│   ├── thoughts/             #   ← Managed by TinaCMS
+│   ├── projects/             #   ← Managed by TinaCMS
+│   └── public/               #   Static assets & Admin UI
+│
+├── tina/                     ← TinaCMS configuration
+│   └── config.ts             #   Collection Schema definitions
+│
+├── scripts/                  ← Automation toolchain
+│   ├── sync.mjs              #   Obsidian → VitePress syntax cleaning
+│   └── sync-projects.mjs     #   Project info sync
+│
+└── .github/workflows/        ← CI/CD auto-deployment
 ```
 
 ---
@@ -97,39 +169,37 @@ Draven-Blogs/
 # Install dependencies
 npm install
 
-# Start the dev server
+# Start dev server (sync + TinaCMS + VitePress)
 npm run dev
 ```
 
-> 💡 First-time setup requires TinaCMS environment variables configuration (see [CI/CD Deployment](#%EF%B8%8F-cicd-deployment) section below)
-
-> **Note**: The `.env` file is already configured in `.gitignore` and will not be committed to the repository.
+> 💡 First-time setup requires TinaCMS environment variables (see [CI/CD Deployment](#️-cicd-deployment)). `.env` is already in `.gitignore`.
 
 ### Available Commands
 
 | Command | Description |
-|---------|-------------|
-| `npm run dev` | Sync notes + Start TinaCMS + VitePress dev server |
-| `npm run build` | Sync + TinaCMS build + VitePress build (production) |
-| `npm run sync` | Only sync Obsidian notes |
-| `npm run watch` | Watch note changes and sync in real-time |
-| `npm run tina:dev` | Only start TinaCMS + VitePress (without syncing notes) |
-| `npm run preview` | Preview the build output |
+|------|------|
+| `npm run dev` | Sync notes + TinaCMS + VitePress dev server |
+| `npm run build` | Sync + TinaCMS build + VitePress production build |
+| `npm run sync` | Only sync notes + project info |
+| `npm run watch` | Watch note changes & sync in real-time |
+| `npm run tina:dev` | Only start TinaCMS + VitePress (skip sync) |
+| `npm run preview` | Preview production build |
 
 After startup:
 
-- Blog homepage: `http://localhost:5173/`
-- TinaCMS Editor: `http://localhost:5173/admin/index.html`
+- 🏠 Blog → `http://localhost:5173/`
+- ✏️ TinaCMS Editor → `http://localhost:5173/admin/index.html`
 
 ---
 
 ## ⚙️ CI/CD Deployment
 
-The project is automatically deployed to GitHub Pages via GitHub Actions. Pushing to the `main` branch triggers the deployment.
+Automatically deployed to **GitHub Pages** via **GitHub Actions** on every push to `main`.
 
 ### Required Secrets
 
-Configure in the repository **Settings → Secrets and variables → Actions**:
+Configure in **Settings → Secrets and variables → Actions**:
 
 | Secret | Description |
 |--------|-------------|
@@ -145,4 +215,6 @@ Configure in the repository **Settings → Secrets and variables → Actions**:
 
 ---
 
-📝 *Keep coding, keep thinking.*
+<p align="center">
+  <sub>📝 Keep coding, keep thinking.</sub>
+</p>

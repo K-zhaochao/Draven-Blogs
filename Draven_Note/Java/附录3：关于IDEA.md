@@ -22,12 +22,12 @@
 
 ### IDEA项目结构：
 
-![[../Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_01.png]]
+![[Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_01.png]]
 
-![[../Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_02.png]]
+![[Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_02.png]]
 
-![[../Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_03.png]]
+![[Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_03.png]]
 
 #### 导包的注意事项：
 
-![[../Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_导包的注意事项：_04.png]]
+![[Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_导包的注意事项：_04.png]]

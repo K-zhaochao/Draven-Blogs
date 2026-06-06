@@ -33,7 +33,7 @@ title: "Java"
   - [其他流](22.IO流/其他流/index.md)
   - [index](22.IO流/index/index.md)
   - [IO笔记](22.IO流/IO笔记/index.md)
-- [23.多线程](23.多线程/index.md)
+- [23.多线程](Draven_Note_Images/Java/23.多线程/index.md)
 - [附录1：细节](附录1：细节/index.md)
 - [附录2：计算机中的数据存储](附录2：计算机中的数据存储/index.md)
 - [附录3：关于IDEA](附录3：关于IDEA/index.md)
