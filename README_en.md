@@ -97,19 +97,19 @@ My solution: **source isolation + zero redundancy + automatic syntax cleaning**.
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  Draven_Note/  (Obsidian vault — source of truth)    │
-│  ├── Java/        ├── Python/      ├── Redis/        │
-│  └── Draven_Note_Images/  (image assets)             │
-│                         │                            │
-│    Windows mklink /J ──→┘  (directory junction)      │
-│                         │                            │
-│  scripts/sync.mjs ──────→  syntax cleaning            │
-│    • [[wikilink]]  →  [text](./path.md)              │
-│    • ![[image]]    →  ![](./image.png)               │
-│    • Callout blocks →  VitePress-compatible           │
-│                         │                            │
-│  docs/notes/  ←──────────  auto-generated output      │
-│    (consumed directly by VitePress, no manual edits)  │
+│  Draven_Note/  (Obsidian vault — source of truth)   │
+│  ├── Java/        ├── Python/      ├── Redis/       │
+│  └── Draven_Note_Images/  (image assets)            │
+│                         │                           │
+│    Windows mklink /J ──→┘  (directory junction)     │
+│                         │                           │
+│  scripts/sync.mjs ──────→  syntax cleaning          │
+│    • [[wikilink]]  →  [text](./path.md)             │
+│    • ![[image]]    →  ![](./image.png)              │
+│    • Callout blocks →  VitePress-compatible         │
+│                         │                           │
+│  docs/notes/  ←──────────  auto-generated output    │
+│    (consumed directly by VitePress, no manual edits)│
 └─────────────────────────────────────────────────────┘
 ```
 
