@@ -205,7 +205,8 @@ export default defineConfig({
     lastUpdated: {
       text: '最后更新于'
     },
-    logo: 'https://skillicons.dev/icons?i=java',
+    // 使用自定义域名 base: '/' 部署；如果改为 GitHub Pages 项目站需改成 '/Draven-Blogs/'
+    logo: '/logo.svg',
     nav: [
       { text: '首页', link: '/' },
       { text: '思考与总结', link: '/thoughts/' },

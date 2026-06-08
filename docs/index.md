@@ -28,6 +28,81 @@ features:
     link: /thoughts/
 ---
 
-<div style="text-align: center; padding: 2rem 0 1rem; opacity: 0.6; font-size: 0.9rem;">
+<script setup>
+import { data as projectData } from './projects/projects.data'
+
+const allProjects = [
+  ...projectData.manualProjects,
+  ...projectData.aiProjects,
+  ...projectData.otherProjects,
+  ...projectData.demoProjects,
+]
+const totalStars = allProjects.reduce((sum, p) => sum + (p.stars || 0), 0)
+const activeCount = allProjects.filter(p => p.status !== '已归档').length
+
+const noteCategories = [
+  { title: 'Java', desc: '基础→集合→IO→多线程', link: '/notes/Java/' },
+  { title: 'JavaWeb', desc: 'Spring Boot · MyBatis · MySQL', link: '/notes/JavaWeb/' },
+  { title: 'Redis', desc: '缓存 · 分布式锁 · 高并发', link: '/notes/Redis/' },
+  { title: '苍穹外卖', desc: 'Spring Boot 实战项目笔记', link: '/notes/苍穹外卖/' },
+  { title: 'Python', desc: '基础语法 · 数据容器 · 可视化', link: '/notes/Python/' },
+]
+</script>
+
+<div class="home-section">
+  <h2 class="home-section-title"><span class="section-icon">⚡</span> 技术栈</h2>
+  <div class="tech-stack-grid">
+    <span class="tech-badge">☕ Java</span>
+    <span class="tech-badge">🍃 Spring Boot</span>
+    <span class="tech-badge">🗄️ MySQL</span>
+    <span class="tech-badge">⚡ Redis</span>
+    <span class="tech-badge">🦅 MyBatis</span>
+    <span class="tech-badge">💚 Vue 3</span>
+    <span class="tech-badge">📘 TypeScript</span>
+    <span class="tech-badge">📖 VitePress</span>
+    <span class="tech-badge">🦙 TinaCMS</span>
+    <span class="tech-badge">🐍 Python</span>
+    <span class="tech-badge">🔧 Git / GitHub Actions</span>
+  </div>
+</div>
+
+<div class="home-section">
+  <h2 class="home-section-title"><span class="section-icon">📝</span> 最近笔记</h2>
+  <div class="note-category-grid">
+    <a
+      v-for="cat in noteCategories"
+      :key="cat.title"
+      :href="cat.link"
+      class="note-category-card"
+    >
+      <div class="note-cat-name">{{ cat.title }}</div>
+      <div class="note-cat-desc">{{ cat.desc }}</div>
+    </a>
+  </div>
+</div>
+
+<div class="home-section">
+  <h2 class="home-section-title"><span class="section-icon">🚀</span> 项目状态</h2>
+  <div class="project-status-row">
+    <div class="project-stat-card">
+      <div class="stat-number">{{ allProjects.length }}</div>
+      <div class="stat-label">开源项目</div>
+    </div>
+    <div class="project-stat-card">
+      <div class="stat-number">{{ activeCount }}</div>
+      <div class="stat-label">活跃项目</div>
+    </div>
+    <a href="/projects/" class="project-stat-card project-stat-link">
+      <div class="stat-number">{{ totalStars }}</div>
+      <div class="stat-label">⭐ 总 Stars</div>
+    </a>
+    <a href="https://github.com/K-zhaochao/Draven-Blogs" target="_blank" rel="noopener noreferrer" class="project-stat-card project-stat-link">
+      <div class="stat-number">→</div>
+      <div class="stat-label">GitHub 主页</div>
+    </a>
+  </div>
+</div>
+
+<div class="home-footer">
   <p>Code like a dreamer, build like an engineer.</p>
 </div>
