@@ -10,6 +10,7 @@ English | [简体中文](./README.md)
   <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" alt="GitHub Actions">
   <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
   <img src="https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white" alt="Markdown">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
 </p>
 
 <p align="center">
@@ -29,9 +30,10 @@ This is my personal blog for recording learning, practice, and reflections. It m
 | Layer | Tech | Purpose |
 |:---:|------|------|
 | 🖊️ Writing | Obsidian + Markdown | Local note-taking with wikilinks & image management |
-| 🧩 CMS | TinaCMS | Visual content management (thoughts / projects) |
+| 🧩 CMS | TinaCMS | Visual content management (blog / projects) |
 | ⚡ Framework | VitePress + Vue 3 | Static site generation & custom theme |
-| 🔧 Scripts | Node.js (chokidar) | Syntax cleaning / hot-reload sync |
+| 🔧 Scripts | Node.js (chokidar) | Syntax cleaning / hot-reload sync / Wiki link resolver |
+| 🛡️ Quality | markdownlint + TypeScript | Content linting & type checking |
 | 🚀 Deploy | GitHub Actions + Pages | CI/CD automated build & publish |
 
 ---
@@ -41,8 +43,8 @@ This is my personal blog for recording learning, practice, and reflections. It m
 <table>
   <tr>
     <td width="50%">
-      <h4>📝 Dual-Path Content Management</h4>
-      <p>Obsidian for notes + TinaCMS for articles — two systems, zero conflicts</p>
+      <h4>📝 Source-Output Separation</h4>
+      <p><code>Draven_Note/</code> as the single editing space; <code>docs/notes/</code> auto-generated & not committed</p>
     </td>
     <td width="50%">
       <h4>🔄 Frictionless Automation</h4>
@@ -69,6 +71,16 @@ This is my personal blog for recording learning, practice, and reflections. It m
       <p>GitHub status auto-tracking, category grouping, dual-link buttons, mobile bottom sheet</p>
     </td>
   </tr>
+  <tr>
+    <td>
+      <h4>🏠 Homepage Dashboard</h4>
+      <p>Tech stack tag cloud, note category shortcuts, project stats (count · Stars)</p>
+    </td>
+    <td>
+      <h4>📂 Auto Index Markers</h4>
+      <p><code>&lt;!-- @auto-index --&gt;</code> markers in note indexes — the script updates only the auto-index section, never overwrites handwritten content</p>
+    </td>
+  </tr>
 </table>
 
 ---
@@ -93,27 +105,29 @@ This site was built to create a **low-friction, local-first content publishing p
 
 If you use Obsidian, you know the struggle: `[[wikilinks]]` and `![[image syntax]]` simply don't render in most frontend frameworks.
 
-My solution: **source isolation + zero redundancy + automatic syntax cleaning**.
+My solution: **source isolation + auto cleaning + generated output is not committed**.
 
 ```
 ┌─────────────────────────────────────────────────────┐
 │  Draven_Note/  (Obsidian vault — source of truth)   │
 │  ├── Java/        ├── Python/      ├── Redis/       │
-│  └── Draven_Note_Images/  (image assets)            │
+│  └── Draven_Note_Images/  (image assets, dir junction)│
 │                         │                           │
-│    Windows mklink /J ──→┘  (directory junction)     │
+│    Windows mklink /J ──→┘  (public dir, zero copy)  │
 │                         │                           │
-│  scripts/sync.mjs ──────→  syntax cleaning          │
+│  scripts/sync.mjs ──────→  syntax cleaning + index  │
 │    • [[wikilink]]  →  [text](./path.md)             │
 │    • ![[image]]    →  ![](./image.png)              │
 │    • Callout blocks →  VitePress-compatible         │
+│    • Auto-index markers →  append-only index blocks │
+│    • WikiLink/Image resolvers → smart path matching │
 │                         │                           │
-│  docs/notes/  ←──────────  auto-generated output    │
-│    (consumed directly by VitePress, no manual edits)│
+│  docs/notes/  ←──────────  auto-generated (ignored) │
+│    (consumed by VitePress, generated at build time) │
 └─────────────────────────────────────────────────────┘
 ```
 
-### 2. 🧩 Thoughts & Projects: TinaCMS Visual Management
+### 2. 🧩 Blog & Projects: TinaCMS Visual Management
 
 - Visit `/admin/` in your browser → WYSIWYG editor
 - Content stored as Markdown in Git, fully isolated from Obsidian notes
@@ -123,8 +137,8 @@ My solution: **source isolation + zero redundancy + automatic syntax cleaning**.
 
 ```mermaid
 graph LR
-    A[git push main] --> B[sync.mjs]
-    B --> C[sync-projects.mjs]
+    A[git push main] --> B[npm run build]
+    B --> C[sync.mjs + sync-projects.mjs]
     C --> D[tinacms build]
     D --> E[vitepress build]
     E --> F[GitHub Pages]
@@ -142,23 +156,38 @@ Draven-Blogs/
 │   ├── Python/               #   Python notes
 │   ├── Redis/                #   Redis notes
 │   ├── 苍穹外卖/              #   Project practice notes
-│   └── Draven_Note_Images/   #   Image assets (mklink → public)
+│   └── Draven_Note_Images/   #   Image assets (mklink → public, excluded from sync)
 │
 ├── docs/                     ← VitePress frontend
 │   ├── .vitepress/           #   Config & custom theme
-│   ├── notes/                #   ← Auto-generated by sync.mjs
+│   │   ├── config.mts        #     Site config
+│   │   ├── theme/            #     custom.css theme styles
+│   │   ├── components/       #     ProjectCard / ProjectModal
+│   │   └── shared/           #     project.ts shared types
+│   ├── notes/                #   ← Auto-generated by sync.mjs (not committed)
 │   ├── thoughts/             #   ← Managed by TinaCMS
-│   ├── projects/             #   ← Managed by TinaCMS
-│   └── public/               #   Static assets & Admin UI
+│   ├── projects/             #   ← Managed by TinaCMS + data loaders
+│   └── public/               #   Static assets
+│       ├── logo.svg          #     Localized logo
+│       ├── admin/            #     TinaCMS Admin UI
+│       └── Draven_Note_Images/ #   Images (mklink junction)
 │
 ├── tina/                     ← TinaCMS configuration
-│   └── config.ts             #   Collection Schema definitions
+│   ├── config.ts             #   Collection Schema definitions
+│   └── __generated__/        #   Auto-generated Client/Types
 │
 ├── scripts/                  ← Automation toolchain
-│   ├── sync.mjs              #   Obsidian → VitePress syntax cleaning
-│   └── sync-projects.mjs     #   Project info sync
+│   ├── sync.mjs              #   Obsidian → VitePress syntax cleaning + indexing
+│   └── sync-projects.mjs     #   GitHub API → project frontmatter + README sync
 │
-└── .github/workflows/        ← CI/CD auto-deployment
+├── .github/workflows/        ← CI/CD auto-deployment
+│   └── deploy-vitepress.yml  #   npm run build → GitHub Pages
+│
+├── .env.example              #   Environment variable template
+├── .markdownlint.json        #   Markdown lint config
+├── tsconfig.json             #   TypeScript config
+├── package.json              #   Dependencies & scripts
+└── README.md                 #   You are reading this
 ```
 
 ---
@@ -169,21 +198,27 @@ Draven-Blogs/
 # Install dependencies
 npm install
 
-# Start dev server (sync + TinaCMS + VitePress)
+# Setup environment (first time)
+cp .env.example .env
+# Edit .env and fill in TINA_CLIENT_ID / TINA_TOKEN
+
+# Start dev server (sync notes + sync projects + TinaCMS + VitePress)
 npm run dev
 ```
-
-> 💡 First-time setup requires TinaCMS environment variables (see [CI/CD Deployment](#️-cicd-deployment)). `.env` is already in `.gitignore`.
 
 ### Available Commands
 
 | Command | Description |
 |------|------|
-| `npm run dev` | Sync notes + TinaCMS + VitePress dev server |
+| `npm run dev` | Sync notes & projects + TinaCMS + VitePress dev server |
 | `npm run build` | Sync + TinaCMS build + VitePress production build |
+| `npm run build:strict` | Same as build + strict internal dead-link check |
 | `npm run sync` | Only sync notes + project info |
+| `npm run sync:notes` | Only sync notes |
+| `npm run sync:projects` | Only sync project info |
 | `npm run watch` | Watch note changes & sync in real-time |
-| `npm run tina:dev` | Only start TinaCMS + VitePress (skip sync) |
+| `npm run lint:md` | Markdown syntax lint |
+| `npm run check` | Full check entry (currently = lint:md) |
 | `npm run preview` | Preview production build |
 
 After startup:
@@ -195,7 +230,7 @@ After startup:
 
 ## ⚙️ CI/CD Deployment
 
-Automatically deployed to **GitHub Pages** via **GitHub Actions** on every push to `main`.
+Automatically deployed to **GitHub Pages** via **GitHub Actions** on every push to `main`. The workflow file is `.github/workflows/deploy-vitepress.yml` and runs `npm run build` for the full pipeline.
 
 ### Required Secrets
 
@@ -205,6 +240,9 @@ Configure in **Settings → Secrets and variables → Actions**:
 |--------|-------------|
 | `TINA_CLIENT_ID` | TinaCMS Cloud project Client ID |
 | `TINA_TOKEN` | TinaCMS Cloud API Token (Content Read-only) |
+| `GITHUB_TOKEN` | (Optional) Increases sync-projects.mjs API rate limit |
+
+> `.env.example` provides a local development template — copy it to `.env` and fill in your values.
 
 ---
 
