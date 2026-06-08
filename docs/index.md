@@ -12,20 +12,6 @@ hero:
     - theme: alt
       text: GitHub
       link: https://github.com/K-zhaochao/Draven-Blogs
-
-features:
-  - icon: 📝
-    title: 学习笔记
-    details: Java、JavaWeb、Python…… 这些笔记不是什么权威教程，只是我在学习路上留下的脚印。写下来，才不会忘。
-    link: /notes/
-  - icon: 🔨
-    title: 项目实战
-    details: 纸上得来终觉浅。这里记录了我参与或主导的项目，从需求分析到踩坑修复，完整呈现。
-    link: /projects/
-  - icon: 💭
-    title: 思考与总结
-    details: 这里是一些我在学习和实践过程中的思考与总结。可能是对某个技术选型的纠结，可能是对某种编程范式的理解。
-    link: /thoughts/
 ---
 
 <script setup>
@@ -49,25 +35,31 @@ const noteCategories = [
 ]
 </script>
 
-<div class="home-section">
-  <h2 class="home-section-title"><span class="section-icon">⚡</span> 技术栈</h2>
-  <div class="tech-stack-grid">
-    <span class="tech-badge">☕ Java</span>
-    <span class="tech-badge">🍃 Spring Boot</span>
-    <span class="tech-badge">🗄️ MySQL</span>
-    <span class="tech-badge">⚡ Redis</span>
-    <span class="tech-badge">🦅 MyBatis</span>
-    <span class="tech-badge">💚 Vue 3</span>
-    <span class="tech-badge">📘 TypeScript</span>
-    <span class="tech-badge">📖 VitePress</span>
-    <span class="tech-badge">🦙 TinaCMS</span>
-    <span class="tech-badge">🐍 Python</span>
-    <span class="tech-badge">🔧 Git / GitHub Actions</span>
-  </div>
+<div class="hero-strip">
+  <a href="/notes/" class="strip-card">
+    <span class="strip-icon">📝</span>
+    <span class="strip-num">{{ noteCategories.length }}</span>
+    <span class="strip-label">门笔记</span>
+  </a>
+  <a href="/projects/" class="strip-card">
+    <span class="strip-icon">📦</span>
+    <span class="strip-num">{{ allProjects.length }}</span>
+    <span class="strip-label">个项目</span>
+  </a>
+  <a href="/thoughts/" class="strip-card">
+    <span class="strip-icon">✍️</span>
+    <span class="strip-num">博客</span>
+    <span class="strip-label">技术 & 生活</span>
+  </a>
+  <a href="https://github.com/K-zhaochao" target=_blank class="strip-card">
+    <span class="strip-icon">☕</span>
+    <span class="strip-num">Java</span>
+    <span class="strip-label">主攻方向</span>
+  </a>
 </div>
 
 <div class="home-section">
-  <h2 class="home-section-title"><span class="section-icon">📝</span> 最近笔记</h2>
+  <h2 class="home-section-title"><span class="section-icon">📝</span> 学习笔记</h2>
   <div class="note-category-grid">
     <a
       v-for="cat in noteCategories"
@@ -84,22 +76,50 @@ const noteCategories = [
 <div class="home-section">
   <h2 class="home-section-title"><span class="section-icon">🚀</span> 项目状态</h2>
   <div class="project-status-row">
-    <div class="project-stat-card">
+    <a href="/projects/" class="project-stat-card">
       <div class="stat-number">{{ allProjects.length }}</div>
       <div class="stat-label">开源项目</div>
-    </div>
-    <div class="project-stat-card">
+    </a>
+    <a href="/projects/" class="project-stat-card">
       <div class="stat-number">{{ activeCount }}</div>
       <div class="stat-label">活跃项目</div>
-    </div>
-    <a href="/projects/" class="project-stat-card project-stat-link">
+    </a>
+    <!-- <a href="/projects/" class="project-stat-card project-stat-link">
       <div class="stat-number">{{ totalStars }}</div>
       <div class="stat-label">⭐ 总 Stars</div>
-    </a>
-    <a href="https://github.com/K-zhaochao/Draven-Blogs" target="_blank" rel="noopener noreferrer" class="project-stat-card project-stat-link">
+    </a> -->
+    <a href="https://github.com/K-zhaochao" target="_blank" rel="noopener noreferrer" class="project-stat-card project-stat-link">
       <div class="stat-number">→</div>
       <div class="stat-label">GitHub 主页</div>
     </a>
+  </div>
+</div>
+
+<div class="home-section">
+  <h2 class="home-section-title"><span class="section-icon">⚡</span> 技术栈 & 学习资源</h2>
+  <div class="tech-stack-grid">
+    <a href="https://www.liaoxuefeng.com/wiki/1252599548343744" target="_blank" rel="noopener noreferrer" class="tech-badge">☕ Java</a>
+    <a href="https://spring.io/projects/spring-boot" target="_blank" rel="noopener noreferrer" class="tech-badge">🍃 Spring Boot</a>
+    <a href="https://www.runoob.com/mysql/mysql-tutorial.html" target="_blank" rel="noopener noreferrer" class="tech-badge">🗄️ MySQL</a>
+    <a href="https://www.runoob.com/redis/redis-tutorial.html" target="_blank" rel="noopener noreferrer" class="tech-badge">⚡ Redis</a>
+    <a href="https://mybatis.org/mybatis-3/zh/" target="_blank" rel="noopener noreferrer" class="tech-badge">🦅 MyBatis</a>
+    <a href="https://baomidou.com/" target="_blank" rel="noopener noreferrer" class="tech-badge">➕ MyBatis-Plus</a>
+    <a href="https://maven.apache.org/guides/" target="_blank" rel="noopener noreferrer" class="tech-badge">📦 Maven</a>
+    <a href="https://tomcat.apache.org/" target="_blank" rel="noopener noreferrer" class="tech-badge">🐱 Tomcat</a>
+    <a href="https://www.runoob.com/w3cnote/nginx-tutorial.html" target="_blank" rel="noopener noreferrer" class="tech-badge">🌐 Nginx</a>
+    <a href="https://www.liaoxuefeng.com/wiki/1016959663602400" target="_blank" rel="noopener noreferrer" class="tech-badge">🐍 Python</a>
+    <a href="https://www.runoob.com/cprogramming/c-tutorial.html" target="_blank" rel="noopener noreferrer" class="tech-badge">🔵 C</a>
+    <a href="https://www.runoob.com/cplusplus/cpp-tutorial.html" target="_blank" rel="noopener noreferrer" class="tech-badge">🔷 C++</a>
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML" target="_blank" rel="noopener noreferrer" class="tech-badge">🏗️ HTML</a>
+    <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS" target="_blank" rel="noopener noreferrer" class="tech-badge">🎨 CSS</a>
+    <a href="https://zh.javascript.info/" target="_blank" rel="noopener noreferrer" class="tech-badge">📜 JavaScript</a>
+    <a href="https://cn.vuejs.org/" target="_blank" rel="noopener noreferrer" class="tech-badge">💚 Vue 3</a>
+    <a href="https://vitepress.dev/zh/" target="_blank" rel="noopener noreferrer" class="tech-badge">📖 VitePress</a>
+    <a href="https://www.liaoxuefeng.com/wiki/896043488029600" target="_blank" rel="noopener noreferrer" class="tech-badge">🔀 Git</a>
+    <a href="https://www.runoob.com/docker/docker-tutorial.html" target="_blank" rel="noopener noreferrer" class="tech-badge">🐳 Docker</a>
+    <a href="https://www.runoob.com/linux/linux-tutorial.html" target="_blank" rel="noopener noreferrer" class="tech-badge">🐧 Linux</a>
+    <a href="https://www.jetbrains.com/zh-cn/idea/" target="_blank" rel="noopener noreferrer" class="tech-badge">🧠 IDEA</a>
+    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer" class="tech-badge">🔧 VS Code</a>
   </div>
 </div>
 

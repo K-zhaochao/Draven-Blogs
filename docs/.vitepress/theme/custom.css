@@ -179,6 +179,7 @@
   border: 1px solid var(--vp-c-divider);
   background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-2);
+  text-decoration: none !important;
   transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s, color 0.25s;
   white-space: nowrap;
 }
@@ -277,8 +278,87 @@
   font-size: 0.9rem;
 }
 
+/* ===== hero 下方轻量信息条 ===== */
+.hero-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  max-width: 960px;
+  margin: 16px auto 0;
+  padding: 0 24px;
+}
+
+.strip-card {
+  flex: 1 1 140px;
+  max-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  text-decoration: none !important;
+  color: inherit;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+}
+
+a.strip-card:hover {
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 0 18px rgba(176, 38, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.strip-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.strip-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--vp-c-brand-1);
+  line-height: 1.2;
+}
+
+.strip-label {
+  font-size: 11px;
+  color: var(--vp-c-text-3);
+  font-weight: 500;
+}
+
+.strip-card-dim {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 /* ===== 移动端适配 ===== */
 @media (max-width: 640px) {
+  .hero-strip {
+    gap: 8px;
+    padding: 0 16px;
+  }
+
+  .strip-card {
+    flex: 1 1 100px;
+    max-width: none;
+    padding: 12px 8px;
+  }
+
+  .strip-icon {
+    font-size: 17px;
+  }
+
+  .strip-num {
+    font-size: 17px;
+  }
+
+  .strip-label {
+    font-size: 10px;
+  }
+
   .home-section {
     margin-top: 40px;
     padding: 0 16px;

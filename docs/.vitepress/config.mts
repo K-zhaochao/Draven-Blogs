@@ -117,7 +117,7 @@ function generateProjectsSidebarItems(): any[] {
 }
 
 // ============================================================
-// 学习笔记分类（手动排序 — 调整数组顺序即可改变展示顺序）
+// 导航下拉分类（集中管理，方便后期维护）
 // ============================================================
 const NOTE_CATEGORIES = [
   { key: 'Java', title: 'Java' },
@@ -126,6 +126,49 @@ const NOTE_CATEGORIES = [
   { key: '苍穹外卖', title: '苍穹外卖' },
   { key: 'Python', title: 'Python' },
 ]
+
+const THOUGHT_CATEGORIES = [
+  { key: '技术总结', title: '技术总结' },
+  { key: '认知感悟', title: '认知感悟' },
+  { key: '生活分享', title: '生活分享' },
+]
+
+// 学习笔记导航下拉
+function noteNavItems() {
+  return NOTE_CATEGORIES.map(c => ({ text: c.title, link: `/notes/${c.key}/` }))
+}
+
+// 我的博客导航下拉
+function thoughtNavItems() {
+  return THOUGHT_CATEGORIES.map(c => ({ text: c.title, link: `/thoughts/${c.key}/` }))
+}
+
+/** 为每个"我的博客"子栏目生成独立的侧边栏 */
+function buildThoughtsSidebar(): Record<string, any[]> {
+  const thoughtsRoot = join(configDir, '..', 'thoughts')
+  const sidebar: Record<string, any[]> = {}
+
+  for (const cat of THOUGHT_CATEGORIES) {
+    const catDir = join(thoughtsRoot, cat.key)
+    if (!existsSync(catDir)) continue
+
+    sidebar[`/thoughts/${cat.key}/`] = [{
+      text: cat.title,
+      link: `/thoughts/${cat.key}/`,
+      items: prefixSidebarLinks(generateSidebar({
+        documentRootPath: `docs/thoughts/${cat.key}`,
+        useTitleFromFrontmatter: true,
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        folderLinkNotIncludesFileName: true,
+        sortMenusByFrontmatterOrder: true,
+        collapsed: false
+      }), `/thoughts/${cat.key}/`)
+    }]
+  }
+
+  return sidebar
+}
 
 /** 为每个笔记类别路径生成独立的侧边栏，进入子分类只看到对应笔记 */
 function buildNotesSidebar(): Record<string, any[]> {
@@ -209,10 +252,13 @@ export default defineConfig({
     logo: '/logo.svg',
     nav: [
       { text: '首页', link: '/' },
-      { text: '思考与总结', link: '/thoughts/' },
+      {
+        text: '我的博客',
+        items: thoughtNavItems(),
+      },
       {
         text: '学习笔记',
-        items: NOTE_CATEGORIES.map(c => ({ text: c.title, link: `/notes/${c.key}/` }))
+        items: noteNavItems(),
       },
       { text: '项目实战', link: '/projects/' },
       { text: 'GitHub', link: 'https://github.com/K-zhaochao/Draven-Blogs' }
@@ -246,19 +292,14 @@ export default defineConfig({
 
     // 1.按路径分区域生成侧边栏（不同导航区域显示各自的目录）
     sidebar: {
-      // 思考与总结区域
+      // 我的博客区域（按子栏目独立侧边栏）
+      ...buildThoughtsSidebar(),
+      // /thoughts/ 聚合页
       '/thoughts/': [{
-        text: '思考与总结',
+        text: '我的博客',
         link: '/thoughts/',
-        items: prefixSidebarLinks(generateSidebar({
-          documentRootPath: 'docs/thoughts',
-          useTitleFromFrontmatter: true,
-          useFolderTitleFromIndexFile: true,
-          useFolderLinkFromIndexFile: true,
-          folderLinkNotIncludesFileName: true,
-          sortMenusByFrontmatterOrder: true,
-          collapsed: false
-        }), '/thoughts/')
+        collapsed: false,
+        items: THOUGHT_CATEGORIES.map(c => ({ text: c.title, link: `/thoughts/${c.key}/` })),
       }],
       // 学习笔记区域（按类别独立侧边栏）
       ...buildNotesSidebar(),

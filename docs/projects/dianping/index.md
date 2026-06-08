@@ -10,7 +10,7 @@ techStack:
   - MySQL
 order: 2
 stars: 0
-lastPush: '2026-06-04'
+lastPush: '2026-06-08'
 language: Java
 description: 黑马点评仓库
 ---

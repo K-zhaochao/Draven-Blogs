@@ -21,7 +21,7 @@ export default defineConfig({
     collections: [
       {
         name: "thoughts",
-        label: "思考与总结",
+        label: "我的博客",
         path: "docs/thoughts",
         match: {
           exclude: "index.md",

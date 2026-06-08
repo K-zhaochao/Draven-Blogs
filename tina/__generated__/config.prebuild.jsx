@@ -18,7 +18,7 @@ var config_default = defineConfig({
     collections: [
       {
         name: "thoughts",
-        label: "\u601D\u8003\u4E0E\u603B\u7ED3",
+        label: "\u6211\u7684\u535A\u5BA2",
         path: "docs/thoughts",
         match: {
           exclude: "index.md"
