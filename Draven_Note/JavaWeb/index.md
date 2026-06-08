@@ -5,6 +5,7 @@ title: "JavaWeb"
 
 # JavaWeb
 
+<!-- @auto-index:start -->
 - [JavaWeb](JavaWeb.md)
 - [Maven[依赖管理器]](Maven[依赖管理器]/index.md)
   - [Maven高阶](Maven[依赖管理器]/Maven高阶.md)
@@ -35,3 +36,4 @@ title: "JavaWeb"
   - [5.Nginx[前端服务器]](Web前端/5.Nginx[前端服务器].md)
   - [前后端分离](Web前端/前后端分离/index.md)
     - [作用域插槽](Web前端/前后端分离/作用域插槽.md)
+<!-- @auto-index:end -->

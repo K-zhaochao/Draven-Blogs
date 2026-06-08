@@ -6,7 +6,9 @@ title: "闲云野鹤笔记"
 
 > 学习笔记。
 
+<!-- @auto-index:start -->
 ## [Java](Java/index.md)
+
 - [1.JDK与JRE](Java/1.JDK与JRE.md)
 - [2.注释与关键字](Java/2.注释与关键字.md)
 - [3.字面量](Java/3.字面量.md)
@@ -39,7 +41,7 @@ title: "闲云野鹤笔记"
   - [1.认识多线程](Java/23.多线程/1.认识多线程.md)
   - [2.常用方法](Java/23.多线程/2.常用方法.md)
   - [3.生命周期与安全&锁](Java/23.多线程/3.生命周期与安全&锁.md)
-  - [4.生成中和消费者](Java/23.多线程/4.生成中和消费者.md)
+  - [4.生产者和消费者](Java/23.多线程/4.生产者和消费者.md)
   - [5.线程的状态](Java/23.多线程/5.线程的状态.md)
   - [6.综合练习](Java/23.多线程/6.综合练习.md)
   - [7.线程池](Java/23.多线程/7.线程池.md)
@@ -53,6 +55,7 @@ title: "闲云野鹤笔记"
 - [附录7：其他](Java/附录7：其他.md)
 
 ## [JavaWeb](JavaWeb/index.md)
+
 - [JavaWeb](JavaWeb/JavaWeb.md)
 - [Maven[依赖管理器]](JavaWeb/Maven[依赖管理器]/index.md)
   - [Maven高阶](JavaWeb/Maven[依赖管理器]/Maven高阶.md)
@@ -85,6 +88,7 @@ title: "闲云野鹤笔记"
     - [作用域插槽](JavaWeb/Web前端/前后端分离/作用域插槽.md)
 
 ## [苍穹外卖](苍穹外卖/index.md)
+
 - [0.课程安排](苍穹外卖/0.课程安排.md)
 - [1.项目概述&环境搭建](苍穹外卖/1.项目概述&环境搭建.md)
 - [2.员工管理&分类管理](苍穹外卖/2.员工管理&分类管理.md)
@@ -105,6 +109,7 @@ title: "闲云野鹤笔记"
 - [附录3 常见错误&问题](苍穹外卖/附录3 常见错误&问题.md)
 
 ## [Redis](Redis/index.md)
+
 - [0.NoSQL](Redis/0.NoSQL.md)
 - [1.Redis入门](Redis/1.Redis入门.md)
 - [2.数据类型](Redis/2.数据类型.md)
@@ -115,11 +120,12 @@ title: "闲云野鹤笔记"
 - [7.高并发缓存防护（穿透与击穿）](Redis/7.高并发缓存防护（穿透与击穿）.md)
 - [黑马点评](Redis/黑马点评/index.md)
   - [0.项目介绍](Redis/黑马点评/0.项目介绍.md)
-  - [1.Seesion共享](Redis/黑马点评/1.Seesion共享.md)
+  - [1.Session共享](Redis/黑马点评/1.Session共享.md)
   - [2.缓存常见问题](Redis/黑马点评/2.缓存常见问题.md)
   - [附录1：重点总结](Redis/黑马点评/附录1：重点总结.md)
 
 ## [Python](Python/index.md)
+
 - [1.字面量](Python/1.字面量.md)
 - [2.注释](Python/2.注释.md)
 - [3.变量](Python/3.变量.md)
@@ -137,4 +143,6 @@ title: "闲云野鹤笔记"
 - [附录2：关键字](Python/附录2：关键字.md)
 
 - [文档排版规范](文档排版规范.md)
+
 - [TinaCMS写作注意事项](TinaCMS写作注意事项.md)
+<!-- @auto-index:end -->

@@ -5,6 +5,7 @@ title: "Redis"
 
 # Redis
 
+<!-- @auto-index:start -->
 - [0.NoSQL](0.NoSQL.md)
 - [1.Redis入门](1.Redis入门.md)
 - [2.数据类型](2.数据类型.md)
@@ -15,6 +16,7 @@ title: "Redis"
 - [7.高并发缓存防护（穿透与击穿）](7.高并发缓存防护（穿透与击穿）.md)
 - [黑马点评](黑马点评/index.md)
   - [0.项目介绍](黑马点评/0.项目介绍.md)
-  - [1.Seesion共享](黑马点评/1.Seesion共享.md)
+  - [1.Session共享](黑马点评/1.Session共享.md)
   - [2.缓存常见问题](黑马点评/2.缓存常见问题.md)
   - [附录1：重点总结](黑马点评/附录1：重点总结.md)
+<!-- @auto-index:end -->
