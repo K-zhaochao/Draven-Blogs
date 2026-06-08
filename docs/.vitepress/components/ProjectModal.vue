@@ -6,53 +6,29 @@
  * 功能：
  * - 顶部：项目标题 + 状态徽章 + 外链按钮（GitHub / 网站）+ 关闭
  * - 中间：元信息行（stars / language / lastPush / techStack）
- * - 底部：README 渲染为 Markdown 阅读模式
+ * - 底部：项目 Markdown 正文渲染后的安全 HTML
  *
  * 双链接按钮：从 githubUrl / websiteUrl 渲染，不再使用 url
  * 移动端：bottom sheet 风格，safe-area 适配
  * 生命周期：body overflow 补偿 + keydown 监听完整清理
  */
 import { computed, watch, onBeforeUnmount } from 'vue'
-import MarkdownIt from 'markdown-it'
+import { getProjectStatusColor, type Project } from '../shared/project'
 
 // ------------------------------------------------------------------ Props & Emits
-interface Project {
-  title: string
-  slug: string
-  category: string
-  status?: string
-  techStack?: string[]
-  stars?: number
-  lastPush?: string
-  description?: string
-  /** @deprecated 新逻辑使用 githubUrl / websiteUrl */
-  url?: string
-  githubUrl?: string
-  websiteUrl?: string
-  language?: string
-}
-
 const props = defineProps<{
   modelValue: boolean
   project: Project | null
-  readmeRaw: string
+  contentHtml: string
 }>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
-// ------------------------------------------------------------------ Markdown 渲染器
-const md = new MarkdownIt({
-  html: true,
-  linkify: true,
-  typographer: true,
-  breaks: true,
-})
-
 const renderedHtml = computed(() => {
-  if (!props.readmeRaw) return '<p class="no-readme">暂无 README 内容</p>'
-  return md.render(props.readmeRaw)
+  if (!props.contentHtml) return '<p class="no-readme">暂无项目详情内容</p>'
+  return props.contentHtml
 })
 
 // ------------------------------------------------------------------ 滚动条补偿
@@ -112,18 +88,6 @@ onBeforeUnmount(() => {
   if (props.modelValue) unlockBody()
 })
 
-// ------------------------------------------------------------------ 状态颜色
-const statusColorMap: Record<string, string> = {
-  '已完成': '#22c55e',
-  '进行中': '#3b82f6',
-  '学习中': '#f59e0b',
-  '规划中': '#a78bfa',
-}
-
-function getStatusColor(status?: string): string {
-  return statusColorMap[status || ''] || '#6b7280'
-}
-
 function formatDate(dateStr?: string): string {
   if (!dateStr) return ''
   const d = new Date(dateStr)
@@ -152,8 +116,8 @@ function formatDate(dateStr?: string): string {
                 v-if="project.status"
                 class="modal-status"
                 :style="{
-                  backgroundColor: getStatusColor(project.status) + '22',
-                  color: getStatusColor(project.status),
+                  backgroundColor: getProjectStatusColor(project.status) + '22',
+                  color: getProjectStatusColor(project.status),
                 }"
               >
                 {{ project.status }}
@@ -210,7 +174,7 @@ function formatDate(dateStr?: string): string {
             </div>
           </div>
 
-          <!-- ========== README 正文 ========== -->
+          <!-- ========== 项目详情正文 ========== -->
           <div class="modal-body">
             <div class="vp-doc readme-content" v-html="renderedHtml" />
           </div>

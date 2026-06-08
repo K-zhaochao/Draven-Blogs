@@ -16,7 +16,7 @@ AI Vibe Coding 项目，智能答题系统。
 
 <!-- @sync-readme:start -->
 
-> 以下内容由 `sync-projects.mjs` 自动从 [GitHub 仓库]() 的 README.md 同步。
+> 以下内容由 `sync-projects.mjs` 自动从 [GitHub 仓库](https://github.com/K-zhaochao/AnswerSystem) 的 README.md 同步。
 
 # 智题坊
 
@@ -246,6 +246,8 @@ pyinstaller build.spec
 - **赞助支持**：[爱发电](https://afdian.com/a/draven323)
 
 <!-- @sync-readme:end -->
+
+
 
 
 

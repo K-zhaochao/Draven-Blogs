@@ -2,6 +2,7 @@ node_modules
 docs/.vitepress/dist
 docs/.vitepress/cache
 docs/notes/
+docs/projects/readme-cache.json
 docs/public/Draven_Note_Images/
 
 # Obsidian 配置（绝不上传）

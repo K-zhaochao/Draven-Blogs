@@ -8,7 +8,6 @@ import { ref } from 'vue'
 import { data } from './projects.data'
 import ProjectCard from '../.vitepress/components/ProjectCard.vue'
 import ProjectModal from '../.vitepress/components/ProjectModal.vue'
-import readmeCache from './readme-cache.json'
 
 const manualProjects = data.manualProjects
 const aiProjects = data.aiProjects
@@ -18,11 +17,9 @@ const demoProjects = data.demoProjects
 // Modal 状态
 const modalVisible = ref(false)
 const selectedProject = ref(null)
-const readmeContent = ref('')
 
 function onProjectSelect(project) {
   selectedProject.value = project
-  readmeContent.value = readmeCache?.[project.slug] || ''
   modalVisible.value = true
 }
 </script>
@@ -40,7 +37,7 @@ function onProjectSelect(project) {
 <div class="project-grid">
   <ProjectCard
     v-for="p in manualProjects"
-    :key="p.title"
+    :key="p.slug"
     :project="p"
     @select="onProjectSelect"
   />
@@ -55,7 +52,7 @@ function onProjectSelect(project) {
 <div class="project-grid">
   <ProjectCard
     v-for="p in aiProjects"
-    :key="p.title"
+    :key="p.slug"
     :project="p"
     @select="onProjectSelect"
   />
@@ -70,7 +67,7 @@ function onProjectSelect(project) {
 <div class="project-grid">
   <ProjectCard
     v-for="p in otherProjects"
-    :key="p.title"
+    :key="p.slug"
     :project="p"
     @select="onProjectSelect"
   />
@@ -85,7 +82,7 @@ function onProjectSelect(project) {
 <div class="project-grid">
   <ProjectCard
     v-for="p in demoProjects"
-    :key="p.title"
+    :key="p.slug"
     :project="p"
     @select="onProjectSelect"
   />
@@ -97,14 +94,5 @@ function onProjectSelect(project) {
 <ProjectModal
   v-model="modalVisible"
   :project="selectedProject"
-  :readme-raw="readmeContent"
+  :content-html="selectedProject?.contentHtml || ''"
 />
-
-<style>
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
-}
-</style>

@@ -1,6 +1,8 @@
 {
   "type": "module",
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/sanitize-html": "^2.16.1",
     "chokidar": "^5.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "medium-zoom": "^1.1.0",
@@ -9,16 +11,21 @@
     "vue": "^3.5.33"
   },
   "dependencies": {
-    "tinacms": "latest",
-    "@tinacms/cli": "latest"
+    "@tinacms/cli": "latest",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.2.0",
+    "sanitize-html": "^2.17.4",
+    "tinacms": "latest"
   },
   "scripts": {
-    "sync": "node scripts/sync.mjs && node scripts/sync-projects.mjs",
+    "sync:notes": "node scripts/sync.mjs",
+    "sync:projects": "node scripts/sync-projects.mjs",
+    "sync": "npm run sync:notes && npm run sync:projects",
     "tina:dev": "tinacms dev -c \"vitepress dev docs\"",
     "tina:build": "tinacms build",
-    "dev": "node scripts/sync.mjs && tinacms dev -c \"vitepress dev docs\"",
-    "build": "node scripts/sync.mjs && node scripts/sync-projects.mjs && tinacms build && vitepress build docs",
+    "dev": "npm run sync && tinacms dev -c \"vitepress dev docs\"",
+    "build": "npm run sync && tinacms build && vitepress build docs",
     "preview": "vitepress preview docs",
-    "watch": "node scripts/sync.mjs --watch"
+    "watch": "npm run sync:notes -- --watch"
   }
 }

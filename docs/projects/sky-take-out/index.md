@@ -22,7 +22,7 @@ description: 苍穹外卖仓库
 
 <!-- @sync-readme:start -->
 
-> 以下内容由 `sync-projects.mjs` 自动从 [GitHub 仓库]() 的 README.md 同步。
+> 以下内容由 `sync-projects.mjs` 自动从 [GitHub 仓库](https://github.com/K-zhaochao/sky-take-out) 的 README.md 同步。
 
 # 苍穹外卖 (Sky Take-Out)
 
@@ -210,6 +210,8 @@ java -jar sky-server/target/sky-server-1.0-SNAPSHOT.jar
 仅供学习交流使用。
 
 <!-- @sync-readme:end -->
+
+
 
 
 

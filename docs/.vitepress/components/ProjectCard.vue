@@ -3,23 +3,13 @@
  * ProjectCard.vue
  * 项目实战看板卡片组件
  * 职责：展示单一项目信息（标题、状态、描述、技术栈、Stars、更新时间）
- * Props: project - 包含 title, slug, category, status, techStack, stars, lastPush, description, url
+ * Props: project - 包含 title, slug, category, status, techStack, stars, lastPush, description
  * 点击：emit('select', project) 由父组件打开 Modal
  * Hover: 上浮 + 品牌色发光边框
  * 缺省防御：stars / techStack 为空时不渲染对应区域
  */
 
-interface Project {
-  title: string
-  slug: string
-  category: string
-  status?: string
-  techStack?: string[]
-  stars?: number
-  lastPush?: string
-  description?: string
-  url?: string
-}
+import { getProjectStatusColor, type Project } from '../shared/project'
 
 defineProps<{
   project: Project
@@ -28,18 +18,6 @@ defineProps<{
 const emit = defineEmits<{
   select: [project: Project]
 }>()
-
-/** 状态映射：不同 status 对应不同颜色 */
-const statusColorMap: Record<string, string> = {
-  '已完成': '#22c55e',
-  '进行中': '#3b82f6',
-  '学习中': '#f59e0b',
-  '规划中': '#a78bfa',
-}
-
-function getStatusColor(status?: string): string {
-  return statusColorMap[status || ''] || '#6b7280'
-}
 
 function formatDate(dateStr?: string): string {
   if (!dateStr) return ''
@@ -64,7 +42,7 @@ function formatDate(dateStr?: string): string {
       <span
         v-if="project.status"
         class="card-status"
-        :style="{ backgroundColor: getStatusColor(project.status) + '22', color: getStatusColor(project.status) }"
+        :style="{ backgroundColor: getProjectStatusColor(project.status) + '22', color: getProjectStatusColor(project.status) }"
       >
         {{ project.status }}
       </span>
