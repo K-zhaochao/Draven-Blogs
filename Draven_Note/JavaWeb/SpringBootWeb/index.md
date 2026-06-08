@@ -18,6 +18,7 @@ title: "SpringBootWeb"
 - [10.Web后端总结](10.Web后端总结.md)
 - [案例](案例.md)
 - [HTTP](HTTP/index.md)
+  - [HTTP基础](HTTP/HTTP基础.md)
   - [响应状态码](HTTP/响应状态码.md)
 - [附录1：实用依赖&工具类](附录1：实用依赖&工具类.md)
 - [附录2：注解整理](附录2：注解整理.md)

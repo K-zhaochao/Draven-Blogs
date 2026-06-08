@@ -232,6 +232,7 @@ function prefixSidebarLinks(items: any, prefix: string): any[] {
 }
 
 export default defineConfig({
+  head: [["link", { rel: "icon", href: "/logo.svg" }]],
   // 本地开发宽松处理死链；CI 构建时通过环境变量 STRICT_LINKS=1 开启严格检查
   ignoreDeadLinks: !process.env.STRICT_LINKS,
   base: '/',

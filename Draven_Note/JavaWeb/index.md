@@ -4,10 +4,11 @@ title: "JavaWeb"
 ---
 
 # JavaWeb
+**资料:** [https://pan.baidu.com/s/1ZbyeMLr6B4vC1ehSOybzQw&pwd=9987](https://pan.baidu.com/s/1ZbyeMLr6B4vC1ehSOybzQw&pwd=9987)
 
 <!-- @auto-index:start -->
-- [JavaWeb](JavaWeb.md)
 - [Maven[依赖管理器]](Maven[依赖管理器]/index.md)
+  - [Maven基础](Maven[依赖管理器]/Maven基础.md)
   - [Maven高阶](Maven[依赖管理器]/Maven高阶.md)
 - [MyBatis](MyBatis.md)
 - [MySQL](MySQL.md)
@@ -25,6 +26,7 @@ title: "JavaWeb"
   - [10.Web后端总结](SpringBootWeb/10.Web后端总结.md)
   - [案例](SpringBootWeb/案例.md)
   - [HTTP](SpringBootWeb/HTTP/index.md)
+    - [HTTP基础](SpringBootWeb/HTTP/HTTP基础.md)
     - [响应状态码](SpringBootWeb/HTTP/响应状态码.md)
   - [附录1：实用依赖&工具类](SpringBootWeb/附录1：实用依赖&工具类.md)
   - [附录2：注解整理](SpringBootWeb/附录2：注解整理.md)

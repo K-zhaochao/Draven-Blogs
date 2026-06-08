@@ -1,22 +1,22 @@
-# Redis
+﻿# Redis
 
 ### `Redis`入门
 
 #### 介绍：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_介绍：_01.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_介绍：_01.png]]
 
 #### 下载与安装：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_下载与安装：_02.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_下载与安装：_02.png]]
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_下载与安装：_03.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_下载与安装：_03.png]]
 
 #### 服务启动与停止：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_服务启动与停止：_04.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_服务启动与停止：_04.png]]
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_服务启动与停止：_05.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_服务启动与停止：_05.png]]
 
 * **`-h`：** 链接地址
 * **`-p`：** 端口号
@@ -28,11 +28,11 @@
 
 #### 常用数据类型：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_常用数据类型：_06.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_常用数据类型：_06.png]]
 
 #### 数据类型详解：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_数据类型详解：_07.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_数据类型详解：_07.png]]
 
 ***
 
@@ -40,27 +40,27 @@
 
 #### 字符串操作命令：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_字符串操作命令：_08.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_字符串操作命令：_08.png]]
 
 #### 哈希操作命令：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_哈希操作命令：_09.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_哈希操作命令：_09.png]]
 
 #### 列表操作命令：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_列表操作命令：_10.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_列表操作命令：_10.png]]
 
 #### 集合操作命令：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_集合操作命令：_11.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_集合操作命令：_11.png]]
 
 #### 有序集合操作命令：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_有序集合操作命令：_12.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_有序集合操作命令：_12.png]]
 
 #### 通用命令：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_通用命令：_13.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_通用命令：_13.png]]
 
 ***
 
@@ -68,15 +68,15 @@
 
 #### `Redis`的Java客户端：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_`Redis`的Java客户端：_14.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_`Redis`的Java客户端：_14.png]]
 
 #### `Spring-Data-Redis`使用方式：
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_15.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_15.png]]
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_16.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_16.png]]
 
-![[../Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_17.png]]
+![[Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_17.png]]
 
 #### 案例：
 

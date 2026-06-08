@@ -70,7 +70,7 @@ public static int/long absExact(int/long a)   返回a的绝对值，能抛出异
 
 #### SimpleDateFormat(格式化时间)：
 
-![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_21.png]]![[../Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_22.png]]
+![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_21.png]]![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_22.png]]
 
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_SimpleDateFormat_格式化_23.png]]
 
@@ -251,8 +251,6 @@ public static void main(String[] args) {
 
 **注意：** 方法是用第二个参数减去第一个参数。
 
-***
-
 ### 包装类
 
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_40.png]]
@@ -264,8 +262,6 @@ public static void main(String[] args) {
 **注：** JDK5以前。
 
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_43.png]]
-
-***
 
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_包装类_44.png]]
 
@@ -359,8 +355,6 @@ public static String toBinaryString(int num) {
 
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_47.png]]
 
-***
-
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_48.png]]
 
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_49.png]]
@@ -368,5 +362,3 @@ public static String toBinaryString(int num) {
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_50.png]]
 
 ![[Draven_Note_Images/Java/附录5：常用API/附录5：常用API_Arrays：_51.png]]
-
-***

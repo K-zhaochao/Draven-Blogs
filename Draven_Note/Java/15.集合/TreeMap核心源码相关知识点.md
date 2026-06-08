@@ -1,3 +1,6 @@
+---
+order: 4
+---
 # TreeMap 核心源码相关知识点
 
 ## 1. TreeMap 中每一个节点的内部属性
@@ -269,8 +272,6 @@ private static final boolean BLACK = true;
 * **默认选择**：HashMap（效率最高）。
 * **需要存取有序**：LinkedHashMap（继承HashMap，维护双向链表保证顺序）。
 * **需要排序**：TreeMap（基于红黑树实现键的排序）。
-
-***
 
 ### 总结
 

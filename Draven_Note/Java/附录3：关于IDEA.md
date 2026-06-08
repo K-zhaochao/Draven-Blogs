@@ -18,8 +18,6 @@
 14. **`Ctrl+Alt+B`：** 向下转型，可在接口类中打开实现类。
 15. **`Ctrl+h`：** 查看该接口有哪些实现类。
 
-***
-
 ### IDEA项目结构：
 
 ![[Draven_Note_Images/Java/附录3：关于IDEA/附录3：关于IDEA_IDEA项目结构：_01.png]]
