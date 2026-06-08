@@ -158,7 +158,7 @@ function upsertGeneratedFrontmatter(content, metadata) {
 }
 
 // 核心转换正则
-function transformContent(content, outputRelPath, sourceRelPath = outputRelPath) {
+function transformContent(content, outputRelPath, sourceRelPath = outputRelPath, resolver = null) {
   // -- 自动注入 Frontmatter 元数据，用于控制 VitePress 侧边栏标题与排序 --
   if (outputRelPath) {
     content = upsertGeneratedFrontmatter(
@@ -211,10 +211,23 @@ function transformContent(content, outputRelPath, sourceRelPath = outputRelPath)
     "> ⚠️ [图片丢失: $2]",
   );
 
-  // 2. 转换 Obsidian 双链: [[文件名]] -> [文件名](./文件名.md)（链接路径去掉空格）
-  content = content.replace(/\[\[(.*?)\]\]/g, (match, name) => {
-    const cleanLink = name.replace(/\s+/g, "");
-    return `[${name}](./${cleanLink}.md)`;
+  // 2. 转换 Obsidian 双链：通过 Wiki 链接解析器查找目标文件的正确相对路径
+  content = content.replace(/\[\[(.*?)\]\]/g, (match, rawName) => {
+    const pipeIdx = rawName.lastIndexOf("|");
+    const target = pipeIdx === -1 ? rawName : rawName.slice(0, pipeIdx);
+    const display = pipeIdx === -1 ? rawName : rawName.slice(pipeIdx + 1);
+
+    if (resolver) {
+      const resolved = resolver.resolveWikiLink(sourceRelPath, target.trim());
+      if (resolved) {
+        return `[${display.trim()}](${resolved})`;
+      }
+      console.warn(`  ⚠ Wiki 链接未解析: [[${rawName}]] (${sourceRelPath})`);
+    }
+
+    // 兜底：直接拼接
+    const cleanLink = target.trim().replace(/\s+/g, "");
+    return `[${display.trim()}](./${cleanLink}.md)`;
   });
 
   // 3. 转换 Obsidian Callout: > [!info] 标题 -> ::: info 标题 \n :::
@@ -233,6 +246,144 @@ function transformContent(content, outputRelPath, sourceRelPath = outputRelPath)
   content = content.replace(/<([A-Z][a-zA-Z0-9_,\s]*)>/g, "&lt;$1&gt;");
 
   return content;
+}
+
+// Wiki 链接解析器：根据 Obsidian 笔记文件树，重建 [[目标]] 到输出路径的映射
+class WikiLinkResolver {
+  /**
+   * @param {string} srcDir - Draven_Note 根目录
+   * @param {string[]} mdFiles - 所有源 Markdown 文件的绝对路径
+   */
+  constructor(srcDir, mdFiles) {
+    this.srcDir = srcDir;
+
+    // fileName -> 相对输出路径（不带 .md，经过空格清理）
+    // 多个同名文件时保留第一次出现的；后续同名覆盖并发出警告
+    this.nameMap = new Map();
+    // "目录/文件名" -> 相对输出路径
+    this.pathMap = new Map();
+
+    for (const absPath of mdFiles) {
+      const relPath = path.relative(srcDir, absPath);
+      if (isIndexFileName(relPath)) continue;
+
+      const clean = cleanOutputRelPath(relPath).replace(/\.md$/i, "");
+      const fileName = path.basename(relPath).replace(/\.md$/i, "");
+      const cleanFileName = fileName.replace(/\s+/g, "");
+
+      // 记录 cleaned 相对路径
+      this.pathMap.set(clean, clean);
+      const dirPart = path.dirname(clean);
+      if (dirPart && dirPart !== ".") {
+        this.pathMap.set(path.join(dirPart, cleanFileName).replace(/\\/g, "/"), clean);
+      }
+
+      // 记录文件名
+      if (this.nameMap.has(cleanFileName)) {
+        console.warn(`  ⚠ 同名文件冲突: ${cleanFileName} (${clean} vs ${this.nameMap.get(cleanFileName)})`);
+      }
+      this.nameMap.set(cleanFileName, clean);
+    }
+  }
+
+  /**
+   * 解析到目标文件 ./相对路径.md
+   * @param {string} sourceRelPath - 当前文件的源相对路径
+   * @param {string} target - [[目标]] 中的原始文本（可能包含路径分隔符 /）
+   * @returns {string|null} 从当前文件到目标文件的相对 Markdown 链接，如 './Java/集合.md'
+   */
+  resolveWikiLink(sourceRelPath, target) {
+    if (!target) return null;
+
+    const cleanTarget = target.replace(/\s+/g, "");
+
+    // 优先精确匹配路径
+    if (this.pathMap.has(cleanTarget)) {
+      return this.toRelativeLink(sourceRelPath, this.pathMap.get(cleanTarget));
+    }
+
+    // 尝试 "目录/文件名" 组合匹配
+    if (cleanTarget.includes("/")) {
+      const normalized = cleanTarget.replace(/\\/g, "/");
+      if (this.pathMap.has(normalized)) {
+        return this.toRelativeLink(sourceRelPath, this.pathMap.get(normalized));
+      }
+      const fileNameOnly = path.basename(normalized);
+      if (this.nameMap.has(fileNameOnly)) {
+        return this.toRelativeLink(sourceRelPath, this.nameMap.get(fileNameOnly));
+      }
+    }
+
+    // 文件名匹配
+    if (this.nameMap.has(cleanTarget)) {
+      return this.toRelativeLink(sourceRelPath, this.nameMap.get(cleanTarget));
+    }
+
+    return null;
+  }
+
+  toRelativeLink(sourceRelPath, targetCleanPath) {
+    const sourceDir = path.dirname(cleanOutputRelPath(sourceRelPath));
+    let rel = path.relative(sourceDir, targetCleanPath).replace(/\\/g, "/");
+    if (!rel.startsWith(".")) rel = "./" + rel;
+    return rel + ".md";
+  }
+}
+
+// 图片资源解析器：扫描 Draven_Note_Images 建立文件名到路径的索引
+class ImageResolver {
+  /**
+   * @param {string} imagesDir - Draven_Note/Draven_Note_Images 绝对路径
+   */
+  constructor(imagesDir) {
+    this.imagesDir = imagesDir;
+    // 文件名 -> 相对于 Draven_Note_Images 的路径（用于 /Draven_Note_Images/... URL）
+    this.nameMap = new Map();
+    // 相对路径 -> 相对于 Draven_Note_Images 的路径
+    this.pathMap = new Map();
+
+    if (!fs.existsSync(imagesDir)) return;
+    this._scan(imagesDir, "");
+  }
+
+  _scan(dir, relativePrefix) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.name.startsWith(".")) continue;
+      if (entry.isFile() && isMarkdownFileName(entry.name)) continue;
+
+      const full = path.join(dir, entry.name);
+      const rel = relativePrefix ? `${relativePrefix}/${entry.name}` : entry.name;
+
+      if (entry.isDirectory()) {
+        this._scan(full, rel);
+      } else {
+        this.nameMap.set(entry.name, rel);
+        this.pathMap.set(rel, rel);
+      }
+    }
+  }
+
+  /**
+   * 根据图片引用片段查找图片在 Draven_Note_Images 中的路径
+   * @param {string} imgRef - 图片引用中的路径部分，如 "Java/11.数组/xxx.png" 或 "xxx.png"
+   * @returns {string|null} /Draven_Note_Images/... 形式的公开 URL 路径，或 null
+   */
+  resolve(imgRef) {
+    const clean = imgRef.replace(/\s+/g, "%20");
+
+    const unencodedRef = imgRef.trim();
+    if (this.pathMap.has(unencodedRef)) {
+      return `/Draven_Note_Images/${this.pathMap.get(unencodedRef).replace(/\s+/g, "%20")}`;
+    }
+
+    const fileName = path.basename(unencodedRef);
+    if (this.nameMap.has(fileName)) {
+      return `/Draven_Note_Images/${this.nameMap.get(fileName).replace(/\s+/g, "%20")}`;
+    }
+
+    return null;
+  }
 }
 
 // 核心复制目录方法：图片资源同步时跳过 Markdown 索引，避免图片目录继续携带文章内容
@@ -516,7 +667,7 @@ function syncPublicImages() {
   }
 }
 
-function syncRelativeImgAssets() {
+function syncRelativeImgAssets(imageResolver) {
   console.log("🔗 处理 ./img/ 相对路径图片引用...");
   const syncedMdFiles = getAllMdFiles(DEST_DIR);
   for (const mdFile of syncedMdFiles) {
@@ -528,7 +679,23 @@ function syncRelativeImgAssets() {
       const pathMatch = ref.match(/!\[.*?\]\(\.\/img\/(.*?)\)/);
       if (!pathMatch) continue;
       const imgRelPath = pathMatch[1]; // e.g. "6Q2D8D5Tei33CxSQ/xxx.png"
-      const srcImg = path.join(SRC_IMG_DIR, "JavaWeb", "Maven", imgRelPath);
+
+      // 通过 ImageResolver 在 Draven_Note_Images 中查找
+      let srcImg = null;
+      if (imageResolver) {
+        const imgUrl = imageResolver.resolve(imgRelPath);
+        if (imgUrl) {
+          // imgUrl 形如 /Draven_Note_Images/JavaWeb/Maven/6Q2D8D5Tei33CxSQ/xxx.png
+          const relativePart = imgUrl.replace(/^\/Draven_Note_Images\//, "").replace(/%20/g, " ");
+          srcImg = path.join(SRC_IMG_DIR, relativePart);
+        }
+      }
+
+      if (!srcImg || !fs.existsSync(srcImg)) {
+        // 兜底：保留旧逻辑文件不被静默丢失
+        srcImg = path.join(SRC_IMG_DIR, "JavaWeb", "Maven", imgRelPath);
+      }
+
       const destImg = path.join(destDir, "img", imgRelPath);
       if (fs.existsSync(srcImg) && !fs.existsSync(destImg)) {
         fs.mkdirSync(path.dirname(destImg), { recursive: true });
@@ -546,24 +713,29 @@ function run() {
   console.log("📁 正在修正 Draven_Note 中的索引文件...");
   regenerateAllIndexes(SRC_DIR, true);
 
+  // 构建图片索引和 Wiki 链接解析器
+  const imageResolver = fs.existsSync(SRC_IMG_DIR) ? new ImageResolver(SRC_IMG_DIR) : null;
+  const allSourceFiles = getAllMdFiles(SRC_DIR);
+  const wikiResolver = new WikiLinkResolver(SRC_DIR, allSourceFiles);
+
   // -- 清洗 Markdown 文件逻辑 --
   if (fs.existsSync(DEST_DIR)) {
     fs.rmSync(DEST_DIR, { recursive: true, force: true });
   }
 
-  const files = getAllMdFiles(SRC_DIR);
+  const files = allSourceFiles;
   files.forEach((file) => {
     const relPath = path.relative(SRC_DIR, file);
     const cleanRelPath = cleanOutputRelPath(relPath);
     const destPath = path.join(DEST_DIR, cleanRelPath);
 
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    const content = transformContent(readText(file), cleanRelPath, relPath);
+    const content = transformContent(readText(file), cleanRelPath, relPath, wikiResolver);
     fs.writeFileSync(destPath, content, "utf-8");
   });
 
   syncPublicImages();
-  syncRelativeImgAssets();
+  syncRelativeImgAssets(imageResolver);
 
   // -- 自动修正所有输出侧 index.md 文件 --
   console.log("📁 正在修正 docs/notes 中的索引文件...");
