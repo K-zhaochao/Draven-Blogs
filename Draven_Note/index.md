@@ -76,8 +76,8 @@ title: "闲云野鹤笔记"
   - [案例](JavaWeb/SpringBootWeb/案例.md)
   - [HTTP](JavaWeb/SpringBootWeb/HTTP/index.md)
     - [响应状态码](JavaWeb/SpringBootWeb/HTTP/响应状态码.md)
-  - [附录1 实用依赖&工具类](JavaWeb/SpringBootWeb/附录1 实用依赖&工具类.md)
-  - [附录2 注解整理](JavaWeb/SpringBootWeb/附录2 注解整理.md)
+  - [附录1：实用依赖&工具类](JavaWeb/SpringBootWeb/附录1：实用依赖&工具类.md)
+  - [附录2：注解整理](JavaWeb/SpringBootWeb/附录2：注解整理.md)
 - [Web前端](JavaWeb/Web前端/index.md)
   - [1.HTML&CSS](JavaWeb/Web前端/1.HTML&CSS.md)
   - [2.JavaScript](JavaWeb/Web前端/2.JavaScript.md)
@@ -104,9 +104,9 @@ title: "闲云野鹤笔记"
 - [12.来电提醒和客户催单](苍穹外卖/12.来电提醒和客户催单.md)
 - [13.数据统计-图形报表](苍穹外卖/13.数据统计-图形报表.md)
 - [14.数据统计-Excel报表](苍穹外卖/14.数据统计-Excel报表.md)
-- [附录1 数据库设计文档](苍穹外卖/附录1 数据库设计文档.md)
-- [附录2 常用API](苍穹外卖/附录2 常用API.md)
-- [附录3 常见错误&问题](苍穹外卖/附录3 常见错误&问题.md)
+- [附录1：数据库设计文档](苍穹外卖/附录1：数据库设计文档.md)
+- [附录2：常用API](苍穹外卖/附录2：常用API.md)
+- [附录3：常见错误&问题](苍穹外卖/附录3：常见错误&问题.md)
 
 ## [Redis](Redis/index.md)
 

@@ -1,4 +1,4 @@
-# 构建并部署 VitePress 站点到 GitHub Pages
+# 通过 npm run build 统一执行：同步笔记 → 同步项目 → TinaCMS 构建 → VitePress 构建，然后部署到 GitHub Pages。
 name: Deploy VitePress to GitHub Pages
 
 on:
@@ -22,6 +22,7 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
       TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -36,16 +37,8 @@ jobs:
         uses: actions/configure-pages@v6
       - name: Install dependencies
         run: npm ci
-      - name: Sync Obsidian Notes
-        run: node scripts/sync.mjs
-      - name: Sync project status from GitHub
-        run: node scripts/sync-projects.mjs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build TinaCMS
-        run: npx tinacms build
-      - name: Build with VitePress
-        run: npx vitepress build docs
+      - name: Build site
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
