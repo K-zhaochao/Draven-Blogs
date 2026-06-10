@@ -2,6 +2,8 @@
 title: Maven基础
 order: 1
 ---
+# Maven基础
+
 ### 作用
 
 ![[Draven_Note_Images/JavaWeb/Maven/6Q2D8D5Tei33CxSQ/1774262844932-aec0f5b3-73cd-4bb4-9d74-89f608736832-670487.png]]
@@ -36,21 +38,21 @@ order: 1
 
 ### 依赖管理
 
-#### 依赖配置：
+#### 依赖配置
 
 ![[Draven_Note_Images/JavaWeb/Maven/6Q2D8D5Tei33CxSQ/1774264062440-0a986fb2-8c08-4e86-b0d0-a68b7f79ccd6-895066.png]]
 
-#### 依赖传递：
+#### 依赖传递
 
 ![[Draven_Note_Images/JavaWeb/Maven/6Q2D8D5Tei33CxSQ/1774264424028-541278dc-8313-4b23-91e0-91e14d151b12-164303.png]]
 
 ![[Draven_Note_Images/JavaWeb/Maven/6Q2D8D5Tei33CxSQ/1774315564185-e8fea495-2e37-4537-845e-2e9569d9ed11-301249.png]]
 
-#### 依赖范围：
+#### 依赖范围
 
 ![[Draven_Note_Images/JavaWeb/Maven/6Q2D8D5Tei33CxSQ/1774315830040-0b93e658-a1dc-4c07-9b36-c649228e8280-498937.png]]
 
-#### 生命周期：
+#### 生命周期
 
 ![[Draven_Note_Images/JavaWeb/Maven/6Q2D8D5Tei33CxSQ/1774316070446-d7d5b675-73e5-4154-af50-33e191936483-476679.png]]
 
