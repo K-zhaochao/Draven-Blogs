@@ -1,0 +1,224 @@
+---
+order: 999
+title: "Redis"
+---
+
+# Redis
+
+### `Redis`入门
+
+#### 介绍：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_介绍：_01.png)
+
+#### 下载与安装：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_下载与安装：_02.png)
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_下载与安装：_03.png)
+
+#### 服务启动与停止：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_服务启动与停止：_04.png)
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_服务启动与停止：_05.png)
+
+* **`-h`：** 链接地址
+* **`-p`：** 端口号
+* **`-a`：**`Redis`密码
+
+***
+
+### `Redis`数据类型
+
+#### 常用数据类型：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_常用数据类型：_06.png)
+
+#### 数据类型详解：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_数据类型详解：_07.png)
+
+***
+
+### `Redis`常用命令
+
+#### 字符串操作命令：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_字符串操作命令：_08.png)
+
+#### 哈希操作命令：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_哈希操作命令：_09.png)
+
+#### 列表操作命令：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_列表操作命令：_10.png)
+
+#### 集合操作命令：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_集合操作命令：_11.png)
+
+#### 有序集合操作命令：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_有序集合操作命令：_12.png)
+
+#### 通用命令：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_通用命令：_13.png)
+
+***
+
+### Java中的`Redis`操作
+
+#### `Redis`的Java客户端：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_`Redis`的Java客户端：_14.png)
+
+#### `Spring-Data-Redis`使用方式：
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_15.png)
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_16.png)
+
+![img](/Draven_Note_Images/JavaWeb/Redis/Redis_`Spring-Data-Redis`使_17.png)
+
+#### 案例：
+
+```java
+/**
+ * 操作字符串类型的数据
+ */
+@Test
+public void testString() {
+    // set get setex setnx
+    redisTemplate.opsForValue().set("name","小明");
+
+    String city =(String) redisTemplate.opsForValue().get("name");
+    System.out.println(city);
+
+    redisTemplate.opsForValue().set("code", "1234",  3, TimeUnit.MINUTES);
+
+    redisTemplate.opsForValue().setIfAbsent("lock","1");
+    redisTemplate.opsForValue().setIfAbsent("lock","2");
+}
+```
+
+```java
+/**
+ * 操作哈希类型的数据
+ */
+@Test
+public void testHash(){
+    // hset hget hdel hkeys hvals
+    HashOperations hashOperations = redisTemplate.opsForHash();
+
+    hashOperations.put("100", "name", "tom");
+    hashOperations.put("100", "age", "20");
+
+    String name = (String) hashOperations.get("100", "name");
+    System.out.println(name);
+
+    Set keys = hashOperations.keys("100");
+    System.out.println(keys);
+
+    List values = hashOperations.values("100");
+    System.out.println(values);
+
+    hashOperations.delete("100", "age");
+}
+```
+
+```java
+/**
+ * 操作列表类型的数据
+ */
+@Test
+public void testList() {
+    //Lpush Lrange rpop Llen
+    ListOperations listOperations = redisTemplate.opsForList();
+
+    listOperations.leftPushAll("mylist", "a", "b", "c");
+    listOperations.leftPush("mylist", "d");
+
+    List mylist = listOperations.range("mylist", 0, -1);
+    System.out.println(mylist);
+
+    listOperations.rightPop("mylist");
+
+    Long size = listOperations.size("mylist");
+    System.out.println(size);
+}
+```
+
+```java
+/**
+ * 操作集合类型的数据
+ */
+@Test
+public void testSet() {
+    // sadd smembers scard sinter sunion srem
+    SetOperations setOperations = redisTemplate.opsForSet();
+
+    setOperations.add("set1", "a", "b", "c", "d");
+    setOperations.add("set2", "a", "b", "x", "y");
+
+    Set members = setOperations.members("set1");
+    System.out.println(members);
+
+    Long size = setOperations.size("set1");
+    System.out.println(size);
+
+    Set intersect = setOperations.intersect("set1", "set2");
+    System.out.println(intersect);
+
+    Set union = setOperations.union("set1", "set2");
+    System.out.println(union);
+
+    setOperations.remove("set1", "a", "b");
+}
+```
+
+```java
+/**
+ * 操作有序集合类型的数据
+ */
+@Test
+public void testZset() {
+    //Zadd zrange zincrby zrem
+    ZSetOperations zSetOperations = redisTemplate.opsForZSet();
+
+    zSetOperations.add("zset1", "a", 10);
+    zSetOperations.add("zset1", "b", 12);
+    zSetOperations.add("zset1", "c", 9);
+
+    Set zset1 = zSetOperations.range("zset1", 0, -1);
+    System.out.println(zset1);
+
+    zSetOperations.incrementScore("zset1", "c", 10);
+
+    zSetOperations.remove("zset1", "a", "b");
+}
+```
+
+```java
+/**
+ * 通用命令操作
+ */
+@Test
+public void testCommon(){
+    //keys exists type deL
+    Set keys = redisTemplate.keys("*");
+    System.out.println(keys);
+
+    Boolean name = redisTemplate.hasKey("name");
+    Boolean set1 = redisTemplate.hasKey("set1");
+
+    for (Object key : keys) {
+        DataType type = redisTemplate.type(key);
+        System.out.println(type.name());
+    }
+
+    redisTemplate.delete("mylist");
+}
+```
