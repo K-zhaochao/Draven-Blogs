@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Dabbler's Blog",
+        "avatar": "https://www.dabbler.top/images/avatar.webp",
+        "desc": "AI 工具、技术分享与自部署笔记",
+        "url": "https://www.dabbler.top/",
+        "topics": [
+            "Blogs"
+        ],
+        "rss": "https://www.dabbler.top/atom.xml"
+    }
+]

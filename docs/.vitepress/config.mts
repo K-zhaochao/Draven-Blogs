@@ -232,7 +232,12 @@ function prefixSidebarLinks(items: any, prefix: string): any[] {
 }
 
 export default defineConfig({
-  head: [["link", { rel: "icon", href: "/logo.svg" }]],
+  head: [
+    ["link", { rel: "icon", href: "/logo.svg" }],
+    // 霞鹜文楷（全站字体）
+    ["link", { rel: "preconnect", href: "https://chinese-fonts-cdn.netlify.app" }],
+    ["link", { rel: "stylesheet", href: "https://chinese-fonts-cdn.netlify.app/packages/lxgwwenkai/dist/LXGWWenKai-Regular/result.css" }],
+  ],
   // 本地开发宽松处理死链；CI 构建时通过环境变量 STRICT_LINKS=1 开启严格检查
   ignoreDeadLinks: !process.env.STRICT_LINKS,
   base: '/',
@@ -263,6 +268,7 @@ export default defineConfig({
         items: noteNavItems(),
       },
       { text: '项目实战', link: '/projects/' },
+      { text: '友链', link: '/friends/' },
       { text: 'GitHub', link: 'https://github.com/K-zhaochao/Draven-Blogs' }
     ],
 
