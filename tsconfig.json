@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "module": "ESNext",
-        "moduleResolution": "bundler",
+        "moduleResolution": "node",
         "skipLibCheck": true,
-        "strict": false
+        "strict": false,
+        "ignoreDeprecations": "6.0"
     },
     "include": [
         "docs/.vitepress/**/*",

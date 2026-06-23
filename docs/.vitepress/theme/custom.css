@@ -15,6 +15,12 @@
   font-family: 'LXGW WenKai', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
+/* ===== 隐藏默认的二段式外观开关（已用自定义三段 ThemeToggle 替代） ===== */
+.VPNavBarAppearance,
+.VPNavScreenAppearance {
+  display: none !important;
+}
+
 /* ===== 始终显示 footer（覆盖 VitePress has-sidebar 隐藏） ===== */
 .VPFooter.has-sidebar {
   display: block;

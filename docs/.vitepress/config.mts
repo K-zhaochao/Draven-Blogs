@@ -232,6 +232,10 @@ function prefixSidebarLinks(items: any, prefix: string): any[] {
 }
 
 export default defineConfig({
+  // 外观模式：检测系统主题（prefers-color-scheme），首次访问默认跟随系统
+  // 用户手动切换后，偏好会存入 localStorage；清除 localStorage 后恢复跟随系统
+  appearance: true,
+
   head: [
     ["link", { rel: "icon", href: "/logo.svg" }],
     // 霞鹜文楷（全站字体）
@@ -241,13 +245,25 @@ export default defineConfig({
   // 本地开发宽松处理死链；CI 构建时通过环境变量 STRICT_LINKS=1 开启严格检查
   ignoreDeadLinks: !process.env.STRICT_LINKS,
   base: '/',
-  title: "Draven's Blogs",
+  title: "Draven's Blog",
   description: "Code like a dreamer, build like an engineer.",
   lastUpdated: true, // 3.开启最后更新时间
   // 配置 markdown
   markdown: {
     config: (md) => {
       md.use(taskLists) // 2.任务列表支持
+    }
+  },
+  // Vite 开发服务器代理：将 /artalk-api 开头的请求转发到 Artalk 后端，解决本地 CORS 问题
+  vite: {
+    server: {
+      proxy: {
+        '/artalk-api': {
+          target: 'https://comment.matehub.top',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/artalk-api/, '')
+        }
+      }
     }
   },
   // 赛博朋克紫色调的主色设置
