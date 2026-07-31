@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "Draven's Blogs"
+  name: "Draven's Blog"
   text: "写代码，记笔记，偶尔想点有的没的。"
   tagline: 一个计算机专业学生的个人空间，记录学习、实践与思考。
   actions:
